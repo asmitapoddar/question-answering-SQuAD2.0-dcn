@@ -20,7 +20,7 @@ import time
 
 th.manual_seed(1)
 
-"""$p$ is the pooling size of each maxout layer. "We use a maxout pool size of 16""""
+# """$p$ is the pooling size of each maxout layer. "We use a maxout pool size of 16""""
 
 # Pooling size of each maxout layer
 MAXOUT_POOL_SIZE = 16
@@ -292,24 +292,23 @@ loss.backward()
 
 print("%d/%d parameters are not None." % (len([param for param in model.parameters() if param is not None]), len(list(model.parameters()))))
 
-doc.shape
-
 # Optimiser 
 
-doc = th.ones(30, ENCODING_DIM)
-que = th.ones(5, ENCODING_DIM)
-model = DCNModel(doc, que, ENCODING_DIM, 0.3)
+def run_optimiser():
+    doc = th.ones(30, ENCODING_DIM)
+    que = th.ones(5, ENCODING_DIM)
+    model = DCNModel(doc, que, ENCODING_DIM, 0.3)
 
-# TODO: hyperparameters?
-optimizer = optim.Adam(model.parameters())
-n_iters = 1000 
+    # TODO: hyperparameters?
+    optimizer = optim.Adam(model.parameters())
+    n_iters = 1000
 
-# TODO: batching? 
-for iter in range(n_iters):
-  optimizer.zero_grad()
-  loss, _, _ = model(doc, que)
-  loss.backward()
-  optimizer.step()
+    # TODO: batching?
+    for iter in range(n_iters):
+        optimizer.zero_grad()
+        loss, _, _ = model(doc, que)
+        loss.backward()
+        optimizer.step()
 
 # TEST
 # HMN test
