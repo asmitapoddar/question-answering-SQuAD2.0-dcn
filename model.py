@@ -12,7 +12,11 @@ Original file is located at
 
 
 # -------------- TODO -------------- #
-# Use use_gpu.
+# 1. Fix CoattentionModule maths - the first th.bmm doesn't look right.
+# 2. Finish batchifying all code:
+#    - Go through all tensor operations and LSTMs, etc. until everything works.
+# 3. Use use_gpu.
+
 
 import numpy as np
 import torch as th
