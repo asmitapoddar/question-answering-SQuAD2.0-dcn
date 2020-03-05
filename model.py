@@ -75,14 +75,14 @@ class CoattentionModule(nn.Module):
         self.use_gpu = use_gpu
 
     def forward(self, D, Q):
-        #Q: B x n + 1 x l
-        #D: B x m + 1 x l
+        #Q: B x (n + 1) x l
+        #D: B x (m + 1) x l
 
         # Coattention.
         print("coattention_module D: ", D.size())
         print("coattention_module Q: ", Q.size())
-        D_T = th.transpose(D, 1, 2) #B x l x m + 1 
-        L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
+        D_T = th.transpose(D, 1, 2) #B x l x (m + 1)
+        L = th.bmm(D_T, Q) # L = B x (m + 1) x (n + 1)
         AQ = F.softmax(L, dim=1)
         AD_T = F.softmax(L,dim=2)
         AD = th.transpose(AD_T, 1, 2) # B x n + 1 x m + 1
