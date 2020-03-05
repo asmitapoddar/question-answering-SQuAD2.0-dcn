@@ -388,16 +388,16 @@ if TEST_HMN:
 
 def test_decoder():
     dpe = DynamicPointerDecoder()
-    alphas, betas, _, _ = dpe.forward(th.randn(2 * HIDDEN_SIZE, 50), 10)
+    alphas, betas, _, _ = dpe.forward(th.randn(2 * HIDDEN_DIM, 50), 10)
     dpe.zero_grad()
 
 if TEST_DYNAMIC_POINTER_DECODER:
     test_decoder()
 
 def test_decoder_2():
-    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_SIZE)
+    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM)
     max_iter = 10
-    U = th.ones(2 * HIDDEN_SIZE, 50)
+    U = th.ones(2 * HIDDEN_DIM, 50)
     alphas, betas, s, e = dpd.forward(U, max_iter)
     loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
     loss.backward()
