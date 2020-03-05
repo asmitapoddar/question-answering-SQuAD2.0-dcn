@@ -235,7 +235,7 @@ class DynamicPointerDecoder(nn.Module):
     # initialize the hidden and cell states 
     # hidden = (h, c)
     doc_length = U.size()[1]
-    hidden = (th.randn(1,1,HIDDEN_SIZE), th.randn(1,1,HIDDEN_SIZE))
+    hidden = (th.randn(1,1,HIDDEN_DIM), th.randn(1,1,HIDDEN_DIM))
     
     # "The iterative procedure halts when both the estimate of the start position 
     # and the estimate of the end position no longer change, 
