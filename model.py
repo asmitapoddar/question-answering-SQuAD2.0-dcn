@@ -10,6 +10,10 @@ Original file is located at
 # Commented out IPython magic to ensure Python compatibility.
 # %matplotlib inline
 
+
+# -------------- TODO -------------- #
+# Use use_gpu.
+
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -20,26 +24,29 @@ import time
 
 th.manual_seed(1)
 
-# Pooling size of each maxout layer
-MAXOUT_POOL_SIZE = 16
+# Test flags.
+TEST_DCN_MODEL = True
+TEST_DYNAMIC_POINTER_DECODER = False
+TEST_DYNAMIC_POINTER_DECODER_2 = False
+TEST_HMN = False
 
-ENCODING_DIM = 200
-
+# Defaults/constants.
+BATCH_SIZE = 64
 DROPOUT = 0.3
+ENCODING_DIM = 200
+HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
+MAXOUT_POOL_SIZE = 16
 
 document_sequence_size = 70
 question_sequence_size = 80
 
-# Hidden state dimension of the LSTM
-HIDDEN_SIZE = 200
-
-### 2.1 DOCUMENT AND QUESTION ENCODER
 
 # The encoder LSTM.
 class Encoder(nn.Module):
-  def __init__(self, doc_word_vecs, question_word_vecs, hidden_dim, dropout):
+  def __init__(self, doc_word_vecs, question_word_vecs, hidden_dim, batch_size, dropout, use_gpu = False):
     super(Encoder, self).__init__()
     self.hidden_dim = hidden_dim
+    self.use_gpu = use_gpu
 
     # Dimensionality of word vectors.
     self.word_vec_dim = doc_word_vecs.size()[1]
@@ -52,53 +59,47 @@ class Encoder(nn.Module):
     return self.lstm(x, hidden)
 
   def generate_initial_hidden_state(self):
-    return (th.zeros(self.hidden_dim).view(1,1,self.hidden_dim),
-            th.zeros(self.hidden_dim).view(1,1,self.hidden_dim))
+    return (th.zeros(1,batch_size,self.hidden_dim),
+            th.zeros(1,batch_size,self.hidden_dim))
+
 
 class BiLSTMEncoder(nn.Module):
-
-    def __init__(self, hidden_dim, document_sequence_size, batch_size, dropout=DROPOUT, use_gpu = False):
+    def __init__(self, hidden_dim, document_sequence_size, batch_size, dropout, use_gpu = False):
         super(BiLSTMEncoder, self).__init__()
         self.hidden_dim = hidden_dim
         self.batch_size = batch_size
         self.document_sequence_size=document_sequence_size
         self.dropout = dropout
-        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim,1, batch_first=True, bidirectional=True, dropout=dropout)
         self.hidden = self.init_hidden()
+        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True, dropout=dropout)
+        self.use_gpu = use_gpu
 
     def init_hidden(self):
-        # first is the hidden h
-        # second is the cell c
         # TODO: Is initialisation zeros or randn? 
+        # First is the hidden h, second is the cell c.
         return (th.zeros(2, self.batch_size, self.hidden_dim),
               th.zeros(2, self.batch_size,self.hidden_dim))
-            #return (Variable(th.zeros(num_layers, self.batch_size, self.hidden_dim).to(device)),
-            #Variable(th.zeros(num_layers, self.batch_size, self.hidden_dim).to(device)))
 
     def forward(self, input_BiLSTM):
         print('Input shape: ', input_BiLSTM.shape[0], " ", self.document_sequence_size)
-        lstm_out, self.hidden = self.lstm(input_BiLSTM.reshape(input_BiLSTM.shape[0], self.document_sequence_size, -1), self.hidden)
+        lstm_out, self.hidden = self.lstm(
+            input_BiLSTM.reshape(input_BiLSTM.shape[0], self.document_sequence_size, -1), 
+            self.hidden)
         return lstm_out
 
-class CoattentionModel(nn.Module):
-    def __init__(self, hidden_dim, dropout_ratio):
+
+# Takes in D, Q. Produces U.
+class CoattentionModule(nn.Module):
+    def __init__(self, batch_size, dropout, hidden_dim, use_gpu=False):
         super(CoattentionModel, self).__init__()
         self.hidden_dim = hidden_dim
-
-        #self.encoder = Encoder(hidden_dim, emb_matrix, dropout_ratio) #Kuba
-
-        #self.q_proj = nn.Linear(hidden_dim, hidden_dim)
-        #self.fusion_bilstm = FusionBiLSTM(hidden_dim, dropout_ratio)
-        #self.decoder = DynamicDecoder(hidden_dim, maxout_pool_size, max_dec_steps, dropout_ratio)
-        #self.dropout = nn.Dropout(p=dropout_ratio)
+        self.use_gpu = use_gpu
 
     def forward(self, D, Q):
-        #Q = self.encoder(q_seq, q_mask) # b x n + 1 x l
-        #D = self.encoder(d_seq, d_mask)  # B x m + 1 x l
-        #D=torch.randn(B,hidden_dim, document_sequence_size)#replace with what Kuba wrote #replace size by n+1
-        #Q=torch.randn(B,hidden_dim, question_sequence_size) #replace with what kuba wrote #replace size by m+1 #B x n + 1 x l
+        #Q: B x n + 1 x l
+        #D: B x m + 1 x l
 
-        #co attention
+        #coattention
         D_T = th.transpose(D, 1, 2) #B x l x m + 1 
         L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
         AQ = F.softmax(L, dim=1)
@@ -114,27 +115,30 @@ class CoattentionModel(nn.Module):
         input_BiLSTM=th.transpose(th.cat((D,CD), 1),1,2)
         print(input_BiLSTM.shape)
 
-        model = BiLSTMEncoder(hidden_dim, document_sequence_size, B)
-        return model.forward(input_BiLSTM)
+        bilstm = BiLSTMEncoder(hidden_dim, document_sequence_size, B)
+        U = bilstm(input_BiLSTM)
+        return U
+
 
 class HighwayMaxoutNetwork(nn.Module):
-  def __init__(self, maxout_pool_size = MAXOUT_POOL_SIZE, encoding_dim = ENCODING_DIM): 
+  def __init__(self, batch_size, dropout, encoding_dim, maxout_pool_size = MAXOUT_POOL_SIZE, use_gpu=False): 
     super(HighwayMaxoutNetwork, self).__init__()
 
     self.encoding_dim = encoding_dim
     self.maxout_pool_size = MAXOUT_POOL_SIZE
+    self.use_gpu = use_gpu
 
-    # Don't apply dropout to biases
+    # Don't apply dropout to biases.
     self.dropout = nn.Dropout(p=DROPOUT)
 
     # W_D := Weights of MLP applied to the coattention encodings of
     # the start/end positions, and the current LSTM hidden state (h_i)
-    # (nn.Linear is an affine transformation y = Wx + b)
+    # (nn.Linear is an affine transformation y = Wx + b).
 
     # There are 5 * encoding_dim incoming features (u_si-1, u_ei-1, h_i) 
-    # which are vectors containing (2l, 2l, l) elements respectively
-    # There's l outgoing features (i.e. r)
-    # There's no bias for this MLP
+    # which are vectors containing (2l, 2l, l) elements respectively.
+    # There's l outgoing features (i.e. r).
+    # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
     self.W_D = self.dropout(nn.Parameter(th.randn(self.encoding_dim, 5 * self.encoding_dim)))
@@ -151,6 +155,7 @@ class HighwayMaxoutNetwork(nn.Module):
     self.W_3 = self.dropout(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.encoding_dim)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1))
 
+
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
     assert(u_t.size()[0] == 2 * self.encoding_dim) 
@@ -162,10 +167,10 @@ class HighwayMaxoutNetwork(nn.Module):
     assert(u_ei_m_1.size()[0] == 2 * self.encoding_dim)
     assert(u_ei_m_1.size()[1] == 1)
 
-    # r := output of MLP 
+    # r := output of MLP.
     r = th.tanh(self.W_D.mm(th.cat((h_i, u_si_m_1, u_ei_m_1), 0)))
 
-    # m_t_1 := output of 1st maxout layer
+    # m_t_1 := output of 1st maxout layer.
     m_t_1_beforemaxpool = th.mm(
         self.W_1.view(self.maxout_pool_size * self.encoding_dim, 
                         3 * self.encoding_dim), 
@@ -177,7 +182,7 @@ class HighwayMaxoutNetwork(nn.Module):
     ).squeeze() + self.b_1
 
     # The max operation in Eq.9-12 computes the maximum value over the 
-    # first dimension of a tensor
+    # first dimension of a tensor.
     m_t_1 = th.Tensor.max(m_t_1_beforemaxpool, dim=0).values.unsqueeze(dim=1)
 
     m_t_2_beforemaxpool = th.mm(
@@ -197,7 +202,7 @@ class HighwayMaxoutNetwork(nn.Module):
             self.maxout_pool_size, 
             2 * self.encoding_dim
         ), 
-        # Highway connection
+        # highway connection
         th.cat((m_t_1, m_t_2), 0)
     ) + self.b_3
     
@@ -205,12 +210,11 @@ class HighwayMaxoutNetwork(nn.Module):
     return output
 
 class DynamicPointerDecoder(nn.Module):
-  def __init__(self):
+  def __init__(self, batch_size, dropout, hidden_dim):
     super(DynamicPointerDecoder, self).__init__()
     self.hmn_alpha = HighwayMaxoutNetwork()
     self.hmn_beta = HighwayMaxoutNetwork()
-    self.lstm = nn.LSTM(4*HIDDEN_SIZE, HIDDEN_SIZE, 1, bidirectional=False, dropout=DROPOUT)
-
+    self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, bidirectional=False, dropout=dropout)
 
   def forward(self, U, max_iter):
 
@@ -263,28 +267,20 @@ class DynamicPointerDecoder(nn.Module):
 
     return (alphas, betas, s, e)
 
-dpd = DynamicPointerDecoder()
-max_iter = 10
-U = th.ones(2 * HIDDEN_SIZE, 50)
-alphas, betas, s, e = dpd.forward(U, max_iter)
-loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
-loss.backward()
-print(loss)
-
 # The full model.
 class DCNModel(nn.Module):
-  def __init__(self, doc_word_vecs, question_word_vecs, encoder_h_dim, encoder_dropout):
+  def __init__(
+      self, doc_word_vecs, question_word_vecs, batch_size, hidden_dim=HIDDEN_DIM, encoder_dropout=DROPOUT, 
+      coattention_dropout=DROPOUT, decoder_dropout=DROPOUT):
     super(DCNModel, self).__init__()
-    self.encoder_h_dim = encoder_h_dim
-    self.encoder = Encoder(doc_word_vecs, question_word_vecs, encoder_h_dim, encoder_dropout)
-    print("Encoder shape: ",self.encoder)
-    self.encoder_sentinel = nn.Parameter(th.randn(encoder_h_dim)) # the sentinel is a trainable parameter of the network
-    self.WQ = nn.Linear(encoder_h_dim, encoder_h_dim)
-    self.dyn_ptr_dec = DynamicPointerDecoder() 
-    self.coattention = CoattentionModel(encoder_h_dim, encoder_dropout)
+    self.hidden_dim = hidden_dim
+    self.encoder = Encoder(doc_word_vecs, question_word_vecs, hidden_dim, batch_size, encoder_dropout)
+    self.encoder_sentinel = nn.Parameter(th.randn(hidden_dim)) # the sentinel is a trainable parameter of the network
+    self.WQ = nn.Linear(hidden_dim, hidden_dim)
+    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, decoder_dropout, decoder_h_dim) 
+    self.coattention = CoattentionModule(batch_size, coattention_dropout, coattention_module_h_dim)
 
   def forward(self, doc_word_vecs, question_word_vecs):
-    
     # TODO: how should we initialise the hidden state of the LSTM? For now:
     hidden = self.encoder.generate_initial_hidden_state()
     for i in doc_word_vecs:
@@ -298,7 +294,7 @@ class DCNModel(nn.Module):
         outp, hidden = self.encoder.lstm(i.view(1, 1, -1), hidden)
 
     Qprime = th.cat([outp.view(-1), self.encoder_sentinel], 0)  # append sentinel word vector
-    Q = th.tanh(self.WQ(Qprime.view(-1, self.encoder_h_dim))).view(Qprime.size()) # l X n+1
+    Q = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size()) # l X n+1
 
     U = self.coattention.forward(D,Q)
     
@@ -327,26 +323,12 @@ class DCNModel(nn.Module):
  
     return loss, start, end
 
-# TEST
-# DCNModel Test.
-doc = th.randn(30, ENCODING_DIM)
-que = th.randn(5, ENCODING_DIM)
 
-# Run model.
-model = DCNModel(doc, que, ENCODING_DIM, DROPOUT)
-loss, s, e = model.forward(doc, que)
-print("loss: ", loss, ", s:", s, ", e:", e)
-model.zero_grad()
-loss.backward()
-
-print("%d/%d parameters are not None." % (len([param for param in model.parameters() if param is not None]), len(list(model.parameters()))))
-
-# Optimiser 
-
+# Optimiser.
 def run_optimiser():
-    doc = th.ones(30, ENCODING_DIM)
-    que = th.ones(5, ENCODING_DIM)
-    model = DCNModel(doc, que, ENCODING_DIM, 0.3)
+    doc = th.ones(30, 200) # Fake word vec dimension set to 200.
+    que = th.ones(5, 200)  # Fake word vec dimension set to 200.
+    model = DCNModel(doc, que, BATCH_SIZE)
 
     # TODO: hyperparameters?
     optimizer = optim.Adam(model.parameters())
@@ -359,10 +341,28 @@ def run_optimiser():
         loss.backward()
         optimizer.step()
 
-# TEST
-# HMN test
-def hmn_test():
-    hmn = HighwayMaxoutNetwork()
+
+# ------------------------------- tests -------------------------------#
+
+# DCNModel Test.
+def test_dcn_model():
+    doc = th.randn(30, ENCODING_DIM)
+    que = th.randn(5, ENCODING_DIM)
+
+    # Run model.
+    model = DCNModel(doc, que, ENCODING_DIM, DROPOUT)
+    loss, s, e = model.forward(doc, que)
+    print("loss: ", loss, ", s:", s, ", e:", e)
+    model.zero_grad()
+    loss.backward()
+
+    print("%d/%d parameters have non-None gradients." % (len([param for param in model.parameters() if param.grad is not None]), len(list(model.parameters()))))
+
+if TEST_DCN_MODEL:
+    test_dcn_model()
+
+def test_hmn():
+    hmn = HighwayMaxoutNetwork(BATCH_SIZE, HIDDEN_DIM, MAXOUT_POOL_SIZE)
     u_t = th.ones(2 * ENCODING_DIM, 1)
     h_i = th.ones(ENCODING_DIM, 1)
     u_si_m_1, u_ei_m_1 = th.ones(2 * ENCODING_DIM, 1), th.ones(2 * ENCODING_DIM, 1)
@@ -370,15 +370,25 @@ def hmn_test():
     #print(output)
     output.backward()
 
-#for param in hmn.parameters(): 
-#  print(param.grad)
+if TEST_HMN:
+    test_hmn()
 
-# TEST
-# Dynamic pointer decoder test
-def dpe_test():
+def test_decoder():
     dpe = DynamicPointerDecoder()
     alphas, betas, _, _ = dpe.forward(th.randn(2 * HIDDEN_SIZE, 50), 10)
     dpe.zero_grad()
 
+if TEST_DYNAMIC_POINTER_DECODER:
+    test_decoder()
 
+def test_decoder_2():
+    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_SIZE)
+    max_iter = 10
+    U = th.ones(2 * HIDDEN_SIZE, 50)
+    alphas, betas, s, e = dpd.forward(U, max_iter)
+    loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
+    loss.backward()
+    print(loss)
 
+if TEST_DYNAMIC_POINTER_DECODER_2:
+    test_decoder_2()
