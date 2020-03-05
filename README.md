@@ -5,3 +5,5 @@ This repository contain a reimplementation of this paper https://arxiv.org/abs/1
 The repo name speaks for itself.
 
 No snitching either.
+
+Existing impl: https://github.com/atulkum/co-attention/blob/master/code/model.py
