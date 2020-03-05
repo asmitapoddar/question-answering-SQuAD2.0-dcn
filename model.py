@@ -68,6 +68,9 @@ class Encoder(nn.Module):
 class CoattentionModule(nn.Module):
     def __init__(self, batch_size, dropout, hidden_dim, use_gpu=False):
         super(CoattentionModule, self).__init__()
+        self.batch_size = batch_size
+        self.bilstm_encoder = BiLSTMEncoder(hidden_dim, document_sequence_size, batch_size, dropout, use_gpu)
+        self.dropout = dropout
         self.hidden_dim = hidden_dim
         self.use_gpu = use_gpu
 
@@ -75,7 +78,9 @@ class CoattentionModule(nn.Module):
         #Q: B x n + 1 x l
         #D: B x m + 1 x l
 
-        #coattention
+        # Coattention.
+        print("coattention_module D: ", D.size())
+        print("coattention_module Q: ", Q.size())
         D_T = th.transpose(D, 1, 2) #B x l x m + 1 
         L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
         AQ = F.softmax(L, dim=1)
@@ -86,13 +91,10 @@ class CoattentionModule(nn.Module):
         CD = th.bmm(th.cat((Q,CQ),1),AD) # B x 2l x m + 1
         C_D_t = th.transpose(CD, 1, 2)  # B x m + 1 x 2l
 
-        #fusion BiLSTM
-        
-        input_BiLSTM=th.transpose(th.cat((D,CD), 1),1,2)
-        print(input_BiLSTM.shape)
-
-        bilstm = BiLSTMEncoder(hidden_dim, document_sequence_size, B)
-        U = bilstm(input_BiLSTM)
+        # Fusion BiLSTM.
+        input_to_BiLSTM = th.transpose(th.cat((D,CD), dim=1), 1, 2)
+        print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
+        U = self.bilstm_encoder(input_to_BiLSTM)
         return U
 
 
@@ -114,7 +116,6 @@ class BiLSTMEncoder(nn.Module):
               th.zeros(2, self.batch_size,self.hidden_dim))
 
     def forward(self, input_BiLSTM):
-        print('Input shape: ', input_BiLSTM.shape[0], " ", self.document_sequence_size)
         lstm_out, self.hidden = self.lstm(
             input_BiLSTM.reshape(input_BiLSTM.shape[0], self.document_sequence_size, -1), 
             self.hidden)
@@ -278,7 +279,7 @@ class DCNModel(nn.Module):
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim)
     self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim) 
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder)
-    self.encoder_sentinel = nn.Parameter(th.randn(batch_size, hidden_dim)) # the sentinel is a trainable parameter of the network
+    self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
@@ -290,12 +291,16 @@ class DCNModel(nn.Module):
     # TODO: how should we initialise the hidden state of the LSTM? For now:
     initial_hidden = self.encoder.generate_initial_hidden_state()
     outp, _ = self.encoder(doc_word_vecs, initial_hidden)
-    D = th.cat([outp.view(self.batch_size, -1), self.encoder_sentinel], dim=1)  # append sentinel word vector # l X n+1
+    # outp: B x m x l
+    D = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector # l X n+1
+    # D: B x (m+1) x l
 
     # TODO: Make sure we should indeed reinit hidden state before encoding the q.
     outp, _ = self.encoder(que_word_vecs, initial_hidden)
-    Qprime = th.cat([outp.view(self.batch_size, -1), self.encoder_sentinel], dim=1)  # append sentinel word vector
-    Q = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size()) # l X n+1
+    Qprime = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector
+    # Qprime: B x (n+1) x l
+    Q = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
+    # Q: B x (n+1) x l
 
     U = self.coattention_module(D,Q)
     
