@@ -12,10 +12,10 @@ Original file is located at
 
 
 # -------------- TODO -------------- #
-# 1. Fix CoattentionModule maths - the first th.bmm doesn't look right.
-# 2. Finish batchifying all code:
+# 1. Finish batchifying all code:
+#    - fix DynamicPointerDecoder's forward pass.
 #    - Go through all tensor operations and LSTMs, etc. until everything works.
-# 3. Use use_gpu.
+# 2. Verify that GPU is used as we're expecting.
 
 
 import numpy as np
@@ -40,17 +40,13 @@ DROPOUT = 0.3
 HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
 MAXOUT_POOL_SIZE = 16
 
-document_sequence_size = 70
-question_sequence_size = 80
-
-
 # The encoder LSTM.
 class Encoder(nn.Module):
-  def __init__(self, doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout, use_gpu = False):
+  def __init__(self, doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout, device):
     super(Encoder, self).__init__()
     self.batch_size = batch_size
     self.hidden_dim = hidden_dim
-    self.use_gpu = use_gpu
+    self.device = device
 
     # Dimensionality of word vectors.
     self.word_vec_dim = doc_word_vecs.size()[2]
@@ -61,8 +57,8 @@ class Encoder(nn.Module):
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
-    return (th.zeros(1, self.batch_size, self.hidden_dim),
-            th.zeros(1, self.batch_size, self.hidden_dim))
+    return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device),
+            th.zeros(1, self.batch_size, self.hidden_dim, device=self.device))
 
   def forward(self, x, hidden):
     return self.lstm(x, hidden)
@@ -70,19 +66,19 @@ class Encoder(nn.Module):
 
 # Takes in D, Q. Produces U.
 class CoattentionModule(nn.Module):
-    def __init__(self, batch_size, dropout, hidden_dim, use_gpu=False):
+    def __init__(self, batch_size, dropout, hidden_dim, device):
         super(CoattentionModule, self).__init__()
         self.batch_size = batch_size
-        self.bilstm_encoder = BiLSTMEncoder(hidden_dim, batch_size, dropout, use_gpu)
+        self.bilstm_encoder = BiLSTMEncoder(hidden_dim, batch_size, dropout, device)
         self.dropout = dropout
         self.hidden_dim = hidden_dim
-        self.use_gpu = use_gpu
+        self.device = device
 
     def forward(self, D_T, Q_T):
         #Q: B x n + 1 x l
         #D: B x m + 1 x l
         
-        Q =  th.transpose(Q_T, 1, 2) #B x  n + 1 x l
+        Q = th.transpose(Q_T, 1, 2) #B x  n + 1 x l
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
 
         # Coattention.
@@ -107,20 +103,20 @@ class CoattentionModule(nn.Module):
 
 
 class BiLSTMEncoder(nn.Module):
-    def __init__(self, hidden_dim, batch_size, dropout, use_gpu = False):
+    def __init__(self, hidden_dim, batch_size, dropout, device):
         super(BiLSTMEncoder, self).__init__()
         self.hidden_dim = hidden_dim
         self.batch_size = batch_size
+        self.device = device
         self.dropout = dropout
         self.hidden = self.init_hidden()
         self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True, dropout=dropout)
-        self.use_gpu = use_gpu
 
     def init_hidden(self):
         # TODO: Is initialisation zeros or randn? 
         # First is the hidden h, second is the cell c.
-        return (th.zeros(2, self.batch_size, self.hidden_dim),
-              th.zeros(2, self.batch_size,self.hidden_dim))
+        return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device),
+              th.zeros(2, self.batch_size,self.hidden_dim, device=self.device))
 
     def forward(self, input_BiLSTM):
         lstm_out, self.hidden = self.lstm(
@@ -130,12 +126,12 @@ class BiLSTMEncoder(nn.Module):
 
 
 class HighwayMaxoutNetwork(nn.Module):
-  def __init__(self, batch_size, dropout, hidden_dim, maxout_pool_size = MAXOUT_POOL_SIZE, use_gpu=False): 
+  def __init__(self, batch_size, dropout, hidden_dim, maxout_pool_size, device): 
     super(HighwayMaxoutNetwork, self).__init__()
 
     self.hidden_dim = hidden_dim
     self.maxout_pool_size = MAXOUT_POOL_SIZE
-    self.use_gpu = use_gpu
+    self.device = device
 
     # Don't apply dropout to biases.
     self.dropout = nn.Dropout(p=DROPOUT)
@@ -219,10 +215,11 @@ class HighwayMaxoutNetwork(nn.Module):
     return output
 
 class DynamicPointerDecoder(nn.Module):
-  def __init__(self, batch_size, dropout_hmn, dropout_lstm, hidden_dim, use_gpu=False):
+  def __init__(self, batch_size, dropout_hmn, dropout_lstm, hidden_dim, device):
     super(DynamicPointerDecoder, self).__init__()
-    self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, use_gpu)
-    self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, use_gpu)
+    self.device = device
+    self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
+    self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
     self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout_lstm)
 
   def forward(self, U, max_iter):
@@ -231,7 +228,7 @@ class DynamicPointerDecoder(nn.Module):
     # Initialise h_0, s_i_0, e_i_0 (TODO can change)
     s = 0
     e = 0
-
+    
     # initialize the hidden and cell states 
     # hidden = (h, c)
     doc_length = U.size()[1]
@@ -242,8 +239,8 @@ class DynamicPointerDecoder(nn.Module):
     # or when a maximum number of iterations is reached"
 
     # We build up the losses here (the iteration being the first dimension)
-    alphas = th.tensor([]).view(0, doc_length)
-    betas = th.tensor([]).view(0, doc_length)
+    alphas = th.tensor([], device=self.device).view(0, doc_length)
+    betas = th.tensor([], device=self.device).view(0, doc_length)
 
     # TODO: make it run only until convergence (or maxiter)
     for _ in range(max_iter):
@@ -258,8 +255,8 @@ class DynamicPointerDecoder(nn.Module):
       h, _ = hidden
 
       # Call HMN to update s_i, e_i
-      alpha = th.tensor([]).view(0, 1)
-      beta = th.tensor([]).view(0, 1)
+      alpha = th.tensor([], device=self.device).view(0, 1)
+      beta = th.tensor([], device=self.device).view(0, 1)
 
       for t in range(doc_length):
         t_hmn_alpha = self.hmn_alpha(U[:, t].view(-1, 1), h.view(-1, 1), U[:,s].view(-1, 1), U[:,e].view(-1, 1))
@@ -279,13 +276,13 @@ class DynamicPointerDecoder(nn.Module):
 # The full model.
 class DCNModel(nn.Module):
   def __init__(
-      self, doc_word_vecs, que_word_vecs, batch_size, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
+      self, doc_word_vecs, que_word_vecs, batch_size, device, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
       dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
-    self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim)
-    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim) 
-    self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder)
+    self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
+    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
+    self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
@@ -359,11 +356,20 @@ def run_optimiser():
 
 # DCNModel Test.
 def test_dcn_model():
-    doc = th.randn(64, 30, 200) # Fake word vec dimension set to 200.
-    que = th.randn(64, 5, 200)  # Fake word vec dimension set to 200.
+    # Is GPU available:
+    print ("cuda device count = %d" % th.cuda.device_count())
+    print ("cuda is available = %d" % th.cuda.is_available())
+    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+
+    doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
+    que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
 
     # Run model.
-    model = DCNModel(doc, que, BATCH_SIZE)
+    model = DCNModel(doc, que, BATCH_SIZE, device)
+    if th.cuda.is_available:
+      # https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
+      # Move net to gpu:
+      model = model.cuda()
     loss, s, e = model.forward(doc, que)
     print("loss: ", loss, ", s:", s, ", e:", e)
     model.zero_grad()
@@ -375,10 +381,10 @@ if TEST_DCN_MODEL:
     test_dcn_model()
 
 def test_hmn():
-    hmn = HighwayMaxoutNetwork(BATCH_SIZE, HIDDEN_DIM, MAXOUT_POOL_SIZE)
-    u_t = th.ones(2 * HIDDEN_DIM, 1)
-    h_i = th.ones(HIDDEN_DIM, 1)
-    u_si_m_1, u_ei_m_1 = th.ones(2 * HIDDEN_DIM, 1), th.ones(2 * HIDDEN_DIM, 1)
+    hmn = HighwayMaxoutNetwork(BATCH_SIZE, HIDDEN_DIM, MAXOUT_POOL_SIZE) #TODO device
+    u_t = th.ones(2 * HIDDEN_DIM, 1) #TODO device
+    h_i = th.ones(HIDDEN_DIM, 1) #TODO device
+    u_si_m_1, u_ei_m_1 = th.ones(2 * HIDDEN_DIM, 1), th.ones(2 * HIDDEN_DIM, 1) #TODO device
     output = hmn.forward(u_t, h_i, u_si_m_1, u_ei_m_1)
     #print(output)
     output.backward()
@@ -388,16 +394,16 @@ if TEST_HMN:
 
 def test_decoder():
     dpe = DynamicPointerDecoder()
-    alphas, betas, _, _ = dpe.forward(th.randn(2 * HIDDEN_DIM, 50), 10)
+    alphas, betas, _, _ = dpe.forward(th.randn(2 * HIDDEN_DIM, 50), 10) #TODO device
     dpe.zero_grad()
 
 if TEST_DYNAMIC_POINTER_DECODER:
     test_decoder()
 
 def test_decoder_2():
-    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM)
+    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM) #TODO device
     max_iter = 10
-    U = th.ones(2 * HIDDEN_DIM, 50)
+    U = th.ones(2 * HIDDEN_DIM, 50) #TODO device
     alphas, betas, s, e = dpd.forward(U, max_iter)
     loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
     loss.backward()
