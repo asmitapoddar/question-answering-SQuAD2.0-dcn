@@ -13,6 +13,7 @@ import json
 
 # Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
 DIMENSIONALITY = 300
+print('hola')
 
 def load_embeddings_index(small = False):
     embeddings_index = {}
@@ -126,3 +127,4 @@ def preprocess(nlp_client, embeddings, dataset):
 with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G') as client:
     embeddings = load_embeddings_index(small=False)
     preprocess(client, embeddings, load_train_set())
+
