@@ -99,9 +99,6 @@ class CoattentionModule(nn.Module):
         print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
 
         U = self.bilstm_encoder(input_to_BiLSTM)
-
-        # TODO: U is supposed to have shape B x m x 2l, currently it's B x (m+1) x 2l. Please fix.
-        print("U.size() at the end of bilstm", U.size())
         return U
 
 
@@ -168,14 +165,14 @@ class HighwayMaxoutNetwork(nn.Module):
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
-    assert(u_t.size()[0] == 2 * self.hidden_dim) 
-    assert(u_t.size()[1] == 1) 
-    assert(h_i.size()[0] == self.hidden_dim)
-    assert(h_i.size()[1] == 1)
-    assert(u_si_m_1.size()[0] == 2 * self.hidden_dim)
-    assert(u_si_m_1.size()[1] == 1)
-    assert(u_ei_m_1.size()[0] == 2 * self.hidden_dim)
-    assert(u_ei_m_1.size()[1] == 1)
+    assert(u_t.size()[0+1] == 2 * self.hidden_dim) 
+    assert(u_t.size()[1+1] == 1) 
+    assert(h_i.size()[0+1] == self.hidden_dim)
+    assert(h_i.size()[1+1] == 1)
+    assert(u_si_m_1.size()[0+1] == 2 * self.hidden_dim)
+    assert(u_si_m_1.size()[1+1] == 1)
+    assert(u_ei_m_1.size()[0+1] == 2 * self.hidden_dim)
+    assert(u_ei_m_1.size()[1+1] == 1)
 
     # r := output of MLP.
     r = th.tanh(self.W_D.mm(th.cat((h_i, u_si_m_1, u_ei_m_1), 0)))
@@ -253,40 +250,41 @@ class DynamicPointerDecoder(nn.Module):
     alphas = th.tensor([], device=self.device).view(0, doc_length)
     betas = th.tensor([], device=self.device).view(0, doc_length)
 
-    # TODO: make it run only until convergence (or maxiter)
+    # TODO: make it run only until convergence (or self.max_iter)
     for _ in range(self.max_iter):
       # call LSTM to update h_i
 
       # Step through the sequence one element at a time.
       # after each step, hidden contains the hidden state.
-      u_si_m1 = U[:,s,:]
-      u_ei_m1 = U[:,e,:]
+      u_si_m_1 = U[:,:,s].unsqueeze(dim=2)
+      u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
       
-      lstm_input = th.cat((u_si_m1, u_ei_m1), dim=1).view(U.size()[0], -1, 1)
+      lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
       print("U.size()", U.size())
       print("lstm_input.size()", lstm_input.size())
 
       _, hidden = self.lstm(lstm_input.view(self.batch_size, 1, -1), hidden)
       h_i, _ = hidden
+      h_i = h_i.squeeze(dim=0).unsqueeze(dim=2)
 
       # Call HMN to update s_i, e_i
       alpha = th.tensor([], device=self.device).view(0, 1)
       beta = th.tensor([], device=self.device).view(0, 1)
 
       for t in range(doc_length):
-        u_t = U[:, t, :]
+        u_t = U[:,:,t].unsqueeze(dim=2)
         print("u_t.size()", u_t.size())
         print("h_i.size()", h_i.size())
-        print("u_si_m1.size()", u_si_m1.size())
-        print("u_ei_m1.size()", u_ei_m1.size())
-        t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m1, u_ei_m1)
+        print("u_si_m_1.size()", u_si_m_1.size())
+        print("u_ei_m_1.size()", u_ei_m_1.size())
+        t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
         alpha = th.cat((alpha, t_hmn_alpha.view(1, 1)), dim=0)
 
       _, s = th.max(alpha, dim=0)  # Leaving out dim=0 changes behaviour.
       u_si = U[:,s,:]
 
       for t in range(doc_length):
-        t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m1)
+        t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
         beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
       
       _, e = th.max(beta, dim=0)
