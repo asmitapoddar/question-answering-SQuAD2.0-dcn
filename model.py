@@ -37,6 +37,7 @@ TEST_HMN = False
 BATCH_SIZE = 64
 DROPOUT = 0.3
 HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
+MAX_ITER = 4
 MAXOUT_POOL_SIZE = 16
 
 # The encoder LSTM.
@@ -98,6 +99,9 @@ class CoattentionModule(nn.Module):
         print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
 
         U = self.bilstm_encoder(input_to_BiLSTM)
+
+        # TODO: U is supposed to have shape B x m x 2l, currently it's B x (m+1) x 2l. Please fix.
+        print("U.size() at the end of bilstm", U.size())
         return U
 
 
@@ -128,12 +132,13 @@ class HighwayMaxoutNetwork(nn.Module):
   def __init__(self, batch_size, dropout, hidden_dim, maxout_pool_size, device): 
     super(HighwayMaxoutNetwork, self).__init__()
 
+    self.batch_size = batch_size
+    self.device = device
     self.hidden_dim = hidden_dim
     self.maxout_pool_size = MAXOUT_POOL_SIZE
-    self.device = device
 
     # Don't apply dropout to biases.
-    self.dropout = nn.Dropout(p=DROPOUT)
+    self.dropout_modifier = nn.Dropout(p=dropout)
 
     # W_D := Weights of MLP applied to the coattention encodings of
     # the start/end positions, and the current LSTM hidden state (h_i)
@@ -145,18 +150,18 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    self.W_D = self.dropout(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim)))
+    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim)))
 
     # 1st Maxout layer
-    self.W_1 = self.dropout(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim)))
+    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim)))
     self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
 
     # 2nd maxout layer
-    self.W_2 = self.dropout(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim)))
+    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim)))
     self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
 
     # 3rd maxout layer
-    self.W_3 = self.dropout(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim)))
+    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1))
 
 
@@ -214,14 +219,19 @@ class HighwayMaxoutNetwork(nn.Module):
     return output
 
 class DynamicPointerDecoder(nn.Module):
-  def __init__(self, batch_size, dropout_hmn, dropout_lstm, hidden_dim, device):
+  def __init__(self, batch_size, max_iter, dropout_hmn, dropout_lstm, hidden_dim, device):
     super(DynamicPointerDecoder, self).__init__()
+    self.batch_size = batch_size
     self.device = device
+    self.hidden_dim = hidden_dim
     self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
     self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
     self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout_lstm)
+    self.max_iter = max_iter
 
-  def forward(self, U, max_iter):
+  def forward(self, U):
+
+    assert(U.size()[0] == self.batch_size)
 
     # TODO: Value to choose for max_iter (600?)
     # Initialise h_0, s_i_0, e_i_0 (TODO can change)
@@ -231,7 +241,8 @@ class DynamicPointerDecoder(nn.Module):
     # initialize the hidden and cell states 
     # hidden = (h, c)
     doc_length = U.size()[1]
-    hidden = (th.randn(1,1,HIDDEN_DIM), th.randn(1,1,HIDDEN_DIM))
+    hidden = (th.randn(1,self.batch_size,self.hidden_dim,device=self.device), 
+              th.randn(1,self.batch_size,self.hidden_dim,device=self.device))
     
     # "The iterative procedure halts when both the estimate of the start position 
     # and the estimate of the end position no longer change, 
@@ -242,31 +253,42 @@ class DynamicPointerDecoder(nn.Module):
     betas = th.tensor([], device=self.device).view(0, doc_length)
 
     # TODO: make it run only until convergence (or maxiter)
-    for _ in range(max_iter):
+    for _ in range(self.max_iter):
       # call LSTM to update h_i
 
       # Step through the sequence one element at a time.
       # after each step, hidden contains the hidden state.
-      u_concatenated = th.cat((U[:,s], U[:,e]), dim=0).view(-1, 1)
-      #print("u_concatenated.size()", u_concatenated.size())
+      u_si_m1 = U[:,s,:]
+      u_ei_m1 = U[:,e,:]
+      
+      lstm_input = th.cat((u_si_m1, u_ei_m1), dim=1).view(U.size()[0], -1, 1)
+      print("U.size()", U.size())
+      print("lstm_input.size()", lstm_input.size())
 
-      out, hidden = self.lstm(u_concatenated.view(1, 1, -1), hidden)
-      h, _ = hidden
+      _, hidden = self.lstm(lstm_input.view(self.batch_size, 1, -1), hidden)
+      h_i, _ = hidden
 
       # Call HMN to update s_i, e_i
       alpha = th.tensor([], device=self.device).view(0, 1)
       beta = th.tensor([], device=self.device).view(0, 1)
 
       for t in range(doc_length):
-        t_hmn_alpha = self.hmn_alpha(U[:, t].view(-1, 1), h.view(-1, 1), U[:,s].view(-1, 1), U[:,e].view(-1, 1))
-        t_hmn_beta = self.hmn_beta(U[:, t].view(-1, 1), h.view(-1, 1), U[:,s].view(-1, 1), U[:,e].view(-1, 1))
+        u_t = U[:, t, :]
+        print("u_t.size()", u_t.size())
+        print("h_i.size()", h_i.size())
+        print("u_si_m1.size()", u_si_m1.size())
+        print("u_ei_m1.size()", u_ei_m1.size())
+        t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m1, u_ei_m1)
         alpha = th.cat((alpha, t_hmn_alpha.view(1, 1)), dim=0)
-        beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
 
-      # Leaving out dim=0 changes behaviour
-      _, s = th.max(alpha, dim=0)
-      _, e = th.max(beta, dim=0)
+      _, s = th.max(alpha, dim=0)  # Leaving out dim=0 changes behaviour.
+      u_si = U[:,s,:]
+
+      for t in range(doc_length):
+        t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m1)
+        beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
       
+      _, e = th.max(beta, dim=0)
       alphas = th.cat((alphas, alpha.view(1, -1)), dim=0)
       betas = th.cat((betas, beta.view(1, -1)), dim=0)
 
@@ -276,11 +298,11 @@ class DynamicPointerDecoder(nn.Module):
 class DCNModel(nn.Module):
   def __init__(
       self, doc_word_vecs, que_word_vecs, batch_size, device, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
-      dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT):
+      dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT, dpd_max_iter=MAX_ITER):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
-    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
+    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
@@ -321,7 +343,7 @@ class DCNModel(nn.Module):
     # distributions over the start positions (alphas)
     # and end positions (betas) at each iteration
     # as well as the final start/end indices
-    alphas, betas, start, end = self.dyn_ptr_dec.forward(U, max_iters)
+    alphas, betas, start, end = self.dyn_ptr_dec(U)
 
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
@@ -335,9 +357,14 @@ class DCNModel(nn.Module):
 
 # Optimiser.
 def run_optimiser():
-    doc = th.randn(64, 30, 200) # Fake word vec dimension set to 200.
-    que = th.randn(64, 5, 200)  # Fake word vec dimension set to 200.
-    model = DCNModel(doc, que, BATCH_SIZE)
+    # Is GPU available:
+    print ("cuda device count = %d" % th.cuda.device_count())
+    print ("cuda is available = %d" % th.cuda.is_available())
+    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+
+    doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
+    que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
+    model = DCNModel(doc, que, BATCH_SIZE, device)
 
     # TODO: hyperparameters?
     optimizer = optim.Adam(model.parameters())
