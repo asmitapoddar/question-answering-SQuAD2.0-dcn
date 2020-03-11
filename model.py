@@ -123,9 +123,10 @@ class BiLSTMEncoder(nn.Module):
 
     def forward(self, input_BiLSTM):
         lstm_out, self.hidden = self.lstm(
-            input_BiLSTM.reshape(input_BiLSTM.shape[0], input_BiLSTM.shape[1], -1), 
+            input_BiLSTM, 
             self.hidden)
-        return lstm_out
+        U=th.transpose(lstm_out, 1, 2)[:,:,1:]
+        return U
 
 
 class HighwayMaxoutNetwork(nn.Module):
