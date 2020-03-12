@@ -319,6 +319,8 @@ class DynamicPointerDecoder(nn.Module):
       # https://pytorch.org/docs/stable/torch.html#torch.gather
       # u_si = [U[batch_ind,:,s[batch_ind]] for batch_ind in range(self.batch_size)].unsqueeze(dim=2)
       # u_si = th.gather(U, ??, ??)
+      s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
+      u_si = th.gather(U,2,s_index)
       
       
       print("u_si.size()", u_si.size())
