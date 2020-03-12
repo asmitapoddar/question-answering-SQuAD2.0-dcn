@@ -162,11 +162,10 @@ class HighwayMaxoutNetwork(nn.Module):
     self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1))
 
-
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
-    assert(u_t.size()[0+1] == 2 * self.hidden_dim) 
-    assert(u_t.size()[1+1] == 1) 
+    assert(u_t.size()[0+1] == 2 * self.hidden_dim)
+    assert(u_t.size()[1+1] == 1)
     assert(h_i.size()[0+1] == self.hidden_dim)
     assert(h_i.size()[1+1] == 1)
     assert(u_si_m_1.size()[0+1] == 2 * self.hidden_dim)
@@ -174,46 +173,70 @@ class HighwayMaxoutNetwork(nn.Module):
     assert(u_ei_m_1.size()[0+1] == 2 * self.hidden_dim)
     assert(u_ei_m_1.size()[1+1] == 1)
 
-    # r := output of MLP.
-    r = th.tanh(self.W_D.mm(th.cat((h_i, u_si_m_1, u_ei_m_1), 0)))
+    # MULTILAYER PERCEPTRON (r)
 
-    # m_t_1 := output of 1st maxout layer.
+    # Concatenate current LSTM state with coattention encodings of
+    # current estimates for start and end positions of answer span.
+    h_us_ue = th.cat((h_i, u_si_m_1, u_ei_m_1), dim=1)
+    assert(h_us_ue.size()[0] == self.batch_size)
+    assert(h_us_ue.size()[1+0] == 5 * self.hidden_dim)
+    assert(h_us_ue.size()[1+1] == 1)
+
+    # r := output of MLP
+    r = th.tanh(self.W_D.matmul(h_us_ue))
+
+    # r has dimension BATCH_SIZE * HIDDEN_DIM * 1
+    assert(r.size()[0] == self.batch_size)
+    assert(r.size()[1+0] == self.hidden_dim)
+    assert(r.size()[1+1] == 1)
+
+    # m_t_1 := output of 1st maxout layer (Eq. 11 in the paper)
+    w1_reshaped = self.W_1.view(self.maxout_pool_size * self.hidden_dim, 3 * self.hidden_dim)
+
+    u_r = th.cat((u_t, r), dim=1).squeeze(dim=2).transpose(0, 1)
+    # Note that the batch dimension here isn't the first one.
+    assert(u_r.size()[0] == 3 * self.hidden_dim)
+    assert(u_r.size()[1] == self.batch_size)
+
+    # Transpose the result of matmul(w1_reshaped, u_r) so that BATCH_SIZE is again the first dimension
     m_t_1_beforemaxpool = th.mm(
-        self.W_1.view(self.maxout_pool_size * self.hidden_dim, 
-                        3 * self.hidden_dim), 
-                        th.cat((u_t, r), 0)
-    ).view(
-        self.maxout_pool_size, 
-        self.hidden_dim, 
-        1
-    ).squeeze() + self.b_1
+        w1_reshaped,
+        u_r).transpose(0, 1).view(self.batch_size, self.maxout_pool_size, self.hidden_dim) + self.b_1.expand(self.batch_size, -1, -1)
+    assert(m_t_1_beforemaxpool.size()[0] == self.batch_size)
+    assert(m_t_1_beforemaxpool.size()[1+0] == self.maxout_pool_size)
+    assert(m_t_1_beforemaxpool.size()[1+1] == self.hidden_dim)
 
-    # The max operation in Eq.9-12 computes the maximum value over the 
-    # first dimension of a tensor.
-    m_t_1 = th.Tensor.max(m_t_1_beforemaxpool, dim=0).values.unsqueeze(dim=1)
+    m_t_1 = th.Tensor.max(m_t_1_beforemaxpool, dim=1).values
+    assert(m_t_1.size()[0] == self.batch_size)
+    assert(m_t_1.size()[1+0] == self.hidden_dim)
 
+    # Eq. 12 in the paper
     m_t_2_beforemaxpool = th.mm(
-        self.W_2.view(self.maxout_pool_size * self.hidden_dim, 
-                        self.hidden_dim), 
-                        m_t_1
-    ).view(
+        self.W_2.view(self.maxout_pool_size * self.hidden_dim, self.hidden_dim),
+        m_t_1.transpose(0, 1)
+    ).transpose(0, 1).view(
+        self.batch_size,
         self.maxout_pool_size, 
-        self.hidden_dim, 
-        1
-    ).squeeze() + self.b_2
-    m_t_2 = th.Tensor.max(m_t_2_beforemaxpool, dim=0).values.unsqueeze(dim=1)
+        self.hidden_dim
+    ) + self.b_2.expand(self.batch_size, -1, -1)
+    m_t_2 = th.Tensor.max(m_t_2_beforemaxpool, dim=1).values
+    assert(m_t_2.size()[0] == self.batch_size)
+    assert(m_t_2.size()[1+0] == self.hidden_dim)
 
-    # HMN output
+    # HMN output (Eq. 9 in the paper)
     output_beforemaxpool = th.mm(
         self.W_3.view(
-            self.maxout_pool_size, 
+            self.maxout_pool_size * 1,
             2 * self.hidden_dim
         ), 
         # highway connection
-        th.cat((m_t_1, m_t_2), 0)
-    ) + self.b_3
+        th.cat((m_t_1, m_t_2), 1).transpose(0, 1)
+    ).transpose(0, 1).view(self.batch_size, self.maxout_pool_size, 1) + self.b_3.expand(self.batch_size, -1, -1)
     
-    output = th.Tensor.max(output_beforemaxpool, dim=0).values
+    output = th.Tensor.max(output_beforemaxpool, dim=1).values
+    assert(output.size()[0] == self.batch_size)
+    assert(output.size()[1] == 1)
+
     return output
 
 class DynamicPointerDecoder(nn.Module):
@@ -405,13 +428,16 @@ if TEST_DCN_MODEL:
 
 def test_hmn():
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    hmn = HighwayMaxoutNetwork(BATCH_SIZE, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device) #TODO device
-    u_t = th.ones(2 * HIDDEN_DIM, 1, device=device) #TODO device
-    h_i = th.ones(HIDDEN_DIM, 1, device=device) #TODO device
-    u_si_m_1, u_ei_m_1 = th.ones(2 * HIDDEN_DIM, 1, device=device), th.ones(2 * HIDDEN_DIM, 1, device=device) #TODO device
+    hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device) #TODO device
+    u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
+    h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device) #TODO device
+    u_si_m_1, u_ei_m_1 = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device), th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
     output = hmn.forward(u_t, h_i, u_si_m_1, u_ei_m_1)
-    #print(output)
-    output.backward()
+    # Call backward on a scalar ("output" is of dimension BATCH_SIZE x 1)
+    assert(output.size()[0] == hmn.batch_size)
+    assert(output.size()[1] == 1)
+    th.mean(output).backward()
+    print("%d/%d parameters have non-None gradients." % (len([param for param in hmn.parameters() if param.grad is not None]), len(list(hmn.parameters()))))
 
 if TEST_HMN:
     test_hmn()
