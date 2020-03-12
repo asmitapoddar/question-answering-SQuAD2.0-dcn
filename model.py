@@ -30,6 +30,7 @@ th.manual_seed(1)
 
 # Test flags.
 TEST_DCN_MODEL = True
+TEST_DCN_MODEL_WITH_CPU = False
 TEST_DYNAMIC_POINTER_DECODER = False
 TEST_HMN = False
 
@@ -82,9 +83,6 @@ class CoattentionModule(nn.Module):
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
 
         # Coattention.
-        print("coattention_module D: ", D.size())
-        print("coattention_module Q: ", Q.size())
-
         L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
         AQ = F.softmax(L, dim=1) # B x(m+1)×(n+1)
         AD_T = F.softmax(L,dim=2) # B x(m+1)×(n+1)
@@ -96,7 +94,7 @@ class CoattentionModule(nn.Module):
 
         # Fusion BiLSTM.
         input_to_BiLSTM = th.transpose(th.cat((D,CD), dim=1), 1, 2) # B x (m+1) x 3l
-        print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
+        # print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
 
         U = self.bilstm_encoder(input_to_BiLSTM)
         return U
@@ -132,6 +130,7 @@ class HighwayMaxoutNetwork(nn.Module):
 
     self.batch_size = batch_size
     self.device = device
+    self.dropout = dropout
     self.hidden_dim = hidden_dim
     self.maxout_pool_size = MAXOUT_POOL_SIZE
 
@@ -148,19 +147,19 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim)))
+    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
 
     # 1st Maxout layer
-    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim)))
-    self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
+    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device)))
+    self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 2nd maxout layer
-    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim)))
-    self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
+    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device)))
+    self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 3rd maxout layer
-    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim)))
-    self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1))
+    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
+    self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
@@ -256,12 +255,12 @@ class DynamicPointerDecoder(nn.Module):
 
     # TODO: Value to choose for max_iter (600?)
     # Initialise h_0, s_i_0, e_i_0 (TODO can change)
-    s = 0
-    e = 0
+    s = th.zeros(self.batch_size, device=self.device, dtype=th.long)
+    e = th.zeros(self.batch_size, device=self.device, dtype=th.long)
     
     # initialize the hidden and cell states 
     # hidden = (h, c)
-    doc_length = U.size()[1]
+    doc_length = U.size()[2]
     hidden = (th.randn(1,self.batch_size,self.hidden_dim,device=self.device), 
               th.randn(1,self.batch_size,self.hidden_dim,device=self.device))
     
@@ -270,49 +269,59 @@ class DynamicPointerDecoder(nn.Module):
     # or when a maximum number of iterations is reached"
 
     # We build up the losses here (the iteration being the first dimension)
-    alphas = th.tensor([], device=self.device).view(0, doc_length)
-    betas = th.tensor([], device=self.device).view(0, doc_length)
+    alphas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
+    betas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
 
-    # TODO: make it run only until convergence (or self.max_iter)
+    # TODO: make it run only until convergence?
     for _ in range(self.max_iter):
       # call LSTM to update h_i
 
       # Step through the sequence one element at a time.
       # after each step, hidden contains the hidden state.
-      u_si_m_1 = U[:,:,s].unsqueeze(dim=2)
-      u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
+      s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
+      u_si_m_1 = th.gather(U,2,s_index)
+      # print("u_si_m_1.size():", u_si_m_1.size())
+      e_index = e.view(-1,1,1).repeat(1,U.size()[1],1)
+      # print("e.size()", e.size())
+      u_ei_m_1 = th.gather(U,2,e_index)
       
       lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
-      print("U.size()", U.size())
-      print("lstm_input.size()", lstm_input.size())
 
       _, hidden = self.lstm(lstm_input.view(self.batch_size, 1, -1), hidden)
       h_i, _ = hidden
       h_i = h_i.squeeze(dim=0).unsqueeze(dim=2)
 
       # Call HMN to update s_i, e_i
-      alpha = th.tensor([], device=self.device).view(0, 1)
-      beta = th.tensor([], device=self.device).view(0, 1)
+      alpha = th.tensor([], device=self.device).view(self.batch_size, 0)
+      beta = th.tensor([], device=self.device).view(self.batch_size, 0)
 
       for t in range(doc_length):
         u_t = U[:,:,t].unsqueeze(dim=2)
-        print("u_t.size()", u_t.size())
-        print("h_i.size()", h_i.size())
-        print("u_si_m_1.size()", u_si_m_1.size())
-        print("u_ei_m_1.size()", u_ei_m_1.size())
+        #print("u_t.size()", u_t.size())
+        #print("h_i.size()", h_i.size())
+        #print("u_si_m_1.size()", u_si_m_1.size())
+        #print("u_ei_m_1.size()", u_ei_m_1.size())
         t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
-        alpha = th.cat((alpha, t_hmn_alpha.view(1, 1)), dim=0)
-
-      _, s = th.max(alpha, dim=0)  # Leaving out dim=0 changes behaviour.
-      u_si = U[:,s,:]
-
+        #print("t_hmn_alpha.size()", t_hmn_alpha.size())
+        #print("alpha.size()", alpha.size())
+        alpha = th.cat((alpha, t_hmn_alpha), dim=1)
+        
+      _, s = th.max(alpha, dim=1)
+      
+      # TODO: we want to get the effect below, using th.gather:
+      # https://pytorch.org/docs/stable/torch.html#torch.gather
+      # u_si = [U[batch_ind,:,s[batch_ind]] for batch_ind in range(self.batch_size)].unsqueeze(dim=2)
+      # u_si = th.gather(U, ??, ??)
+      s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
+      u_si = th.gather(U,2,s_index)
+            
       for t in range(doc_length):
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
-        beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
-      
-      _, e = th.max(beta, dim=0)
-      alphas = th.cat((alphas, alpha.view(1, -1)), dim=0)
-      betas = th.cat((betas, beta.view(1, -1)), dim=0)
+        beta = th.cat((beta, t_hmn_beta), dim=1)
+
+      _, e = th.max(beta, dim=1)
+      alphas = th.cat((alphas, alpha.view(self.batch_size,1,doc_length)), dim=1)
+      betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
     return (alphas, betas, s, e)
 
@@ -324,15 +333,15 @@ class DCNModel(nn.Module):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
-    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
+    self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
 
-  def forward(self, doc_word_vecs, que_word_vecs):
-    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec,dim].
+  def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
+    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
     # que_word_vecs the same as above.
 
     # TODO: how should we initialise the hidden state of the LSTM? For now:
@@ -350,29 +359,16 @@ class DCNModel(nn.Module):
     # Q: B x (n+1) x l
 
     U = self.coattention_module(D_T,Q_T)
+    alphas, betas, start, end = self.decoder(U)
     
-    # TODO: Replace with the true start/end positions for the current batch of questions
-    x,y = th.randint(0, doc_word_vecs.size()[0], (2,))
-    x, y = min(x,y), max(x,y)
-    
-    # TODO: Replace with actual U
-    max_iters = 10
-    doc_words = doc_word_vecs.size()[0]
-
     criterion = nn.CrossEntropyLoss()    
-
-    # Run the dynamic pointer decoder, accumulate the 
-    # distributions over the start positions (alphas)
-    # and end positions (betas) at each iteration
-    # as well as the final start/end indices
-    alphas, betas, start, end = self.dyn_ptr_dec(U)
 
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
-    loss = th.FloatTensor([0])
-    for it in range(max_iters):
-      loss += criterion(alphas[it].view(1, -1), Variable(th.LongTensor([x])))
-      loss += criterion(betas[it].view(1, -1), Variable(th.LongTensor([x])))
+    loss = th.FloatTensor([0.0])
+    for it in range(self.decoder.max_iter):
+      loss += criterion(alphas[:,it,:], true_s)
+      loss += criterion(alphas[:,it,:], true_e)
  
     return loss, start, end
 
@@ -409,15 +405,21 @@ def test_dcn_model():
     # Is GPU available:
     print ("cuda device count = %d" % th.cuda.device_count())
     print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
 
-    doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
-    que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
+    doc = th.randn(BATCH_SIZE, 30, HIDDEN_DIM, device=device) # Fake word vec dimension set to HIDDEN_DIM.
+    que = th.randn(BATCH_SIZE, 5, HIDDEN_DIM, device=device)  # Fake word vec dimension set to HIDDEN_DIM.
+
+    # Fake ground truth data (one batch of starts and ends):
+    true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
+    true_e = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
+    for i in range(BATCH_SIZE):
+      true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
     # Run model.
     model = DCNModel(doc, que, BATCH_SIZE, device).to(device)
-    loss, s, e = model.forward(doc, que)
-    print("loss: ", loss, ", s:", s, ", e:", e)
+    loss, s, e = model.forward(doc, que, true_s, true_e)
+    print("Predicted start: %s \nPredicted end: %s \nloss: %s" % (str(s), str(e), str(loss)))
     model.zero_grad()
     loss.backward()
 
@@ -428,9 +430,9 @@ if TEST_DCN_MODEL:
 
 def test_hmn():
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device) #TODO device
-    u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
-    h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device) #TODO device
+    hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device)
+    u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device)
+    h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device)
     u_si_m_1, u_ei_m_1 = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device), th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
     output = hmn.forward(u_t, h_i, u_si_m_1, u_ei_m_1)
     # Call backward on a scalar ("output" is of dimension BATCH_SIZE x 1)
@@ -444,9 +446,9 @@ if TEST_HMN:
 
 def test_decoder():
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM, device).to(device) #TODO device
+    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM, device).to(device)
     max_iter = 10
-    U = th.ones(2 * HIDDEN_DIM, 50, device=device) #TODO device
+    U = th.ones(2 * HIDDEN_DIM, 50, device=device)
     alphas, betas, s, e = dpd.forward(U, max_iter)
     loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
     dpd.zero_grad()

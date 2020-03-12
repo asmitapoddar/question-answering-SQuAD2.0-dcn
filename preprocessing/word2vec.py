@@ -1,4 +1,3 @@
-# import vord2vec
 import numpy as np 
 from scipy import spatial 
 import matplotlib.pyplot as plt 
