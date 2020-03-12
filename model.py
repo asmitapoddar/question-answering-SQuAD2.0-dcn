@@ -30,6 +30,7 @@ th.manual_seed(1)
 
 # Test flags.
 TEST_DCN_MODEL = True
+TEST_DCN_MODEL_WITH_CPU = False
 TEST_DYNAMIC_POINTER_DECODER = False
 TEST_HMN = False
 
@@ -82,8 +83,8 @@ class CoattentionModule(nn.Module):
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
 
         # Coattention.
-        print("coattention_module D: ", D.size())
-        print("coattention_module Q: ", Q.size())
+        print("coattention_module D.size(): ", D.size())
+        print("coattention_module Q.size(): ", Q.size())
 
         L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
         AQ = F.softmax(L, dim=1) # B x(m+1)×(n+1)
@@ -132,6 +133,7 @@ class HighwayMaxoutNetwork(nn.Module):
 
     self.batch_size = batch_size
     self.device = device
+    self.dropout = dropout
     self.hidden_dim = hidden_dim
     self.maxout_pool_size = MAXOUT_POOL_SIZE
 
@@ -148,19 +150,20 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim)))
+    # self.W_D = nn.Linear(5 * self.hidden_dim, self.hidden_dim, bias=False, dropout=dropout)
+    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
 
     # 1st Maxout layer
-    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim)))
-    self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
+    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device)))
+    self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 2nd maxout layer
-    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim)))
-    self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim))
+    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device)))
+    self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 3rd maxout layer
-    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim)))
-    self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1))
+    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
+    self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
@@ -261,7 +264,7 @@ class DynamicPointerDecoder(nn.Module):
     
     # initialize the hidden and cell states 
     # hidden = (h, c)
-    doc_length = U.size()[1]
+    doc_length = U.size()[2]
     hidden = (th.randn(1,self.batch_size,self.hidden_dim,device=self.device), 
               th.randn(1,self.batch_size,self.hidden_dim,device=self.device))
     
@@ -270,6 +273,7 @@ class DynamicPointerDecoder(nn.Module):
     # or when a maximum number of iterations is reached"
 
     # We build up the losses here (the iteration being the first dimension)
+    # TODO alphas,betas need to be reshaped to accommodate for batching
     alphas = th.tensor([], device=self.device).view(0, doc_length)
     betas = th.tensor([], device=self.device).view(0, doc_length)
 
@@ -280,6 +284,7 @@ class DynamicPointerDecoder(nn.Module):
       # Step through the sequence one element at a time.
       # after each step, hidden contains the hidden state.
       u_si_m_1 = U[:,:,s].unsqueeze(dim=2)
+      print("u_si_m_1.size()", u_si_m_1.size())
       u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
       
       lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
@@ -291,21 +296,33 @@ class DynamicPointerDecoder(nn.Module):
       h_i = h_i.squeeze(dim=0).unsqueeze(dim=2)
 
       # Call HMN to update s_i, e_i
-      alpha = th.tensor([], device=self.device).view(0, 1)
-      beta = th.tensor([], device=self.device).view(0, 1)
+      alpha = th.tensor([], device=self.device).view(self.batch_size, 0)
+      beta = th.tensor([], device=self.device).view(self.batch_size, 0)
 
+      print("doc_length:",doc_length)
       for t in range(doc_length):
         u_t = U[:,:,t].unsqueeze(dim=2)
-        print("u_t.size()", u_t.size())
-        print("h_i.size()", h_i.size())
-        print("u_si_m_1.size()", u_si_m_1.size())
-        print("u_ei_m_1.size()", u_ei_m_1.size())
+        #print("u_t.size()", u_t.size())
+        #print("h_i.size()", h_i.size())
+        #print("u_si_m_1.size()", u_si_m_1.size())
+        #print("u_ei_m_1.size()", u_ei_m_1.size())
         t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
-        alpha = th.cat((alpha, t_hmn_alpha.view(1, 1)), dim=0)
-
-      _, s = th.max(alpha, dim=0)  # Leaving out dim=0 changes behaviour.
-      u_si = U[:,s,:]
-
+        #print("t_hmn_alpha.size()", t_hmn_alpha.size())
+        #print("alpha.size()", alpha.size())
+        alpha = th.cat((alpha, t_hmn_alpha), dim=1)
+        
+      print("alpha.size()", alpha.size())
+      _, s = th.max(alpha, dim=1)  # Leaving out dim changes behaviour.
+      print("s", s)
+      
+      # TODO: we want to get the effect below, using th.gather:
+      # https://pytorch.org/docs/stable/torch.html#torch.gather
+      # u_si = [U[batch_ind,:,s[batch_ind]] for batch_ind in range(self.batch_size)].unsqueeze(dim=2)
+      # u_si = th.gather(U, ??, ??)
+      
+      
+      print("u_si.size()", u_si.size())
+        
       for t in range(doc_length):
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
         beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
@@ -409,7 +426,7 @@ def test_dcn_model():
     # Is GPU available:
     print ("cuda device count = %d" % th.cuda.device_count())
     print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
 
     doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
     que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
@@ -428,9 +445,9 @@ if TEST_DCN_MODEL:
 
 def test_hmn():
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device) #TODO device
-    u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
-    h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device) #TODO device
+    hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device)
+    u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device)
+    h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device)
     u_si_m_1, u_ei_m_1 = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device), th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device) #TODO device
     output = hmn.forward(u_t, h_i, u_si_m_1, u_ei_m_1)
     # Call backward on a scalar ("output" is of dimension BATCH_SIZE x 1)
@@ -444,9 +461,9 @@ if TEST_HMN:
 
 def test_decoder():
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM, device).to(device) #TODO device
+    dpd = DynamicPointerDecoder(BATCH_SIZE, DROPOUT, HIDDEN_DIM, device).to(device)
     max_iter = 10
-    U = th.ones(2 * HIDDEN_DIM, 50, device=device) #TODO device
+    U = th.ones(2 * HIDDEN_DIM, 50, device=device)
     alphas, betas, s, e = dpd.forward(U, max_iter)
     loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
     dpd.zero_grad()
