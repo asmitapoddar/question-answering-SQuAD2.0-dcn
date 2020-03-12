@@ -259,8 +259,8 @@ class DynamicPointerDecoder(nn.Module):
 
     # TODO: Value to choose for max_iter (600?)
     # Initialise h_0, s_i_0, e_i_0 (TODO can change)
-    s = 0
-    e = 0
+    s = th.zeros(self.batch_size, device=self.device, dtype=th.long)
+    e = th.zeros(self.batch_size, device=self.device, dtype=th.long)
     
     # initialize the hidden and cell states 
     # hidden = (h, c)
@@ -273,23 +273,24 @@ class DynamicPointerDecoder(nn.Module):
     # or when a maximum number of iterations is reached"
 
     # We build up the losses here (the iteration being the first dimension)
-    # TODO alphas,betas need to be reshaped to accommodate for batching
-    alphas = th.tensor([], device=self.device).view(0, doc_length)
-    betas = th.tensor([], device=self.device).view(0, doc_length)
+    alphas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
+    betas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
 
-    # TODO: make it run only until convergence (or self.max_iter)
+    # TODO: make it run only until convergence?
     for _ in range(self.max_iter):
       # call LSTM to update h_i
 
       # Step through the sequence one element at a time.
       # after each step, hidden contains the hidden state.
-      u_si_m_1 = U[:,:,s].unsqueeze(dim=2)
-      print("u_si_m_1.size()", u_si_m_1.size())
-      u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
+      s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
+      u_si_m_1 = th.gather(U,2,s_index)
+      print("u_si_m_1.size():", u_si_m_1.size())
+      e_index = e.view(-1,1,1).repeat(1,U.size()[1],1)
+      print("e.size()", e.size())
+      u_ei_m_1 = th.gather(U,2,e_index)
+      #u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
       
       lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
-      print("U.size()", U.size())
-      print("lstm_input.size()", lstm_input.size())
 
       _, hidden = self.lstm(lstm_input.view(self.batch_size, 1, -1), hidden)
       h_i, _ = hidden
@@ -299,7 +300,6 @@ class DynamicPointerDecoder(nn.Module):
       alpha = th.tensor([], device=self.device).view(self.batch_size, 0)
       beta = th.tensor([], device=self.device).view(self.batch_size, 0)
 
-      print("doc_length:",doc_length)
       for t in range(doc_length):
         u_t = U[:,:,t].unsqueeze(dim=2)
         #print("u_t.size()", u_t.size())
@@ -311,9 +311,7 @@ class DynamicPointerDecoder(nn.Module):
         #print("alpha.size()", alpha.size())
         alpha = th.cat((alpha, t_hmn_alpha), dim=1)
         
-      print("alpha.size()", alpha.size())
-      _, s = th.max(alpha, dim=1)  # Leaving out dim changes behaviour.
-      print("s", s)
+      _, s = th.max(alpha, dim=1)
       
       # TODO: we want to get the effect below, using th.gather:
       # https://pytorch.org/docs/stable/torch.html#torch.gather
@@ -321,17 +319,14 @@ class DynamicPointerDecoder(nn.Module):
       # u_si = th.gather(U, ??, ??)
       s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
       u_si = th.gather(U,2,s_index)
-      
-      
-      print("u_si.size()", u_si.size())
-        
+            
       for t in range(doc_length):
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
-        beta = th.cat((beta, t_hmn_beta.view(1, 1)), dim=0)
-      
-      _, e = th.max(beta, dim=0)
-      alphas = th.cat((alphas, alpha.view(1, -1)), dim=0)
-      betas = th.cat((betas, beta.view(1, -1)), dim=0)
+        beta = th.cat((beta, t_hmn_beta), dim=1)
+
+      _, e = th.max(beta, dim=1)
+      alphas = th.cat((alphas, alpha.view(self.batch_size,1,doc_length)), dim=1)
+      betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
     return (alphas, betas, s, e)
 
