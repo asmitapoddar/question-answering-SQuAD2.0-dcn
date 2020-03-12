@@ -20,25 +20,37 @@ def get_token_index(char_index, tokens):
         e.g. if context = "hello world" and context_tokens = ["hello", "world"] then
         for 0,1,2,3,4 we return 0 and 6,7,8,9,10 we return 1.
     """
-    acc = 0 # accumulator
-    token_index=None
+    acc = -1 # accumulator
     current_token_index = 0 # current token location
 
     for current_token in tokens:
-      for current_char in current_token:
-        if acc==char_index:
-          token_index=current_token_index
-        acc+=1
-      current_token_index+=1
+      acc+=1
+      if acc>=char_index:
+            return current_token_index
+      if current_token!='-RRB-' and current_token!='-LRB-' and current_token!="``":
+        for current_char in current_token:
+          acc+=1
+        if current_token==':' or current_token==';' or current_token=='.' or current_token==',' or current_token=='!' or current_token=='?':
+          acc-=1
+        current_token_index+=1
+      else:
+        current_token_index+=1
 
-    return token_index
+    return None
 
 def get_char_length(tokens):
-  len=0
+  lens=-1
   for token in tokens:
-    for char in token:
-      len+=1
-  return len
+    lens+=1
+    if token!='-RRB-' and token!='-LRB-' and token!="``":
+      
+
+      for char in token:
+        lens+=1
+      if token==':' or token==';' or token=='.' or token==',' or token=='!' or token=='?':
+        lens-=1
+
+  return lens
 
 def preprocess(dataset, type):
     # Takes the parsed JSON dataset, and replaces the questions and context documents 
@@ -48,7 +60,7 @@ def preprocess(dataset, type):
     data = dataset["data"]
     print("Computing embeddings for the text in SQuAD")
     examples=[]
-#    first=True
+    first=True
     for item in tqdm(data): 
         for para in item["paragraphs"]:
             
@@ -75,15 +87,15 @@ def preprocess(dataset, type):
                     assert answer_start <= answer_end
                     answer_token_start_location=get_token_index(answer_start, context_tokens)
                     answer_token_end_location=get_token_index(answer_end, context_tokens)
-                   # if type=='developing' and first:
+                    if type=='developing' and first:
                     
-                    #  if answer_token_start_location==None:
-                     #   first=False
-                      #  print("answer_token_start_location=None")
-                      #  print(answer_start)
-                      #  print("context length")
-                      #  print(get_char_length(context_tokens))
-                      #  print(answer_text_tokens)
+                      if answer_token_start_location==None:
+                        first=False
+                        print("answer_token_start_location=None")
+                        print(answer_start)
+                        print("context length")
+                        print(get_char_length(context_tokens))
+                        print(answer_text_tokens)
                     
 
                     #if answer_token_end_location==None:
