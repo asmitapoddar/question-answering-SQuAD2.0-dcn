@@ -83,9 +83,6 @@ class CoattentionModule(nn.Module):
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
 
         # Coattention.
-        print("coattention_module D.size(): ", D.size())
-        print("coattention_module Q.size(): ", Q.size())
-
         L = th.bmm(D_T, Q) # L = B x m + 1 x n + 1
         AQ = F.softmax(L, dim=1) # B x(m+1)×(n+1)
         AD_T = F.softmax(L,dim=2) # B x(m+1)×(n+1)
@@ -97,7 +94,7 @@ class CoattentionModule(nn.Module):
 
         # Fusion BiLSTM.
         input_to_BiLSTM = th.transpose(th.cat((D,CD), dim=1), 1, 2) # B x (m+1) x 3l
-        print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
+        # print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
 
         U = self.bilstm_encoder(input_to_BiLSTM)
         return U
@@ -150,7 +147,6 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    # self.W_D = nn.Linear(5 * self.hidden_dim, self.hidden_dim, bias=False, dropout=dropout)
     self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
 
     # 1st Maxout layer
@@ -284,11 +280,10 @@ class DynamicPointerDecoder(nn.Module):
       # after each step, hidden contains the hidden state.
       s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
       u_si_m_1 = th.gather(U,2,s_index)
-      print("u_si_m_1.size():", u_si_m_1.size())
+      # print("u_si_m_1.size():", u_si_m_1.size())
       e_index = e.view(-1,1,1).repeat(1,U.size()[1],1)
-      print("e.size()", e.size())
+      # print("e.size()", e.size())
       u_ei_m_1 = th.gather(U,2,e_index)
-      #u_ei_m_1 = U[:,:,e].unsqueeze(dim=2)
       
       lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
 
@@ -338,15 +333,15 @@ class DCNModel(nn.Module):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
-    self.dyn_ptr_dec = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
+    self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
 
-  def forward(self, doc_word_vecs, que_word_vecs):
-    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec,dim].
+  def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
+    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
     # que_word_vecs the same as above.
 
     # TODO: how should we initialise the hidden state of the LSTM? For now:
@@ -364,29 +359,16 @@ class DCNModel(nn.Module):
     # Q: B x (n+1) x l
 
     U = self.coattention_module(D_T,Q_T)
+    alphas, betas, start, end = self.decoder(U)
     
-    # TODO: Replace with the true start/end positions for the current batch of questions
-    x,y = th.randint(0, doc_word_vecs.size()[0], (2,))
-    x, y = min(x,y), max(x,y)
-    
-    # TODO: Replace with actual U
-    max_iters = 10
-    doc_words = doc_word_vecs.size()[0]
-
     criterion = nn.CrossEntropyLoss()    
-
-    # Run the dynamic pointer decoder, accumulate the 
-    # distributions over the start positions (alphas)
-    # and end positions (betas) at each iteration
-    # as well as the final start/end indices
-    alphas, betas, start, end = self.dyn_ptr_dec(U)
 
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
-    loss = th.FloatTensor([0])
-    for it in range(max_iters):
-      loss += criterion(alphas[it].view(1, -1), Variable(th.LongTensor([x])))
-      loss += criterion(betas[it].view(1, -1), Variable(th.LongTensor([x])))
+    loss = th.FloatTensor([0.0])
+    for it in range(self.decoder.max_iter):
+      loss += criterion(alphas[:,it,:], true_s)
+      loss += criterion(alphas[:,it,:], true_e)
  
     return loss, start, end
 
@@ -425,13 +407,19 @@ def test_dcn_model():
     print ("cuda is available = %d" % th.cuda.is_available())
     device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
 
-    doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
-    que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
+    doc = th.randn(BATCH_SIZE, 30, HIDDEN_DIM, device=device) # Fake word vec dimension set to HIDDEN_DIM.
+    que = th.randn(BATCH_SIZE, 5, HIDDEN_DIM, device=device)  # Fake word vec dimension set to HIDDEN_DIM.
+
+    # Fake ground truth data (one batch of starts and ends):
+    true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
+    true_e = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
+    for i in range(BATCH_SIZE):
+      true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
     # Run model.
     model = DCNModel(doc, que, BATCH_SIZE, device).to(device)
-    loss, s, e = model.forward(doc, que)
-    print("loss: ", loss, ", s:", s, ", e:", e)
+    loss, s, e = model.forward(doc, que, true_s, true_e)
+    print("Predicted start: %s \nPredicted end: %s \nloss: %s" % (str(s), str(e), str(loss)))
     model.zero_grad()
     loss.backward()
 
