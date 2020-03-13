@@ -13,72 +13,59 @@ def load_tokenize_dev_set():
         dev_set = json.load(f)
     return dev_set
 
-def load_train_set(): 
-    with open("data/train-v2.0.json", "r") as f:
-        train_set = json.load(f)
-    return train_set
-
-def load_dev_set(): 
-    with open("data/dev-v2.0.json", "r") as f:
-        dev_set = json.load(f)
-    return dev_set
-
-
-
-def get_token_index(context, context_tokens):
+def get_token_index(char_index, tokens):
     """
     Given a char index, returns corresponding token locations.
     If we're unable to complete the mapping e.g. because of special characters, we return None.
         e.g. if context = "hello world" and context_tokens = ["hello", "world"] then
         for 0,1,2,3,4 we return 0 and 6,7,8,9,10 we return 1.
     """
-    acc = '' # accumulator
+    acc = -1 # accumulator
     current_token_index = 0 # current token location
-    mapping=dict()
-    for char_index,char in enumerate(context):
-      current_token=context_tokens[current_token_index]
-        
-      if char!= ' ' and char!='\n':
-        acc+=char
 
-        if current_token=='-RRB-' :
-          current_token=')'
-        if current_token=='-LRB-' :
-          current_token='('
-        if current_token=="``"or current_token=="''":
-          current_token="\""
-          
+    for current_token in tokens:
+      acc+=1
+      if acc>=char_index:
+            return current_token_index
+      if current_token!='-RRB-' and current_token!='-LRB-' and current_token!="``":
+        for current_char in current_token:
+          acc+=1
+        if current_token==':' or current_token==';' or current_token=='.' or current_token==',' or current_token=='!' or current_token=='?':
+          acc-=1
+        current_token_index+=1
+      else:
+        current_token_index+=1
 
+    return None
 
-        if acc==current_token:
-        
-          start_index=char_index-len(acc)+1
-          for location in range(start_index, char_index+1):
-            mapping[location]=current_token_index
-          acc=''
-          current_token_index+=1
+def get_char_length(tokens):
+  lens=-1
+  for token in tokens:
+    lens+=1
+    if token!='-RRB-' and token!='-LRB-' and token!="``":
+      
 
- 
-    if current_token_index != len(context_tokens):
-        return None
-    else:
-        return mapping
-        
-def preprocess(dataset, dataset_tokenize, type):
+      for char in token:
+        lens+=1
+      if token==':' or token==';' or token=='.' or token==',' or token=='!' or token=='?':
+        lens-=1
+
+  return lens
+
+def preprocess(dataset, type):
     # Takes the parsed JSON dataset, and replaces the questions and context documents 
     # by a sequence of word embeddings after tokenisation.
 
     # Array
     data = dataset["data"]
-    data_tokens=dataset_tokenize["data"]
     print("Computing embeddings for the text in SQuAD")
     examples=[]
-    for item in tqdm(data_tokens): 
+    first=True
+    for item in tqdm(data): 
         for para in item["paragraphs"]:
             
             # This is the short paragraph of context for the question
             context_tokens = para["context"]
-            context=item["paragraphs"]
             
 
             for qas in para["qas"]:
@@ -100,7 +87,16 @@ def preprocess(dataset, dataset_tokenize, type):
                     assert answer_start <= answer_end
                     answer_token_start_location=get_token_index(answer_start, context_tokens)
                     answer_token_end_location=get_token_index(answer_end, context_tokens)
-                   
+                    if type=='developing' and first:
+                    
+                      if answer_token_start_location==None:
+                        first=False
+                        print("answer_token_start_location=None")
+                        print(answer_start)
+                        print("context length")
+                        print(get_char_length(context_tokens))
+                        print(answer_text_tokens)
+                    
 
                     #if answer_token_end_location==None:
                      # print("answer_token_end_location=None")
@@ -130,18 +126,16 @@ def main():
     
     
     # download train set
-     train_data_tokenize = load_tokenize_train_set()
-     train_data = load_train_set()
+     train_data = load_tokenize_train_set()
 
      # preprocess train set and write to file
-     preprocess(train_data,train_data_tokenize, 'training')
+     preprocess(train_data, 'training')
 
      # download dev set
-     dev_data_tokenize= load_tokenize_dev_set()
-     dev_data= load_dev_set()
+     dev_data= load_tokenize_dev_set()
 
      # preprocess dev set and write to file
-     preprocess(dev_data,dev_data_tokenize, 'developing')
+     preprocess(dev_data, 'developing')
 
 
 if __name__ == '__main__':
