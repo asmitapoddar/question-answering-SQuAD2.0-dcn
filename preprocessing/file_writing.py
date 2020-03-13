@@ -24,7 +24,7 @@ def get_token_index(char_index, tokens):
     current_token_index = 0 # current token location
 
     for current_token in tokens:
-      acc+=1
+      acc += 1
       if acc>=char_index:
             return current_token_index
       if current_token not in ['-RRB-', '-LRB-', "``"]:
