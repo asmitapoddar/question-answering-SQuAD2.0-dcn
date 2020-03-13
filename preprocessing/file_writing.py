@@ -13,59 +13,69 @@ def load_tokenize_dev_set():
         dev_set = json.load(f)
     return dev_set
 
-def get_token_index(char_index, tokens):
+def load_train_set(): 
+    with open("data/train-v2.0.json", "r") as f:
+        train_set = json.load(f)
+    return train_set
+
+def load_dev_set(): 
+    with open("data/dev-v2.0.json", "r") as f:
+        dev_set = json.load(f)
+    return dev_set
+
+
+
+    def get_token_index(context, context_tokens):
     """
     Given a char index, returns corresponding token locations.
     If we're unable to complete the mapping e.g. because of special characters, we return None.
         e.g. if context = "hello world" and context_tokens = ["hello", "world"] then
         for 0,1,2,3,4 we return 0 and 6,7,8,9,10 we return 1.
     """
-    acc = -1 # accumulator
+    acc = '' # accumulator
     current_token_index = 0 # current token location
+    mapping=dic()
+    for char_index,char in ennumerate(context):
+      current_token=context_tokens[current_token_index]
 
-    for current_token in tokens:
-      acc+=1
-      if acc>=char_index:
-            return current_token_index
-      if current_token!='-RRB-' and current_token!='-LRB-' and current_token!="``":
-        for current_char in current_token:
-          acc+=1
-        if current_token==':' or current_token==';' or current_token=='.' or current_token==',' or current_token=='!' or current_token=='?':
-          acc-=1
-        current_token_index+=1
-      else:
-        current_token_index+=1
+      if current_token=='-RRB-' :
+        current_token='('
+      if current_token=='-LRB-' :
+        current_token=')'
+      if current_token=="``":
+        current_token='/'
+        
+      if char!=' ' and char!='\n':
+        acc+=char
+        if acc==current_token:
+          start_index=char_index-len(acc)+1
+          for location in range(start_index, char_index+1):
+            mapping[location]=current_token_index
+          acc=''
+          current_token+=1
 
-    return None
 
-def get_char_length(tokens):
-  lens=-1
-  for token in tokens:
-    lens+=1
-    if token!='-RRB-' and token!='-LRB-' and token!="``":
-      
+    if current_token_idx != len(context_tokens):
+        return None
+    else:
+        return mapping
 
-      for char in token:
-        lens+=1
-      if token==':' or token==';' or token=='.' or token==',' or token=='!' or token=='?':
-        lens-=1
 
-  return lens
-
-def preprocess(dataset, type):
+def preprocess(dataset, dataset_tokenize, type):
     # Takes the parsed JSON dataset, and replaces the questions and context documents 
     # by a sequence of word embeddings after tokenisation.
 
     # Array
     data = dataset["data"]
+    data_tokens=dataset_tokenize["data"]
     print("Computing embeddings for the text in SQuAD")
     examples=[]
-    first=True
-    for item in tqdm(data): 
+    for item in tqdm(data_tokens): 
         for para in item["paragraphs"]:
             
             # This is the short paragraph of context for the question
             context_tokens = para["context"]
+            context=item["paragraphs"]
             
 
             for qas in para["qas"]:
@@ -126,16 +136,18 @@ def main():
     
     
     # download train set
-     train_data = load_tokenize_train_set()
+     train_data_tokenize = load_tokenize_train_set()
+     train_data = load_train_set()
 
      # preprocess train set and write to file
-     preprocess(train_data, 'training')
+     preprocess(train_data,train_data_tokenize, 'training')
 
      # download dev set
-     dev_data= load_tokenize_dev_set()
+     dev_data_tokenize= load_tokenize_dev_set()
+     dev_data= load_dev_set()
 
      # preprocess dev set and write to file
-     preprocess(dev_data, 'developing')
+     preprocess(dev_data,dev_data_tokenize, 'developing')
 
 
 if __name__ == '__main__':
