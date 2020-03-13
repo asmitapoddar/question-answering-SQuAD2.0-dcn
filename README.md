@@ -8,4 +8,8 @@ The repo name speaks for itself.
 
 No snitching either.
 
-Existing impl: https://github.com/atulkum/co-attention/blob/master/code/model.py
+### Existing impl
+Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
+Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data_batcher.py
+
+
