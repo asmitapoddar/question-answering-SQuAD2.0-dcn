@@ -49,9 +49,9 @@ def get_token_index(context, context_tokens):
     current_token_index = 0 # current token location
     mapping=dict()
     for char_index,char in enumerate(context):
-      current_token=context_tokens[current_token_index]
         
-      if char!= ' ' and char!='\n':
+      if char!=' ' and char!='\n':
+        current_token=context_tokens[current_token_index]
         acc+=char
 
         if current_token=='-RRB-' :
