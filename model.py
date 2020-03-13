@@ -350,7 +350,7 @@ class DCNModel(nn.Module):
     loss = th.FloatTensor([0.0]).to(self.device)
     for it in range(self.decoder.max_iter):
       loss += criterion(alphas[:,it,:], true_s)
-      loss += criterion(alphas[:,it,:], true_e)
+      loss += criterion(betas[:,it,:], true_e)
  
     return loss, start, end
 
