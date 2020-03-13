@@ -31,7 +31,7 @@ def get_token_index(char_index, tokens):
         for current_char in current_token:
           acc+=1
         if len(current_token) == 1 and current_token in ':;.,!?':
-            acc-=1
+          acc-=1
         current_token_index+=1
       else:
         current_token_index+=1
