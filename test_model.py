@@ -65,7 +65,7 @@ def test_hmn():
 def test_decoder():
     max_iter = 10
     device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-    dpd = DynamicPointerDecoder(BATCH_SIZE, max_iter, DROPOUT, DROPOUT, HIDDEN_DIM, device).to(device)
+    dpd = DynamicPointerDecoder(BATCH_SIZE, max_iter, DROPOUT, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device)
     U = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 50, device=device)
     alphas, betas, s, e = dpd.forward(U)
     loss = th.mean(th.mean(alphas, dim=0)) + th.mean(th.mean(betas, dim=0))
