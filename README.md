@@ -18,4 +18,4 @@ Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data
 - [x] Forward Pass
 - [ ] Backward Pass
 - [ ] Complete batching
-- [ ] Move tests to seperate file
+- [ ] Move tests to seperate file (Richie)
