@@ -315,6 +315,7 @@ class DCNModel(nn.Module):
     self.batch_size = batch_size
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
     self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, maxout_pool_size, device) 
+    self.device = device
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
@@ -346,7 +347,7 @@ class DCNModel(nn.Module):
 
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
-    loss = th.FloatTensor([0.0])
+    loss = th.FloatTensor([0.0]).to(self.device)
     for it in range(self.decoder.max_iter):
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(alphas[:,it,:], true_e)
