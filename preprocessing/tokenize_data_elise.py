@@ -108,7 +108,7 @@ def preprocess(nlp_client, dataset, outFile):
                     answer_text_tokens = tokenize(nlp_client, answer_text)
 
                     answer_start = ans["answer_start"]
-                    answer_end = answer_start + len(answer_text)
+                    answer_end = answer_start + len(answer_text)-1
                     assert answer_start <= answer_end
 
                     if mapping_context!=None:
