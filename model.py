@@ -1,10 +1,3 @@
-# -------------- TODO -------------- #
-# 1. Finish batchifying all code:
-#    - fix DynamicPointerDecoder's forward pass.
-#    - Go through all tensor operations and LSTMs, etc. until everything works.
-# 2. Verify that GPU is used as we're expecting.
-
-
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -119,7 +112,7 @@ class HighwayMaxoutNetwork(nn.Module):
     self.device = device
     self.dropout = dropout
     self.hidden_dim = hidden_dim
-    self.maxout_pool_size = MAXOUT_POOL_SIZE
+    self.maxout_pool_size = maxout_pool_size
 
     # Don't apply dropout to biases.
     self.dropout_modifier = nn.Dropout(p=dropout)
@@ -226,13 +219,13 @@ class HighwayMaxoutNetwork(nn.Module):
     return output
 
 class DynamicPointerDecoder(nn.Module):
-  def __init__(self, batch_size, max_iter, dropout_hmn, dropout_lstm, hidden_dim, device):
+  def __init__(self, batch_size, max_iter, dropout_hmn, dropout_lstm, hidden_dim, maxout_pool_size, device):
     super(DynamicPointerDecoder, self).__init__()
     self.batch_size = batch_size
     self.device = device
     self.hidden_dim = hidden_dim
-    self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
-    self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, MAXOUT_POOL_SIZE, device)
+    self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
+    self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
     self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout_lstm)
     self.max_iter = max_iter
 
@@ -316,11 +309,12 @@ class DynamicPointerDecoder(nn.Module):
 class DCNModel(nn.Module):
   def __init__(
       self, doc_word_vecs, que_word_vecs, batch_size, device, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
-      dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT, dpd_max_iter=MAX_ITER):
+      dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT, dpd_max_iter=MAX_ITER,
+      maxout_pool_size=MAXOUT_POOL_SIZE):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
-    self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, device) 
+    self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, maxout_pool_size, device) 
     self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
