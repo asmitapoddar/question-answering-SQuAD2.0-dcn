@@ -9,11 +9,8 @@ from model import *
 
 th.manual_seed(1)
 
-# Test flags.
-TEST_DCN_MODEL = True
+# Config flags.
 TEST_DCN_MODEL_WITH_CPU = False
-TEST_DYNAMIC_POINTER_DECODER = False
-TEST_HMN = False
 
 # Defaults/constants.
 BATCH_SIZE = 64
