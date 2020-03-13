@@ -27,11 +27,11 @@ def get_token_index(char_index, tokens):
       acc+=1
       if acc>=char_index:
             return current_token_index
-      if current_token!='-RRB-' and current_token!='-LRB-' and current_token!="``":
+      if current_token not in ['-RRB-', '-LRB-', "``"]:
         for current_char in current_token:
           acc+=1
-        if current_token==':' or current_token==';' or current_token=='.' or current_token==',' or current_token=='!' or current_token=='?':
-          acc-=1
+        if len(current_token) == 1 and current_token in ':;.,!?':
+            acc-=1
         current_token_index+=1
       else:
         current_token_index+=1
@@ -42,12 +42,10 @@ def get_char_length(tokens):
   lens=-1
   for token in tokens:
     lens+=1
-    if token!='-RRB-' and token!='-LRB-' and token!="``":
-      
-
+    if token not in ['-RRB-', '-LRB-', "``"]:
       for char in token:
         lens+=1
-      if token==':' or token==';' or token=='.' or token==',' or token=='!' or token=='?':
+      if len(token) == 1 and token in ':;.,!?':
         lens-=1
 
   return lens
