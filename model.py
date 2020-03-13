@@ -303,7 +303,7 @@ class DynamicPointerDecoder(nn.Module):
         #print("u_ei_m_1.size()", u_ei_m_1.size())
         t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
         #print("t_hmn_alpha.size()", t_hmn_alpha.size())
-        #print("alpha.size()", alpha.size())
+        # print("alpha.size()", alpha.size())
         alpha = th.cat((alpha, t_hmn_alpha), dim=1)
         
       _, s = th.max(alpha, dim=1)
