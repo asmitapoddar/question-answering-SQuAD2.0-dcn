@@ -25,7 +25,7 @@ def load_dev_set():
 
 
 
-    def get_token_index(context, context_tokens):
+def get_token_index(context, context_tokens):
     """
     Given a char index, returns corresponding token locations.
     If we're unable to complete the mapping e.g. because of special characters, we return None.
@@ -34,33 +34,36 @@ def load_dev_set():
     """
     acc = '' # accumulator
     current_token_index = 0 # current token location
-    mapping=dic()
-    for char_index,char in ennumerate(context):
+    mapping=dict()
+    for char_index,char in enumerate(context):
       current_token=context_tokens[current_token_index]
-
-      if current_token=='-RRB-' :
-        current_token='('
-      if current_token=='-LRB-' :
-        current_token=')'
-      if current_token=="``":
-        current_token='/'
         
-      if char!=' ' and char!='\n':
+      if char!= ' ' and char!='\n':
         acc+=char
+
+        if current_token=='-RRB-' :
+          current_token=')'
+        if current_token=='-LRB-' :
+          current_token='('
+        if current_token=="``"or current_token=="''":
+          current_token="\""
+          
+
+
         if acc==current_token:
+        
           start_index=char_index-len(acc)+1
           for location in range(start_index, char_index+1):
             mapping[location]=current_token_index
           acc=''
-          current_token+=1
+          current_token_index+=1
 
-
-    if current_token_idx != len(context_tokens):
+ 
+    if current_token_index != len(context_tokens):
         return None
     else:
         return mapping
-
-
+        
 def preprocess(dataset, dataset_tokenize, type):
     # Takes the parsed JSON dataset, and replaces the questions and context documents 
     # by a sequence of word embeddings after tokenisation.
@@ -97,16 +100,7 @@ def preprocess(dataset, dataset_tokenize, type):
                     assert answer_start <= answer_end
                     answer_token_start_location=get_token_index(answer_start, context_tokens)
                     answer_token_end_location=get_token_index(answer_end, context_tokens)
-                    if type=='developing' and first:
-                    
-                      if answer_token_start_location==None:
-                        first=False
-                        print("answer_token_start_location=None")
-                        print(answer_start)
-                        print("context length")
-                        print(get_char_length(context_tokens))
-                        print(answer_text_tokens)
-                    
+                   
 
                     #if answer_token_end_location==None:
                      # print("answer_token_end_location=None")

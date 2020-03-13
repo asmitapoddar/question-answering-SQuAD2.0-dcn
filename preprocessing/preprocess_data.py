@@ -28,7 +28,7 @@ def load_embeddings_index(small = False):
     with open(filePath, 'r', encoding="utf8") as f:
         for line in tqdm(f):
             values = line.split()
-            word = ''.join(values[:-DIMENSIONALITY])
+            word = line[:-(len(' '.join(values[-DIMENSIONALITY:]))+2)]
             coefs = np.asarray(values[-DIMENSIONALITY:], dtype='float32')
             embeddings_index[word] = coefs
     return embeddings_index
