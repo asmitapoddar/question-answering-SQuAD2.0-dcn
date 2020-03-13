@@ -77,7 +77,7 @@ def get_token_index(context, context_tokens):
     else:
         return mapping
 
-def preprocess(nlp_client, dataset, outFile):
+def preprocess(nlp_client, dataset, type):
     # Takes the parsed JSON dataset, and replaces the questions and context documents 
     # by a sequence of word embeddings after tokenisation.
 
@@ -137,11 +137,7 @@ def preprocess(nlp_client, dataset, outFile):
             ans_text_file.write(answer.encode('utf8') + b'\n')
             ans_span_file.write(span.encode('utf8') + b'\n')
 
-    # Write to file 
-    with open(outFile, "w") as outFile: 
-        json.dump(dataset, outFile)
-
 # set up the client
 with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G') as client:
-    preprocess(client, load_train_set(), "data/train-v2.0-tokenized.json")
-    preprocess(client, load_dev_set(), "data/dev-v2.0-tokenized.json")
+    preprocess(client, load_train_set(), "train")
+    preprocess(client, load_dev_set(), "dev")
