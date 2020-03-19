@@ -13,7 +13,6 @@ import json
 
 # Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
 DIMENSIONALITY = 300
-print('hola')
 
 def load_embeddings_index(small = False):
     embeddings_index = {}
