@@ -34,7 +34,7 @@ class Encoder(nn.Module):
     assert(self.word_vec_dim == que_word_vecs.size()[2])
 
     # Dimension of the hidden state and cell state (they're equal) of the LSTM
-    self.lstm = nn.LSTM(self.word_vec_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout)
+    self.lstm = nn.LSTM(self.word_vec_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
@@ -88,7 +88,7 @@ class BiLSTMEncoder(nn.Module):
         self.device = device
         self.dropout = dropout
         self.hidden = self.init_hidden()
-        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True, dropout=dropout)
+        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
     def init_hidden(self):
         # TODO: Is initialisation zeros or randn? 
@@ -226,7 +226,7 @@ class DynamicPointerDecoder(nn.Module):
     self.hidden_dim = hidden_dim
     self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
     self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
-    self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout_lstm)
+    self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
     self.max_iter = max_iter
 
   def forward(self, U):
