@@ -18,5 +18,6 @@ Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data
 - [x] Forward Pass (Kuba)
 - [x] Backward Pass (Kuba)
 - [x] Debug why predicted end indices are all 0 (Richie)
-- [ ] Complete batching
+- [x] Complete batching (Asmita)
+- [x] Training pipeline (Asmita)
 - [x] Move tests to seperate file (Richie)
