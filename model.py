@@ -296,6 +296,7 @@ class DynamicPointerDecoder(nn.Module):
       u_si = th.gather(U,2,s_index)
             
       for t in range(doc_length):
+        u_t = U[:,:,t].unsqueeze(dim=2)
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
         beta = th.cat((beta, t_hmn_beta), dim=1)
 
