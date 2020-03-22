@@ -1,3 +1,21 @@
+"""
+from google.colab import drive
+drive.mount('/content/gdrive', force_remount=True)
+import sys
+sys.path.append('AML_Project/word_vectors/glove.840B.300d.txt')
+sys.path.append('/content/gdrive/My Drive/AML_Project/word_vectors/word2id.csv')
+sys.path.append('/content/gdrive/My Drive/AML_Project/word_vectors/id2word.csv')
+sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_question.txt')
+sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_context.txt')
+sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_ans_text.txt')
+
+#For me:
+word2id_path = sys.path[12]
+question_path = sys.path[14]
+context_path = sys.path[15]
+ans_path = sys.path[16]
+"""
+
 import io
 import json
 import logging
