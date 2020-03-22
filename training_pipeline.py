@@ -40,14 +40,15 @@ def sentence_to_token_ids(sentence, word2id):
     tokens = split_by_whitespace(sentence) # list of strings
     ids = [word2id.get(w, UNK_ID) for w in tokens]
     return tokens, ids
-    def get_mask_from_seq_len(self, seq_mask):
+    
+def get_mask_from_seq_len(self, seq_mask):
         seq_lens = np.sum(seq_mask, 1)
         max_len = np.max(seq_lens)
         indices = np.arange(0, max_len)
         mask = (indices < np.expand_dims(seq_lens, 1)).astype(int)
         return mask
 
-    def get_data(self, batch, is_train=True):
+def get_data(self, batch, is_train=True):
         qn_mask = self.get_mask_from_seq_len(batch.qn_mask)
         qn_mask_var = torch.from_numpy(qn_mask).long()
 
