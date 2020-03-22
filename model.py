@@ -343,36 +343,3 @@ class DCNModel(nn.Module):
       loss += criterion(betas[:,it,:], true_e)
  
     return loss, start, end
-
-
-# Optimiser.
-def run_optimiser():
-    # Is GPU available:
-    print ("cuda device count = %d" % th.cuda.device_count())
-    print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
-
-    doc = th.randn(BATCH_SIZE, 30, 200, device=device) # Fake word vec dimension set to 200.
-    que = th.randn(BATCH_SIZE, 5, 200, device=device)  # Fake word vec dimension set to 200.
-
-    # Fake ground truth data (one batch of starts and ends):
-    true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
-    true_e = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
-    for i in range(BATCH_SIZE):
-      true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
-
-    model = DCNModel(doc, que, BATCH_SIZE, device)
-
-    # TODO: hyperparameters?
-    optimizer = optim.Adam(model.parameters())
-    n_iters = 5
-
-    # TODO: batching?
-    for iter in range(n_iters):
-        optimizer.zero_grad()
-        loss, _, _ = model(doc, que, true_s, true_e)
-        loss.backward(retain_graph=True)
-        optimizer.step()
-        print("Loss after %d steps: %f" %(iter+1, loss[0]))
-
-    print("Optimizer finished.")
