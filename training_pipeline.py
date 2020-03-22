@@ -25,7 +25,54 @@ import time
 import numpy as np
 import torch
 
+_PAD = b"<pad>"
+_UNK = b"<unk>"
+_START_VOCAB = [_PAD, _UNK]
+PAD_ID = 0
+UNK_ID = 1
+
 # from preprocessing/batching import get_batch_generator
+def sentence_to_token_ids(sentence, word2id):
+    """Turns an already-tokenized sentence string into word indices
+    e.g. "i do n't know" -> [9, 32, 16, 96]
+    Note any token that isn't in the word2id mapping gets mapped to the id for UNK
+    """
+    tokens = split_by_whitespace(sentence) # list of strings
+    ids = [word2id.get(w, UNK_ID) for w in tokens]
+    return tokens, ids
+    def get_mask_from_seq_len(self, seq_mask):
+        seq_lens = np.sum(seq_mask, 1)
+        max_len = np.max(seq_lens)
+        indices = np.arange(0, max_len)
+        mask = (indices < np.expand_dims(seq_lens, 1)).astype(int)
+        return mask
+
+    def get_data(self, batch, is_train=True):
+        qn_mask = self.get_mask_from_seq_len(batch.qn_mask)
+        qn_mask_var = torch.from_numpy(qn_mask).long()
+
+        context_mask = self.get_mask_from_seq_len(batch.context_mask)
+        context_mask_var = torch.from_numpy(context_mask).long()
+
+        qn_seq_var = torch.from_numpy(batch.qn_ids).long()
+        context_seq_var = torch.from_numpy(batch.context_ids).long()
+
+        if is_train:
+            span_var = torch.from_numpy(batch.ans_span).long()
+
+        if use_cuda:
+            qn_mask_var = qn_mask_var.cuda()
+            context_mask_var = context_mask_var.cuda()
+            qn_seq_var = qn_seq_var.cuda()
+            context_seq_var = context_seq_var.cuda()
+            if is_train:
+                span_var = span_var.cuda()
+
+        if is_train:
+            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_var
+        else:
+            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
+
 
 def train_one_batch(self, batch, model, optimizer, params):
         model.train()
