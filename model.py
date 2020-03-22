@@ -1,3 +1,4 @@
+from constants import *
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -7,19 +8,6 @@ import torch.optim as optim
 import time
 
 th.manual_seed(1)
-
-# Test flags.
-TEST_DCN_MODEL = True
-TEST_DCN_MODEL_WITH_CPU = False
-TEST_DYNAMIC_POINTER_DECODER = False
-TEST_HMN = False
-
-# Defaults/constants.
-BATCH_SIZE = 64
-DROPOUT = 0.3
-HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
-MAX_ITER = 4
-MAXOUT_POOL_SIZE = 16
 
 # The encoder LSTM.
 class Encoder(nn.Module):

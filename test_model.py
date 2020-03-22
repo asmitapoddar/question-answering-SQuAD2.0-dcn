@@ -1,3 +1,4 @@
+from constants import *
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
@@ -8,16 +9,6 @@ import time
 from model import *
 
 th.manual_seed(1)
-
-# Config flags.
-TEST_DCN_MODEL_WITH_CPU = False
-
-# Defaults/constants.
-BATCH_SIZE = 64
-DROPOUT = 0.3
-HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
-MAX_ITER = 4
-MAXOUT_POOL_SIZE = 16
 
 # start test functions with test_
 def test_example():
