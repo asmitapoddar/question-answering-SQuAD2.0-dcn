@@ -24,6 +24,7 @@ import sys
 import time
 import numpy as np
 import torch
+import pandas as pd
 
 _PAD = b"<pad>"
 _UNK = b"<unk>"
@@ -133,8 +134,12 @@ def training():
     while epoch < num_epochs:
       epoch += 1
       iter_tic = time.time()
-
-      for batch in get_batch_generator(word2id_path, context_path, question_path, ans_path, 64, context_len=600,
+      
+      word2id = []
+      df = pd.read_csv(word2id_path)
+      word2id = df.to_dict()
+    
+      for batch in get_batch_generator(word2id, context_path, question_path, ans_path, 64, context_len=600,
               question_len=30, discard_long=True):
           global_step += 1
           loss, param_norm, grad_norm = self.train_one_batch(batch, model, optimizer, params)
