@@ -32,6 +32,14 @@ PAD_ID = 0
 UNK_ID = 1
 
 # from preprocessing/batching import get_batch_generator
+
+def split_by_whitespace(sentence):
+    words = []
+    for space_separated_fragment in sentence.strip().split():
+        words.extend(re.split(" ", space_separated_fragment))
+    return [w for w in words if w]
+
+
 def sentence_to_token_ids(sentence, word2id):
     """Turns an already-tokenized sentence string into word indices
     e.g. "i do n't know" -> [9, 32, 16, 96]
