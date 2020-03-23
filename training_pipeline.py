@@ -25,6 +25,8 @@ import time
 import numpy as np
 import torch
 import pandas as pd
+import re
+from batching import *
 
 _PAD = b"<pad>"
 _UNK = b"<unk>"
@@ -32,6 +34,19 @@ _START_VOCAB = [_PAD, _UNK]
 PAD_ID = 0
 UNK_ID = 1
 reg_lambda = 0.1
+max_grad_norm = 0.5
+
+use_cuda = torch.cuda.is_available()
+
+#TO BE UPDATED
+word2id_path = " "
+question_path = " "
+context_path = " "
+ans_path = " "
+model = " "
+optimizer = " "
+params = " " 
+global_step = 0
 
 # from preprocessing/batching import get_batch_generator
 
@@ -143,10 +158,10 @@ def training():
       for batch in get_batch_generator(word2id, context_path, question_path, ans_path, 64, context_len=600,
               question_len=30, discard_long=True):
           global_step += 1
-          loss, param_norm, grad_norm = self.train_one_batch(batch, model, optimizer, params)
+          loss, param_norm, grad_norm = train_one_batch(batch, model, optimizer, params)
       iter_toc = time.time()
       iter_time = iter_toc - iter_tic
 
-    loss, param_norm, grad_norm = self.train_one_batch(batch, model, optimizer, params)
+    loss, param_norm, grad_norm = train_one_batch(batch, model, optimizer, params)
     iter_toc = time.time()
     iter_time = iter_toc - iter_tic
