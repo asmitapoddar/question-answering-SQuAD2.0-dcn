@@ -2,3 +2,4 @@
 preprocessing/glove/
 
 .DS_Store
+*.pyc

@@ -1,3 +1,4 @@
+from constants import *
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -7,19 +8,6 @@ import torch.optim as optim
 import time
 
 th.manual_seed(1)
-
-# Test flags.
-TEST_DCN_MODEL = True
-TEST_DCN_MODEL_WITH_CPU = False
-TEST_DYNAMIC_POINTER_DECODER = False
-TEST_HMN = False
-
-# Defaults/constants.
-BATCH_SIZE = 64
-DROPOUT = 0.3
-HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
-MAX_ITER = 4
-MAXOUT_POOL_SIZE = 16
 
 # The encoder LSTM.
 class Encoder(nn.Module):
@@ -34,7 +22,7 @@ class Encoder(nn.Module):
     assert(self.word_vec_dim == que_word_vecs.size()[2])
 
     # Dimension of the hidden state and cell state (they're equal) of the LSTM
-    self.lstm = nn.LSTM(self.word_vec_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout)
+    self.lstm = nn.LSTM(self.word_vec_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
@@ -88,7 +76,7 @@ class BiLSTMEncoder(nn.Module):
         self.device = device
         self.dropout = dropout
         self.hidden = self.init_hidden()
-        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True, dropout=dropout)
+        self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
     def init_hidden(self):
         # TODO: Is initialisation zeros or randn? 
@@ -226,7 +214,7 @@ class DynamicPointerDecoder(nn.Module):
     self.hidden_dim = hidden_dim
     self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
     self.hmn_beta = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
-    self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False, dropout=dropout_lstm)
+    self.lstm = nn.LSTM(4*hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
     self.max_iter = max_iter
 
   def forward(self, U):
@@ -296,6 +284,7 @@ class DynamicPointerDecoder(nn.Module):
       u_si = th.gather(U,2,s_index)
             
       for t in range(doc_length):
+        u_t = U[:,:,t].unsqueeze(dim=2)
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
         beta = th.cat((beta, t_hmn_beta), dim=1)
 
@@ -304,6 +293,7 @@ class DynamicPointerDecoder(nn.Module):
       betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
     return (alphas, betas, s, e)
+
 
 # The full model.
 class DCNModel(nn.Module):
@@ -353,26 +343,3 @@ class DCNModel(nn.Module):
       loss += criterion(betas[:,it,:], true_e)
  
     return loss, start, end
-
-
-# Optimiser.
-def run_optimiser():
-    # Is GPU available:
-    print ("cuda device count = %d" % th.cuda.device_count())
-    print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
-
-    doc = th.randn(64, 30, 200, device=device) # Fake word vec dimension set to 200.
-    que = th.randn(64, 5, 200, device=device)  # Fake word vec dimension set to 200.
-    model = DCNModel(doc, que, BATCH_SIZE, device)
-
-    # TODO: hyperparameters?
-    optimizer = optim.Adam(model.parameters())
-    n_iters = 1000
-
-    # TODO: batching?
-    for iter in range(n_iters):
-        optimizer.zero_grad()
-        loss, _, _ = model(doc, que)
-        loss.backward()
-        optimizer.step()
