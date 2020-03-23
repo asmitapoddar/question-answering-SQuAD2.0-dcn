@@ -31,6 +31,7 @@ _UNK = b"<unk>"
 _START_VOCAB = [_PAD, _UNK]
 PAD_ID = 0
 UNK_ID = 1
+reg_lambda = 0.1
 
 # from preprocessing/batching import get_batch_generator
 
@@ -114,7 +115,7 @@ def train_one_batch(self, batch, model, optimizer, params):
         else:
             l2_reg = l2_reg + W.norm(2)
 
-    loss = loss + config.reg_lambda * l2_reg
+    loss = loss + reg_lambda * l2_reg
 
     loss.backward()
 
