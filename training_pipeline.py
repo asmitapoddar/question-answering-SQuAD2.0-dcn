@@ -72,7 +72,7 @@ def split_by_whitespace(sentence):
 class Training:
 
     def __init__(self):
-        self.use_cuda = th.cuda.is_available()
+        self.use_cuda = th.cuda.is_available() and (not DISABLE_CUDA)
 
         #TO BE UPDATED
         self.word2id_path = " "
