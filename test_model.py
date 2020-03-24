@@ -1,25 +1,27 @@
-from constants import *
+import time
 import torch as th
 import torch.nn as nn
 import torch.nn.functional as F
-from torch.autograd import Variable
 import torch.optim as optim
-import time
 
+from constants import *
 from model import *
+from torch.autograd import Variable
 
 th.manual_seed(1)
+
 
 # start test functions with test_
 def test_example():
     pass
+
 
 def test_dcn_model():
     # https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
     # Is GPU available:
     print ("cuda device count = %d" % th.cuda.device_count())
     print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
     doc = th.randn(BATCH_SIZE, 30, HIDDEN_DIM, device=device) # Fake word vec dimension set to HIDDEN_DIM.
     que = th.randn(BATCH_SIZE, 5, HIDDEN_DIM, device=device)  # Fake word vec dimension set to HIDDEN_DIM.
@@ -39,8 +41,9 @@ def test_dcn_model():
 
     print("%d/%d parameters have non-None gradients." % (len([param for param in model.parameters() if param.grad is not None]), len(list(model.parameters()))))
 
+
 def test_hmn():
-    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
     hmn = HighwayMaxoutNetwork(BATCH_SIZE, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device)
     u_t = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 1, device=device)
     h_i = th.ones(BATCH_SIZE, HIDDEN_DIM, 1, device=device)
@@ -53,9 +56,10 @@ def test_hmn():
     th.mean(output).backward()
     print("%d/%d parameters have non-None gradients." % (len([param for param in hmn.parameters() if param.grad is not None]), len(list(hmn.parameters()))))
 
+
 def test_decoder():
     max_iter = 10
-    device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
     dpd = DynamicPointerDecoder(BATCH_SIZE, max_iter, DROPOUT, DROPOUT, HIDDEN_DIM, MAXOUT_POOL_SIZE, device).to(device)
     U = th.ones(BATCH_SIZE, 2 * HIDDEN_DIM, 50, device=device)
     alphas, betas, s, e = dpd.forward(U)
@@ -64,13 +68,14 @@ def test_decoder():
     loss.backward()
     print(loss)
 
+
 # Optimiser.
 def test_optimiser():
   
     # Is GPU available:
     print ("cuda device count = %d" % th.cuda.device_count())
     print ("cuda is available = %d" % th.cuda.is_available())
-    device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
+    device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
     # Fake one batch of data
     doc = th.randn(BATCH_SIZE, 30, 200, device=device) # Fake word vec dimension set to 200.
@@ -86,13 +91,17 @@ def test_optimiser():
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
-    n_iters = 1000
+    N_STEPS = 3
 
-    for iter in range(n_iters):
+    loss_values_over_steps = []
+
+    for step_it in range(N_STEPS):
         optimizer.zero_grad()
         loss, _, _ = model(doc, que, true_s, true_e)
         loss.backward(retain_graph=True)  # TODO: Should this be here?
         optimizer.step()
-        print("Loss after %d steps: %f" %(iter+1, loss[0]))
+        loss_values_over_steps.append(loss[0])
+        print("Loss after %d steps: %f" %(step_it+1, loss[0]))
 
+    assert(loss_values_over_steps[0] >= loss_values_over_steps[-1])
     print("Optimizer finished.")

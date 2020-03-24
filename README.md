@@ -9,15 +9,22 @@ The repo name speaks for itself.
 No snitching either.
 
 ### Existing impl
-Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
+* Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
+* Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data_batcher.py
 
-Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data_batcher.py
+### Links to our content
+* GDrive: https://drive.google.com/open?id=17K0ZFb_OCdvHgSlkNFErzyx--eYZnoiG
+* AML GDoc: https://docs.google.com/document/d/1fit7dYVHn0I0PsAA_HCj3AqnxJ7Wzz-78sb--wxKdA4/edit?usp=sharing
 
-
-### TODOS
-- [x] Forward Pass (Kuba)
-- [x] Backward Pass (Kuba)
+### TODOs
+- [ ] ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) *Add your **past** contributions or **nearest-future work** here. (everyone)*
+- [x] Move tests to seperate file (Richie)
+- [x] Implement model (everyone)
+- [x] Enable cuda usage (Kuba)
+- [x] Get forward pass to run (Kuba)
+- [x] Get backward pass to run (Kuba -- this was quick)
 - [x] Debug why predicted end indices are all 0 (Richie)
 - [x] Complete batching (Asmita)
-- [ ] Training pipeline (Asmita)
-- [x] Move tests to seperate file (Richie)
+- [ ] Training pipeline (Asmita + Kuba's minor cleanup)
+- [x] Model serialisation (~~Kuba~~ / Richie :p)
+- [ ] Run Training on real data ( ? )
