@@ -19,13 +19,14 @@ ans_path = sys.path[16]
 import io
 import json
 import logging
-import os
-import sys
-import time
 import numpy as np
-import torch
+import os
 import pandas as pd
 import re
+import sys
+import time
+import torch as th
+
 from batching import *
 from constants import *
 
@@ -70,7 +71,7 @@ def split_by_whitespace(sentence):
 
 class Training:
 
-    self.use_cuda = torch.cuda.is_available()
+    self.use_cuda = th.cuda.is_available()
 
     #TO BE UPDATED
     self.word2id_path = " "
@@ -92,16 +93,16 @@ class Training:
 
     def get_data(self, batch, is_train=True):
         qn_mask = self.get_mask_from_seq_len(batch.qn_mask)
-        qn_mask_var = torch.from_numpy(qn_mask).long()
+        qn_mask_var = th.from_numpy(qn_mask).long()
 
         context_mask = self.get_mask_from_seq_len(batch.context_mask)
-        context_mask_var = torch.from_numpy(context_mask).long()
+        context_mask_var = th.from_numpy(context_mask).long()
 
-        qn_seq_var = torch.from_numpy(batch.qn_ids).long()
-        context_seq_var = torch.from_numpy(batch.context_ids).long()
+        qn_seq_var = th.from_numpy(batch.qn_ids).long()
+        context_seq_var = th.from_numpy(batch.context_ids).long()
 
         if is_train:
-            span_var = torch.from_numpy(batch.ans_span).long()
+            span_var = th.from_numpy(batch.ans_span).long()
 
         if self.use_cuda:
             qn_mask_var = qn_mask_var.cuda()
