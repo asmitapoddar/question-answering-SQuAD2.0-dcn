@@ -71,17 +71,19 @@ def split_by_whitespace(sentence):
 
 class Training:
 
-    self.use_cuda = th.cuda.is_available()
+    def __init__(self):
+        self.use_cuda = th.cuda.is_available()
 
-    #TO BE UPDATED
-    self.word2id_path = " "
-    self.question_path = " "
-    self.context_path = " "
-    self.ans_path = " "
-    self.model = " "
-    self.optimizer = " "
-    self.params = " " 
-    self.global_step = 0
+        #TO BE UPDATED
+        self.word2id_path = " "
+        self.question_path = " "
+        self.context_path = " "
+        self.ans_path = " "
+        self.model = " "
+        self.optimizer = " "
+        self.params = " " 
+        self.global_step = 0
+        
 
     def get_mask_from_seq_len(self, seq_mask):
         seq_lens = np.sum(seq_mask, 1)
