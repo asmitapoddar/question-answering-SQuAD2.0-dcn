@@ -27,14 +27,14 @@ import torch
 import pandas as pd
 import re
 from batching import *
+from constants import *
 
 _PAD = b"<pad>"
 _UNK = b"<unk>"
 _START_VOCAB = [_PAD, _UNK]
 PAD_ID = 0
 UNK_ID = 1
-reg_lambda = 0.1
-max_grad_norm = 0.5
+REG_LAMBDA = 0.1
 
 use_cuda = torch.cuda.is_available()
 
@@ -130,14 +130,14 @@ def train_one_batch(self, batch, model, optimizer, params):
         else:
             l2_reg = l2_reg + W.norm(2)
 
-    loss = loss + reg_lambda * l2_reg
+    loss = loss + REG_LAMBDA * l2_reg
 
     loss.backward()
 
     param_norm = self.get_param_norm(params)
     grad_norm = self.get_grad_norm(params)
 
-    clip_grad_norm_(params, max_grad_norm)
+    clip_grad_norm_(params, MAX_GRAD_NORM)
     optimizer.step()
     print(loss.item())
     return loss.item(), param_norm, grad_norm
@@ -155,8 +155,8 @@ def training():
       df = pd.read_csv(word2id_path)
       word2id = df.to_dict()
     
-      for batch in get_batch_generator(word2id, context_path, question_path, ans_path, 64, context_len=600,
-              question_len=30, discard_long=True):
+      for batch in get_batch_generator(word2id, context_path, question_path, ans_path, 64, context_len=MAX_CONTEXT_LEN,
+              question_len=MAX_QUESTION_LEN, discard_long=True):
           global_step += 1
           loss, param_norm, grad_norm = train_one_batch(batch, model, optimizer, params)
       iter_toc = time.time()
