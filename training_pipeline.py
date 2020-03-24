@@ -83,7 +83,7 @@ class Training:
         self.optimizer = " "
         self.params = " " 
         self.global_step = 0
-        
+
 
     def get_mask_from_seq_len(self, seq_mask):
         seq_lens = np.sum(seq_mask, 1)
@@ -150,20 +150,16 @@ class Training:
         epoch = 0
         num_epochs = 1000 
         while epoch < num_epochs:
-        epoch += 1
-        iter_tic = time.time()
-        
-        word2id = []
-        df = pd.read_csv(self.word2id_path)
-        word2id = df.to_dict()
-        
-        for batch in get_batch_generator(word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
-                question_len=MAX_QUESTION_LEN, discard_long=True):
-            global_step += 1
-            loss, param_norm, grad_norm = train_one_batch(batch, self.model, self.optimizer, self.params)
-        iter_toc = time.time()
-        iter_time = iter_toc - iter_tic
-
-        loss, param_norm, grad_norm = train_one_batch(batch, self.model, self.optimizer, self.params)
-        iter_toc = time.time()
-        iter_time = iter_toc - iter_tic
+            epoch += 1
+            iter_tic = time.time()
+            
+            word2id = []
+            df = pd.read_csv(self.word2id_path)
+            word2id = df.to_dict()
+            
+            for batch in get_batch_generator(word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
+                    question_len=MAX_QUESTION_LEN, discard_long=True):
+                global_step += 1
+                loss, param_norm, grad_norm = train_one_batch(batch, self.model, self.optimizer, self.params)
+            iter_toc = time.time()
+            iter_time = iter_toc - iter_tic
