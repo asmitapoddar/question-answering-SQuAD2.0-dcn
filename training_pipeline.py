@@ -30,8 +30,7 @@ import torch as th
 from preprocessing.batching import *
 from constants import *
 
-# from preprocessing/batching import get_batch_generator
-
+from datetime import datetime
 
 def get_grad_norm(parameters, norm_type=2):
     parameters = list(filter(lambda p: p.grad is not None, parameters))
@@ -147,19 +146,26 @@ class Training:
 
 
     def training(self):
-        epoch = 0
-        num_epochs = 1000 
-        while epoch < num_epochs:
-            epoch += 1
+        word2id = []
+        df = pd.read_csv(self.word2id_path)
+        word2id = df.to_dict()
+       
+        serial_path = "model/" + datetime.now().strftime("%Y%m%d_%H%M%S") + "/"
+        os.mkdir(serial_path)
+        
+        for epoch in range(NUM_EPOCHS):
             iter_tic = time.time()
-            
-            word2id = []
-            df = pd.read_csv(self.word2id_path)
-            word2id = df.to_dict()
-            
+             
             for batch in get_batch_generator(word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
                     question_len=MAX_QUESTION_LEN, discard_long=True):
                 global_step += 1
                 loss, param_norm, grad_norm = train_one_batch(batch, self.model, self.optimizer, self.params)
             iter_toc = time.time()
             iter_time = iter_toc - iter_tic
+            print("Epoch %i completed in %i seconds" % (epoch, iter_time))
+
+            # save model
+
+            print("Serialising model parameters ...", end='')
+            th.save(model.state_dict(), serial_path + "epoch_%i.par" % epoch) 
+            print("done.")
