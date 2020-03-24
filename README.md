@@ -26,5 +26,5 @@ No snitching either.
 - [x] Debug why predicted end indices are all 0 (Richie)
 - [x] Complete batching (Asmita)
 - [ ] Training pipeline (Asmita + Kuba's minor cleanup)
-- [ ] Model serialisation (Kuba / Richie -- whoever gets to it first)
+- [x] Model serialisation (~~Kuba~~ / Richie :p)
 - [ ] Run Training on real data ( ? )
