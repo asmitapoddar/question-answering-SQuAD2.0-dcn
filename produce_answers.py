@@ -85,8 +85,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	if len(batch[2]) > 0:
 		yield batch
 
+def run_evaluation(model_path, output_path = "predictions.json"):
 
-def run_evaluation():
 	# Load glove word vectors into a dictionary 
 	glove = load_embeddings_index(small=False)
 
@@ -103,6 +103,8 @@ def run_evaluation():
 	# The file that will be provided to evaluate-v2.0.py
 	answer_mapping = {}
 
+	model = None
+
 	for batch in tqdm(batch_iterator):
 
 		context_vectors, question_vectors, context_ids, context_paras = batch
@@ -118,13 +120,17 @@ def run_evaluation():
 		for i in range(evaluation_batch_size):
 		  true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
-		# Run model.
-		model = DCNModel(context_vectors, question_vectors, evaluation_batch_size, device).to(device)
+		if model is None:
+			model = DCNModel(context_vectors, question_vectors, evaluation_batch_size, device).to(device)
+			model.load_state_dict(th.load(model_path))
+			model.eval()
+
+		# Run model
 		loss, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
 		answer_substring = " ".join(context_paras[0][s:e])
 		answer_mapping[context_ids[0]] = answer_substring
 
-	with open("predictions.json", "w") as f:
+	with open(output_path, "w") as f:
 		json.dump(answer_mapping, f)
 
-run_evaluation()
+# run_evaluation("")

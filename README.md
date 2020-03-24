@@ -28,4 +28,4 @@ No snitching either.
 - [ ] Training pipeline (Asmita + Kuba's minor cleanup)
 - [x] Model serialisation (~~Kuba~~ / Richie :p)
 - [ ] Run Training on real data ( ? )
-- [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, load serialised model) (Dip)
+- [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
