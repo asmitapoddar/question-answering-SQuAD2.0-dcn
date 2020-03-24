@@ -27,7 +27,7 @@ import sys
 import time
 import torch as th
 
-from batching import *
+from preprocessing.batching import *
 from constants import *
 
 # from preprocessing/batching import get_batch_generator
