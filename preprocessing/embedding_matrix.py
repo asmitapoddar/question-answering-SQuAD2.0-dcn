@@ -1,3 +1,12 @@
+import torch
+import torch.nn as nn
+import torch.nn.functional as F
+import torch.optim as optim
+from torch.autograd import Variable
+import numpy as np
+import csv
+import json
+from google.colab import files
 
 """This file contains a function to read the GloVe vectors from file,
 and return them as an embedding matrix"""
@@ -73,3 +82,11 @@ def get_glove(glove_path, glove_dim):
     #assert idx == final_vocab_size
 
     return emb_matrix, word2id, id2word
+
+#Write to file
+"""
+w = csv.writer(open("word2id.csv", "w"))
+for key, val in word2id.items():
+    w.writerow([key, val])
+files.download('word2id.csv') #for downloading to Google Drive
+"""
