@@ -87,7 +87,7 @@ def test_optimiser():
     for i in range(BATCH_SIZE):
       true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
-    model = DCNModel(doc, que, BATCH_SIZE, device)
+    model = DCNModel(BATCH_SIZE, device)
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
