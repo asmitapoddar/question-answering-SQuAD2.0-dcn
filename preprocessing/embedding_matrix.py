@@ -85,8 +85,12 @@ def get_glove(glove_path, glove_dim):
 
 #Write to file
 """
+#For dictionary
 w = csv.writer(open("word2id.csv", "w"))
 for key, val in word2id.items():
     w.writerow([key, val])
 files.download('word2id.csv') #for downloading to Google Drive
+
+#For embedding_matrix
+np.savetxt('embedding_matrix.txt', emb_matrix,fmt='%.2f')
 """
