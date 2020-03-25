@@ -11,18 +11,15 @@ th.manual_seed(1)
 
 # The encoder LSTM.
 class Encoder(nn.Module):
-  def __init__(self, doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout, device):
+  def __init__(self, embedding_dim, hidden_dim, batch_size, dropout, device):
     super(Encoder, self).__init__()
     self.batch_size = batch_size
+    self.embedding_dim = embedding_dim
     self.hidden_dim = hidden_dim
     self.device = device
 
-    # Dimensionality of word vectors.
-    self.word_vec_dim = doc_word_vecs.size()[2]
-    assert(self.word_vec_dim == que_word_vecs.size()[2])
-
     # Dimension of the hidden state and cell state (they're equal) of the LSTM
-    self.lstm = nn.LSTM(self.word_vec_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
+    self.lstm = nn.LSTM(self.embedding_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
@@ -35,10 +32,10 @@ class Encoder(nn.Module):
 
 # Takes in D, Q. Produces U.
 class CoattentionModule(nn.Module):
-    def __init__(self, batch_size, dropout, hidden_dim, device):
+    def __init__(self, batch_size, dropout, embedding_dim, hidden_dim, device):
         super(CoattentionModule, self).__init__()
         self.batch_size = batch_size
-        self.bilstm_encoder = BiLSTMEncoder(hidden_dim, batch_size, dropout, device)
+        self.bilstm_encoder = BiLSTMEncoder(embedding_dim, hidden_dim, batch_size, dropout, device)
         self.dropout = dropout
         self.hidden_dim = hidden_dim
         self.device = device
@@ -69,7 +66,7 @@ class CoattentionModule(nn.Module):
 
 
 class BiLSTMEncoder(nn.Module):
-    def __init__(self, hidden_dim, batch_size, dropout, device):
+    def __init__(self, embedding_dim, hidden_dim, batch_size, dropout, device):
         super(BiLSTMEncoder, self).__init__()
         self.hidden_dim = hidden_dim
         self.batch_size = batch_size
@@ -298,15 +295,15 @@ class DynamicPointerDecoder(nn.Module):
 # The full model.
 class DCNModel(nn.Module):
   def __init__(
-      self, doc_word_vecs, que_word_vecs, batch_size, device, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
+      self, batch_size, device, embedding_dim=EMBEDDING_DIM, hidden_dim=HIDDEN_DIM, dropout_encoder=DROPOUT, 
       dropout_coattention=DROPOUT, dropout_decoder_hmn=DROPOUT, dropout_decoder_lstm=DROPOUT, dpd_max_iter=MAX_ITER,
       maxout_pool_size=MAXOUT_POOL_SIZE):
     super(DCNModel, self).__init__()
     self.batch_size = batch_size
-    self.coattention_module = CoattentionModule(batch_size, dropout_coattention, hidden_dim, device)
+    self.coattention_module = CoattentionModule(batch_size, dropout_coattention, embedding_dim, hidden_dim, device)
     self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, maxout_pool_size, device) 
     self.device = device
-    self.encoder = Encoder(doc_word_vecs, que_word_vecs, hidden_dim, batch_size, dropout_encoder, device)
+    self.encoder = Encoder(embedding_dim, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
@@ -316,6 +313,7 @@ class DCNModel(nn.Module):
     # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
     # que_word_vecs the same as above.
 
+    print("doc_word_vec", doc_word_vecs.shape)
     # TODO: how should we initialise the hidden state of the LSTM? For now:
     initial_hidden = self.encoder.generate_initial_hidden_state()
     outp, _ = self.encoder(doc_word_vecs, initial_hidden)
