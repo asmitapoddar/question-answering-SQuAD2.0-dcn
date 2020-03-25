@@ -48,6 +48,14 @@ def get_grad_norm(parameters, norm_type=2):
     return total_norm
 
 
+def get_mask_from_seq_len(self, seq_mask):
+    seq_lens = np.sum(seq_mask, axis=1)
+    max_len = np.max(seq_lens)
+    indices = np.arange(0, max_len)
+    mask = (indices < np.expand_dims(seq_lens, 1)).astype(int)
+    return mask
+
+
 def get_param_norm(parameters, norm_type=2):
     total_norm = 0
     for p in parameters:
@@ -78,7 +86,6 @@ class Training:
 
     def __init__(self):
         self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
-        self.use_cuda = th.cuda.is_available() and (not DISABLE_CUDA)
         
         self.model = None
         self.optimizer = None
@@ -96,36 +103,19 @@ class Training:
         self.global_step = 0
 
 
-    def get_mask_from_seq_len(self, seq_mask):
-        seq_lens = np.sum(seq_mask, axis=1)
-        max_len = np.max(seq_lens)
-        indices = np.arange(0, max_len)
-        mask = (indices < np.expand_dims(seq_lens, 1)).astype(int)
-        return mask
-
-
     def get_data(self, batch, is_train=True):
-        qn_mask = self.get_mask_from_seq_len(batch.qn_mask)
-        qn_mask_var = th.from_numpy(qn_mask).long()
+        qn_mask = get_mask_from_seq_len(batch.qn_mask)
+        qn_mask_var = th.from_numpy(qn_mask).long().to(self.device)
 
         context_mask = self.get_mask_from_seq_len(batch.context_mask)
-        context_mask_var = th.from_numpy(context_mask).long()
+        context_mask_var = th.from_numpy(context_mask).long().to(self.device)
 
-        qn_seq_var = th.from_numpy(batch.qn_ids).long()
-        context_seq_var = th.from_numpy(batch.context_ids).long()
+        qn_seq_var = th.from_numpy(batch.qn_ids).long().to(self.device)
+        context_seq_var = th.from_numpy(batch.context_ids).long().to(self.device)
 
         if is_train:
-            span_var = th.from_numpy(batch.ans_span).long()
+            span_var = th.from_numpy(batch.ans_span).long().to(self.device)
             span_s, span_e = self.get_spans(span_var)
-
-        if self.use_cuda:
-            qn_mask_var = qn_mask_var.cuda()
-            context_mask_var = context_mask_var.cuda()
-            qn_seq_var = qn_seq_var.cuda()
-            context_seq_var = context_seq_var.cuda()
-            if is_train:
-                span_var = span_var.cuda()
-                span_s, span_e = self.get_spans(span_var)
 
         if is_train:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_s, span_e 
@@ -133,8 +123,8 @@ class Training:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
 
     def get_spans(self, span):
-        span_start=th.zeros(span.shape[0])
-        span_end=th.zeros(span.shape[0])
+        span_start=th.zeros(span.shape[0], device=self.device)
+        span_end=th.zeros(span.shape[0], device=self.device)
         for k in span:
             span_start=k[0]
             span_end=k[1]
@@ -143,7 +133,7 @@ class Training:
     def seq_to_emb(self, seq):
         seq_list = seq.tolist()
         emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
-        return th.Tensor(emb_list)
+        return th.Tensor(emb_list, device=self.device)
 
     def train_one_batch(self, batch, model, optimizer, params):
         model.train()
@@ -151,8 +141,8 @@ class Training:
         q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
 
         # convert sequence into embedding
-        q_emb = self.seq_to_emb(q_seq).cuda()
-        d_emb = self.seq_to_emb(d_seq).cuda()
+        q_emb = self.seq_to_emb(q_seq)
+        d_emb = self.seq_to_emb(d_seq)
 
         print(q_seq.shape, d_seq.shape)
         print(q_emb.shape, d_emb.shape)
