@@ -23,8 +23,8 @@ def test_dcn_model():
     print ("cuda is available = %d" % th.cuda.is_available())
     device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
-    doc = th.randn(BATCH_SIZE, 30, HIDDEN_DIM, device=device) # Fake word vec dimension set to HIDDEN_DIM.
-    que = th.randn(BATCH_SIZE, 5, HIDDEN_DIM, device=device)  # Fake word vec dimension set to HIDDEN_DIM.
+    doc = th.randn(BATCH_SIZE, 30, EMBEDDING_DIM, device=device) # Fake word vec dimension set to EMBEDDING_DIM.
+    que = th.randn(BATCH_SIZE, 5, EMBEDDING_DIM, device=device)  # Fake word vec dimension set to EMBEDDING_DIM.
 
     # Fake ground truth data (one batch of starts and ends):
     true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
@@ -78,8 +78,8 @@ def test_optimiser():
     device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
     # Fake one batch of data
-    doc = th.randn(BATCH_SIZE, 30, 200, device=device) # Fake word vec dimension set to 200.
-    que = th.randn(BATCH_SIZE, 5, 200, device=device)  # Fake word vec dimension set to 200.
+    doc = th.randn(BATCH_SIZE, 30, EMBEDDING_DIM, device=device) # Fake word vec dimension set to EMBEDDING_DIM.
+    que = th.randn(BATCH_SIZE, 5, EMBEDDING_DIM, device=device)  # Fake word vec dimension set to EMBEDDING_DIM.
 
     # Fake one batch of ground truth
     true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
