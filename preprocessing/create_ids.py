@@ -4,14 +4,10 @@ and return them as an embedding matrix"""
 from __future__ import absolute_import
 from __future__ import division
 
+from constants import *
 from tqdm import tqdm
-import numpy as np
 
-_PAD = b"<pad>"
-_UNK = b"<unk>"
-_START_VOCAB = [_PAD, _UNK]
-PAD_ID = 0
-UNK_ID = 1
+import numpy as np
 
 
 def get_glove(glove_path, glove_dim):
@@ -19,7 +15,7 @@ def get_glove(glove_path, glove_dim):
     print ("Loading GLoVE vectors from file: %s" % glove_path)
     vocab_size = 2196018 # this is the vocab size of the corpus we've downloaded
 
-    emb_matrix = np.zeros((vocab_size + len(_START_VOCAB), glove_dim))
+    emb_matrix = np.zeros((vocab_size + len(START_VOCAB), glove_dim))
     print(emb_matrix.shape)
     word2id = {}
     id2word = {}
@@ -27,11 +23,11 @@ def get_glove(glove_path, glove_dim):
     random_init = True
     # randomly initialize the special tokens
     if random_init:
-        emb_matrix[:len(_START_VOCAB), :] = np.random.randn(len(_START_VOCAB), glove_dim)
+        emb_matrix[:len(START_VOCAB), :] = np.random.randn(len(START_VOCAB), glove_dim)
 
     # put start tokens in the dictionaries
     idx = 0
-    for word in _START_VOCAB:
+    for word in START_VOCAB:
         print('word', idx)
         word2id[word] = idx
         id2word[idx] = word
@@ -64,7 +60,7 @@ def get_glove(glove_path, glove_dim):
             idx += 1
             
 
-    final_vocab_size = vocab_size + len(_START_VOCAB)
+    final_vocab_size = vocab_size + len(START_VOCAB)
     #assert len(word2id) == final_vocab_size
     #assert len(id2word) == final_vocab_size
     #assert idx == final_vocab_size

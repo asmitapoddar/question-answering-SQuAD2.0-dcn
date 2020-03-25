@@ -12,8 +12,9 @@ MAX_GRAD_NORM = 0.5
 MAX_QUESTION_LEN = 30
 NUM_EPOCHS = 1000 
 REG_LAMBDA = 0.1
-_PAD = b"<pad>"
-_UNK = b"<unk>"
-_START_VOCAB = [_PAD, _UNK]
+
+PAD = b"<pad>"
+UNK = b"<unk>"
+START_VOCAB = [PAD, UNK]
 PAD_ID = 0
 UNK_ID = 1
