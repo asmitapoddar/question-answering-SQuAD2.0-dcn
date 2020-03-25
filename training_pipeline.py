@@ -111,11 +111,7 @@ class Training:
 
         if is_train:
             span_var = th.from_numpy(batch.ans_span).long()
-<<<<<<< HEAD
             span_s, span_e = self.get_spans(span_var)
-=======
-            span_start,span_end=get_spans(span_var)
->>>>>>> 9fdda8ad9456ef33152611cdf09f825d354b235e
 
         if self.use_cuda:
             qn_mask_var = qn_mask_var.cuda()
@@ -124,7 +120,6 @@ class Training:
             context_seq_var = context_seq_var.cuda()
             if is_train:
                 span_var = span_var.cuda()
-<<<<<<< HEAD
                 span_s, span_e = self.get_spans(span_var)
 
         if is_train:
@@ -133,16 +128,6 @@ class Training:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
 
     def get_spans(self, span):
-=======
-                span_start,span_end=get_spans(span_var)
-
-        if is_train:
-            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_start, span_end 
-        else:
-            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
-
-    def get_spans(span):
->>>>>>> 9fdda8ad9456ef33152611cdf09f825d354b235e
         span_start=th.zeros(span.shape[0])
         span_end=th.zeros(span.shape[0])
         for k in span:
@@ -150,19 +135,14 @@ class Training:
             span_end=k[1]
         return span_start, span_end
 
-<<<<<<< HEAD
     def seq_to_emb(self, seq):
         seq_list = seq.tolist()
         emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
         return th.Tensor(emb_list)
-=======
-
->>>>>>> 9fdda8ad9456ef33152611cdf09f825d354b235e
 
     def train_one_batch(self, batch, model, optimizer, params):
         model.train()
         optimizer.zero_grad()
-<<<<<<< HEAD
         q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
 
         # convert sequence into embedding
@@ -172,10 +152,6 @@ class Training:
         print(q_seq.shape, d_seq.shape)
         print(q_emb.shape, d_emb.shape)
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
-=======
-        q_seq, q_lens, d_seq, d_lens, span_start,span_end = self.get_data(batch)
-        loss, _, _ = model( d_seq, q_seq,span_start,span_end)
->>>>>>> 9fdda8ad9456ef33152611cdf09f825d354b235e
 
         l2_reg = None
         for W in params:

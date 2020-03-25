@@ -165,9 +165,9 @@ Who was the hostage ?
 Who did Alexander I marry ?
 Who did Alexander I marry ?
 Who did Alexander I marry ?
-What culture 's arrival in Scotland is know as the " Davidian Revolution " ?
-What culture 's arrival in Scotland is know as the " Davidian Revolution " ?
-What culture 's arrival in Scotland is know as the " Davidian Revolution " ?
+What culture 's arrival in Scotland is know as the `` Davidian Revolution '' ?
+What culture 's arrival in Scotland is know as the `` Davidian Revolution '' ?
+What culture 's arrival in Scotland is know as the `` Davidian Revolution '' ?
 Where was Ralph earl of ?
 Where was Ralph earl of ?
 Where was Ralph earl of ?
@@ -437,9 +437,9 @@ What term corresponds to the maximum measurement of time across all functions of
 How is worst-case time complexity written as an expression ?
 How is worst-case time complexity written as an expression ?
 How is worst-case time complexity written as an expression ?
-Assuming that T represents a polynomial in T ( n ) , what is the term given to the corresponding algorithm ?
-Assuming that T represents a polynomial in T ( n ) , what is the term given to the corresponding algorithm ?
-Assuming that T represents a polynomial in T ( n ) , what is the term given to the corresponding algorithm ?
+Assuming that T represents a polynomial in T -LRB- n -RRB- , what is the term given to the corresponding algorithm ?
+Assuming that T represents a polynomial in T -LRB- n -RRB- , what is the term given to the corresponding algorithm ?
+Assuming that T represents a polynomial in T -LRB- n -RRB- , what is the term given to the corresponding algorithm ?
 What is the term for a mathematical model that theoretically represents a general computing machine ?
 What is the term for a mathematical model that theoretically represents a general computing machine ?
 What is the term for a mathematical model that theoretically represents a general computing machine ?
@@ -556,9 +556,9 @@ The analysis of a specific algorithm is typically assigned to what field of comp
 Which bound of time is more difficult to establish ?
 Which bound of time is more difficult to establish ?
 Which bound of time is more difficult to establish ?
-A specific algorithm demonstrating T ( n ) represents what measure of time complexity ?
-A specific algorithm demonstrating T ( n ) represents what measure of time complexity ?
-A specific algorithm demonstrating T ( n ) represents what measure of time complexity ?
+A specific algorithm demonstrating T -LRB- n -RRB- represents what measure of time complexity ?
+A specific algorithm demonstrating T -LRB- n -RRB- represents what measure of time complexity ?
+A specific algorithm demonstrating T -LRB- n -RRB- represents what measure of time complexity ?
 What is the colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time ?
 What is the colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time ?
 What is the colloquial phrase used to convey the continuum of algorithms with unlimited availability irrespective of time ?
@@ -568,9 +568,9 @@ What expression is generally used to convey upper or lower bounds ?
 What does a big O notation hide ?
 What does a big O notation hide ?
 What does a big O notation hide ?
-How would one write T ( n ) = 7n2 + 15n + 40 in big O notation ?
-How would one write T ( n ) = 7n2 + 15n + 40 in big O notation ?
-How would one write T ( n ) = 7n2 + 15n + 40 in big O notation ?
+How would one write T -LRB- n -RRB- = 7n2 + 15n + 40 in big O notation ?
+How would one write T -LRB- n -RRB- = 7n2 + 15n + 40 in big O notation ?
+How would one write T -LRB- n -RRB- = 7n2 + 15n + 40 in big O notation ?
 Big O notation provides autonomy to upper and lower bounds with relationship to what ?
 Big O notation provides autonomy to upper and lower bounds with relationship to what ?
 Big O notation provides autonomy to upper and lower bounds with relationship to what ?
@@ -625,9 +625,9 @@ IP and AM are most commonly defined by what type of proof system ?
 What is an example of a measurement within a complexity class that would create a bigger set of problems if the bounds were relaxed ?
 What is an example of a measurement within a complexity class that would create a bigger set of problems if the bounds were relaxed ?
 What is an example of a measurement within a complexity class that would create a bigger set of problems if the bounds were relaxed ?
-In what expression can one expect to find DTIME ( n )
-In what expression can one expect to find DTIME ( n )
-In what expression can one expect to find DTIME ( n )
+In what expression can one expect to find DTIME -LRB- n -RRB-
+In what expression can one expect to find DTIME -LRB- n -RRB-
+In what expression can one expect to find DTIME -LRB- n -RRB-
 What theorems are responsible for determining questions of time and space requirements ?
 What theorems are responsible for determining questions of time and space requirements ?
 What theorems are responsible for determining questions of time and space requirements ?
@@ -840,18 +840,18 @@ In the most basic sense what did a Turing machine emulate ?
 What paper is commonly considered the bellwether ushering in systematic studies computational complexity ?
 What paper is commonly considered the bellwether ushering in systematic studies computational complexity ?
 What paper is commonly considered the bellwether ushering in systematic studies computational complexity ?
-What individuals were responsible for authoring " On the Computational Complexity of Algorithms " ?
-What individuals were responsible for authoring " On the Computational Complexity of Algorithms " ?
-What individuals were responsible for authoring " On the Computational Complexity of Algorithms " ?
+What individuals were responsible for authoring `` On the Computational Complexity of Algorithms '' ?
+What individuals were responsible for authoring `` On the Computational Complexity of Algorithms '' ?
+What individuals were responsible for authoring `` On the Computational Complexity of Algorithms '' ?
 In what year was Hatmanis and Stearn 's seminal work in computational complexity received ?
 In what year was Hatmanis and Stearn 's seminal work in computational complexity received ?
 In what year was Hatmanis and Stearn 's seminal work in computational complexity received ?
-What complex measurements were defined by " On the Computational Complexity of Algorithms " ?
-What complex measurements were defined by " On the Computational Complexity of Algorithms " ?
-What complex measurements were defined by " On the Computational Complexity of Algorithms " ?
-In what year did Edmond 's characterize a " good " algorithm ?
-In what year did Edmond 's characterize a " good " algorithm ?
-In what year did Edmond 's characterize a " good " algorithm ?
+What complex measurements were defined by `` On the Computational Complexity of Algorithms '' ?
+What complex measurements were defined by `` On the Computational Complexity of Algorithms '' ?
+What complex measurements were defined by `` On the Computational Complexity of Algorithms '' ?
+In what year did Edmond 's characterize a `` good '' algorithm ?
+In what year did Edmond 's characterize a `` good '' algorithm ?
+In what year did Edmond 's characterize a `` good '' algorithm ?
 Who provided a definition of linear bounded automata in 1960 ?
 Who provided a definition of linear bounded automata in 1960 ?
 Who provided a definition of linear bounded automata in 1960 ?
@@ -882,15 +882,15 @@ How many combinatory and graph theoretical problems , formerly believed to be pl
 What is Southern California often abbreviated as ?
 What is Southern California often abbreviated as ?
 What is Southern California often abbreviated as ?
-Despite being traditionall described as " eight counties " , how many counties does this region actually have ?
-Despite being traditionall described as " eight counties " , how many counties does this region actually have ?
-Despite being traditionall described as " eight counties " , how many counties does this region actually have ?
+Despite being traditionall described as `` eight counties '' , how many counties does this region actually have ?
+Despite being traditionall described as `` eight counties '' , how many counties does this region actually have ?
+Despite being traditionall described as `` eight counties '' , how many counties does this region actually have ?
 What is a major importance of Southern California in relation to California and the United States ?
 What is a major importance of Southern California in relation to California and the United States ?
 What is a major importance of Southern California in relation to California and the United States ?
-What are the ties that best described what the " eight counties " are based on ?
-What are the ties that best described what the " eight counties " are based on ?
-What are the ties that best described what the " eight counties " are based on ?
+What are the ties that best described what the `` eight counties '' are based on ?
+What are the ties that best described what the `` eight counties '' are based on ?
+What are the ties that best described what the `` eight counties '' are based on ?
 The reasons for the las two counties to be added are based on what ?
 The reasons for the las two counties to be added are based on what ?
 The reasons for the las two counties to be added are based on what ?
@@ -1011,9 +1011,9 @@ Geographically speaking , where is California 's north - south midway point in t
 How many miles south of San Jose is the north - south midway point located ?
 How many miles south of San Jose is the north - south midway point located ?
 How many miles south of San Jose is the north - south midway point located ?
-The term " southern " California usually refers to how many of the southern-most counties of the state ?
-The term " southern " California usually refers to how many of the southern-most counties of the state ?
-The term " southern " California usually refers to how many of the southern-most counties of the state ?
+The term `` southern '' California usually refers to how many of the southern-most counties of the state ?
+The term `` southern '' California usually refers to how many of the southern-most counties of the state ?
+The term `` southern '' California usually refers to how many of the southern-most counties of the state ?
 Other than Point Conception , what landmark is used in the other definition of southern California ?
 Other than Point Conception , what landmark is used in the other definition of southern California ?
 Point Conception is an example of a landmark among what boundary of southern California ?
@@ -1253,9 +1253,9 @@ What type of district is southern California home to many of ?
 What does CBD stand for ?
 What does CBD stand for ?
 What does CBD stand for ?
-What is the only district in the CBD to not have " downtown " in it 's name ?
-What is the only district in the CBD to not have " downtown " in it 's name ?
-What is the only district in the CBD to not have " downtown " in it 's name ?
+What is the only district in the CBD to not have `` downtown '' in it 's name ?
+What is the only district in the CBD to not have `` downtown '' in it 's name ?
+What is the only district in the CBD to not have `` downtown '' in it 's name ?
 Downtown Burbank is an example of what kind of district ?
 Downtown Burbank is an example of what kind of district ?
 Downtown Burbank is an example of what kind of district ?
@@ -1490,15 +1490,15 @@ What channels were removed from the network in March of 2007 ?
 What did Virgin Media claim BSkyB did that resulted Virgin not carrying the channels anymore ?
 What did Virgin Media claim BSkyB did that resulted Virgin not carrying the channels anymore ?
 What did Virgin Media claim BSkyB did that resulted Virgin not carrying the channels anymore ?
-What additional srevice did BSkyB offer besides HD channels that they claimed offered " substantially more value " ?
-What additional srevice did BSkyB offer besides HD channels that they claimed offered " substantially more value " ?
-What additional srevice did BSkyB offer besides HD channels that they claimed offered " substantially more value " ?
-What additional srevice did BSkyB offer besides Video on Demand that they claimed offered " substantially more value " ?
-What additional srevice did BSkyB offer besides Video on Demand that they claimed offered " substantially more value " ?
-What additional srevice did BSkyB offer besides Video on Demand that they claimed offered " substantially more value " ?
-when did the English High court find Microsoft 's use of the term " SkyDrive " infringed on Sky 's right ?
-when did the English High court find Microsoft 's use of the term " SkyDrive " infringed on Sky 's right ?
-when did the English High court find Microsoft 's use of the term " SkyDrive " infringed on Sky 's right ?
+What additional srevice did BSkyB offer besides HD channels that they claimed offered `` substantially more value '' ?
+What additional srevice did BSkyB offer besides HD channels that they claimed offered `` substantially more value '' ?
+What additional srevice did BSkyB offer besides HD channels that they claimed offered `` substantially more value '' ?
+What additional srevice did BSkyB offer besides Video on Demand that they claimed offered `` substantially more value '' ?
+What additional srevice did BSkyB offer besides Video on Demand that they claimed offered `` substantially more value '' ?
+What additional srevice did BSkyB offer besides Video on Demand that they claimed offered `` substantially more value '' ?
+when did the English High court find Microsoft 's use of the term `` SkyDrive '' infringed on Sky 's right ?
+when did the English High court find Microsoft 's use of the term `` SkyDrive '' infringed on Sky 's right ?
+when did the English High court find Microsoft 's use of the term `` SkyDrive '' infringed on Sky 's right ?
 What year did BSkyB and Microsoft announce their settlement ?
 What year did BSkyB and Microsoft announce their settlement ?
 What year did BSkyB and Microsoft announce their settlement ?
@@ -2319,9 +2319,9 @@ By what other name was the Gate known ?
 Who allegedly haunted the gate ?
 Who allegedly haunted the gate ?
 Who allegedly haunted the gate ?
-By what name were the " supposedly reformed " known ?
-By what name were the " supposedly reformed " known ?
-By what name were the " supposedly reformed " known ?
+By what name were the `` supposedly reformed '' known ?
+By what name were the `` supposedly reformed '' known ?
+By what name were the `` supposedly reformed '' known ?
 What time of day did these reformed supposedly gather to engage in Huguenot rituals ?
 What time of day did these reformed supposedly gather to engage in Huguenot rituals ?
 What time of day did these reformed supposedly gather to engage in Huguenot rituals ?
@@ -2606,15 +2606,15 @@ What made emigration to these colonies attractive ?
 From what French King did the Huguenot name possibly descend ?
 From what French King did the Huguenot name possibly descend ?
 From what French King did the Huguenot name possibly descend ?
-What is the theory that this King 's name is the origin of " Huguenot " called ?
-What is the theory that this King 's name is the origin of " Huguenot " called ?
-What is the theory that this King 's name is the origin of " Huguenot " called ?
+What is the theory that this King 's name is the origin of `` Huguenot '' called ?
+What is the theory that this King 's name is the origin of `` Huguenot '' called ?
+What is the theory that this King 's name is the origin of `` Huguenot '' called ?
 Who is one prominent advocate of this theory ?
 Who is one prominent advocate of this theory ?
 Who is one prominent advocate of this theory ?
-According to the theory , what does the name " Huguenot " mean ?
-According to the theory , what does the name " Huguenot " mean ?
-According to the theory , what does the name " Huguenot " mean ?
+According to the theory , what does the name `` Huguenot '' mean ?
+According to the theory , what does the name `` Huguenot '' mean ?
+According to the theory , what does the name `` Huguenot '' mean ?
 Other theories of the word 's origin can be generally classed as what ?
 Other theories of the word 's origin can be generally classed as what ?
 Who was one French pro-reform Roman Catholic of the 15th century ?
@@ -3571,21 +3571,21 @@ What chemist showed that fire needed only a part of air ?
 What chemist showed that fire needed only a part of air ?
 What chemist showed that fire needed only a part of air ?
 What chemist showed that fire needed only a part of air ?
-" An Account of Further Discoveries in Air " was published by who in 1775 ?
-" An Account of Further Discoveries in Air " was published by who in 1775 ?
-" An Account of Further Discoveries in Air " was published by who in 1775 ?
-" An Account of Further Discoveries in Air " was published by who in 1775 ?
-" An Account of Further Discoveries in Air " was published by who in 1775 ?
+`` An Account of Further Discoveries in Air '' was published by who in 1775 ?
+`` An Account of Further Discoveries in Air '' was published by who in 1775 ?
+`` An Account of Further Discoveries in Air '' was published by who in 1775 ?
+`` An Account of Further Discoveries in Air '' was published by who in 1775 ?
+`` An Account of Further Discoveries in Air '' was published by who in 1775 ?
 What was the occupation of Joseph Priestley ?
 What was the occupation of Joseph Priestley ?
 What was the occupation of Joseph Priestley ?
 What was the occupation of Joseph Priestley ?
 What was the occupation of Joseph Priestley ?
-By sunlight , what compound did Priestley concentrate on to make the gas he called " dephlogisticated air " ?
-By sunlight , what compound did Priestley concentrate on to make the gas he called " dephlogisticated air " ?
-By sunlight , what compound did Priestley concentrate on to make the gas he called " dephlogisticated air " ?
-By sunlight , what compound did Priestley concentrate on to make the gas he called " dephlogisticated air " ?
-By sunlight , what compound did Priestley concentrate on to make the gas he called " dephlogisticated air " ?
+By sunlight , what compound did Priestley concentrate on to make the gas he called `` dephlogisticated air '' ?
+By sunlight , what compound did Priestley concentrate on to make the gas he called `` dephlogisticated air '' ?
+By sunlight , what compound did Priestley concentrate on to make the gas he called `` dephlogisticated air '' ?
+By sunlight , what compound did Priestley concentrate on to make the gas he called `` dephlogisticated air '' ?
+By sunlight , what compound did Priestley concentrate on to make the gas he called `` dephlogisticated air '' ?
 The symbol for mercuric oxide is ?
 The symbol for mercuric oxide is ?
 The symbol for mercuric oxide is ?
@@ -4658,11 +4658,11 @@ When did the United States withdraw from the Bretton Woods Accord ?
 When did the United States withdraw from the Bretton Woods Accord ?
 When did the United States withdraw from the Bretton Woods Accord ?
 When did the United States withdraw from the Bretton Woods Accord ?
-What does it mean when currencies are left to " float ? "
-What does it mean when currencies are left to " float ? "
-What does it mean when currencies are left to " float ? "
-What does it mean when currencies are left to " float ? "
-What does it mean when currencies are left to " float ? "
+What does it mean when currencies are left to `` float ? ''
+What does it mean when currencies are left to `` float ? ''
+What does it mean when currencies are left to `` float ? ''
+What does it mean when currencies are left to `` float ? ''
+What does it mean when currencies are left to `` float ? ''
 Why was there a depreciation of the industrialized nations dollars ?
 Why was there a depreciation of the industrialized nations dollars ?
 Why was there a depreciation of the industrialized nations dollars ?
@@ -5939,9 +5939,9 @@ How many square kilometers of rainforest is covered in the basin ?
 How many nations control this region in total ?
 How many nations control this region in total ?
 How many nations control this region in total ?
-How many nations contain " Amazonas " in their names ?
-How many nations contain " Amazonas " in their names ?
-How many nations contain " Amazonas " in their names ?
+How many nations contain `` Amazonas '' in their names ?
+How many nations contain `` Amazonas '' in their names ?
+How many nations contain `` Amazonas '' in their names ?
 What percentage does the Amazon represents in rainforests on the planet ?
 What percentage does the Amazon represents in rainforests on the planet ?
 What is the Dutch word for the Amazon rainforest ?
@@ -6460,9 +6460,9 @@ In what year did the Amazon experience its worst drought of recent history ?
 What organization predicted that the Amazon forest could survive only three years of drought ?
 What organization predicted that the Amazon forest could survive only three years of drought ?
 What organization predicted that the Amazon forest could survive only three years of drought ?
-What organization argued that drought , among other effects , could cause the Amazon forest to reach a " tipping point ? "
-What organization argued that drought , among other effects , could cause the Amazon forest to reach a " tipping point ? "
-What organization argued that drought , among other effects , could cause the Amazon forest to reach a " tipping point ? "
+What organization argued that drought , among other effects , could cause the Amazon forest to reach a `` tipping point ? ''
+What organization argued that drought , among other effects , could cause the Amazon forest to reach a `` tipping point ? ''
+What organization argued that drought , among other effects , could cause the Amazon forest to reach a `` tipping point ? ''
 Along with drought , what is one other factor that is pushing the Amazon rainforest towards a tipping point ?
 Along with drought , what is one other factor that is pushing the Amazon rainforest towards a tipping point ?
 Along with drought , what is one other factor that is pushing the Amazon rainforest towards a tipping point ?
@@ -6965,9 +6965,9 @@ How old were the fossils found in China ?
 What type of fossils were found in China ?
 What type of fossils were found in China ?
 What type of fossils were found in China ?
-Which genus is considered the " aunt " of ctenophores ?
-Which genus is considered the " aunt " of ctenophores ?
-Which genus is considered the " aunt " of ctenophores ?
+Which genus is considered the `` aunt '' of ctenophores ?
+Which genus is considered the `` aunt '' of ctenophores ?
+Which genus is considered the `` aunt '' of ctenophores ?
 Stromatoveris is similair to which genus ?
 Stromatoveris is similair to which genus ?
 Stromatoveris is similair to which genus ?
@@ -7052,12 +7052,12 @@ In what year did BankAmericard change its name ?
 What present-day company did BankAmericard turn into ?
 What present-day company did BankAmericard turn into ?
 What present-day company did BankAmericard turn into ?
-Who wrote " Walking in Fresno ? "
-Who wrote " Walking in Fresno ? "
-Who wrote " Walking in Fresno ? "
-Who recorded " Walking in Fresno ? "
-Who recorded " Walking in Fresno ? "
-Who recorded " Walking in Fresno ? "
+Who wrote `` Walking in Fresno ? ''
+Who wrote `` Walking in Fresno ? ''
+Who wrote `` Walking in Fresno ? ''
+Who recorded `` Walking in Fresno ? ''
+Who recorded `` Walking in Fresno ? ''
+Who recorded `` Walking in Fresno ? ''
 In what town did Bill Aiken grow up ?
 In what town did Bill Aiken grow up ?
 In what town did Bill Aiken grow up ?
@@ -8357,9 +8357,9 @@ What types of scientists looks for signs of magnetic reversals in igneous rocks 
 Fielding H. Garrison believes that the science of geology can be traced to where ?
 Fielding H. Garrison believes that the science of geology can be traced to where ?
 Fielding H. Garrison believes that the science of geology can be traced to where ?
-Living from 973 – 1048 CE he was one of the earliest Persian geologists , what was his name ?
-Living from 973 – 1048 CE he was one of the earliest Persian geologists , what was his name ?
-Living from 973 – 1048 CE he was one of the earliest Persian geologists , what was his name ?
+Living from 973 -- 1048 CE he was one of the earliest Persian geologists , what was his name ?
+Living from 973 -- 1048 CE he was one of the earliest Persian geologists , what was his name ?
+Living from 973 -- 1048 CE he was one of the earliest Persian geologists , what was his name ?
 In China , this person inferred that the land was formed by erosion of the mountains and by silt deposition , what was his name ?
 In China , this person inferred that the land was formed by erosion of the mountains and by silt deposition , what was his name ?
 In China , this person inferred that the land was formed by erosion of the mountains and by silt deposition , what was his name ?
@@ -10082,9 +10082,9 @@ What are private schools that charge no tuition called ?
 Along with Canada and the United Kingdom , what country generally does n't refer to universities as private schools ?
 Along with Canada and the United Kingdom , what country generally does n't refer to universities as private schools ?
 Along with Canada and the United Kingdom , what country generally does n't refer to universities as private schools ?
-What region does use the term ' private schools ' to refer to universities ?
-What region does use the term ' private schools ' to refer to universities ?
-What region does use the term ' private schools ' to refer to universities ?
+What region does use the term ` private schools ' to refer to universities ?
+What region does use the term ` private schools ' to refer to universities ?
+What region does use the term ` private schools ' to refer to universities ?
 What is another term for year 12 of education ?
 What is another term for year 12 of education ?
 What is another term for year 12 of education ?
@@ -10100,8 +10100,8 @@ Along with location , endowment and the willingness of parents to pay , what fac
 Who receives higher salaries at private schools that charge higher tuition ?
 Who receives higher salaries at private schools that charge higher tuition ?
 Who receives higher salaries at private schools that charge higher tuition ?
-What religion 's schools does the term ' parochial schools ' generally refer to ?
-What religion 's schools does the term ' parochial schools ' generally refer to ?
+What religion 's schools does the term ` parochial schools ' generally refer to ?
+What religion 's schools does the term ` parochial schools ' generally refer to ?
 Along with Muslims , Jews and Protestant Christians , what religious group notably operates private schools ?
 Along with Muslims , Jews and Protestant Christians , what religious group notably operates private schools ?
 Along with Muslims , Jews and Protestant Christians , what religious group notably operates private schools ?
@@ -10225,9 +10225,9 @@ As a result of a compromise , about how many Chinese schools became National Typ
 What is a term for schools that receive government assistance ?
 What is a term for schools that receive government assistance ?
 What is a term for schools that receive government assistance ?
-How are ' un-aided ' schools different from ' aided ' schools ?
-How are ' un-aided ' schools different from ' aided ' schools ?
-How are ' un-aided ' schools different from ' aided ' schools ?
+How are ` un-aided ' schools different from ` aided ' schools ?
+How are ` un-aided ' schools different from ` aided ' schools ?
+How are ` un-aided ' schools different from ` aided ' schools ?
 Where is Galaxy Public School located ?
 Where is Galaxy Public School located ?
 Where is Galaxy Public School located ?
@@ -10306,9 +10306,9 @@ In South Africa , along with privately governed schools , what schools are class
 In what century did missionaries notably establish church schools in South Africa ?
 In what century did missionaries notably establish church schools in South Africa ?
 In what century did missionaries notably establish church schools in South Africa ?
-After apartheid , what types of schools are referred to as " Model C " schools ?
-After apartheid , what types of schools are referred to as " Model C " schools ?
-After apartheid , what types of schools are referred to as " Model C " schools ?
+After apartheid , what types of schools are referred to as `` Model C '' schools ?
+After apartheid , what types of schools are referred to as `` Model C '' schools ?
+After apartheid , what types of schools are referred to as `` Model C '' schools ?
 How do academic results in former Model C schools compare to other schools ?
 How do academic results in former Model C schools compare to other schools ?
 How do academic results in former Model C schools compare to other schools ?
@@ -10656,9 +10656,9 @@ Starting in what year has Harvard topped the Academic Rankings of World Universi
 Beginning in what year was Harvard on top of the World Reputation Rankings ?
 Beginning in what year was Harvard on top of the World Reputation Rankings ?
 Beginning in what year was Harvard on top of the World Reputation Rankings ?
-According to the Princeton Review where has Harvard ranked as a " Dream College " in 2013
-According to the Princeton Review where has Harvard ranked as a " Dream College " in 2013
-According to the Princeton Review where has Harvard ranked as a " Dream College " in 2013
+According to the Princeton Review where has Harvard ranked as a `` Dream College '' in 2013
+According to the Princeton Review where has Harvard ranked as a `` Dream College '' in 2013
+According to the Princeton Review where has Harvard ranked as a `` Dream College '' in 2013
 How many intercollegiate sports does Harvard compete in NCAA division I
 How many intercollegiate sports does Harvard compete in NCAA division I
 How many intercollegiate sports does Harvard compete in NCAA division I
@@ -10689,9 +10689,9 @@ What is the name of Harvard 's primary recreational sports facility ?
 How many weight rooms are in the Malkin Athletic Center
 How many weight rooms are in the Malkin Athletic Center
 How many weight rooms are in the Malkin Athletic Center
-Harvard - Yale Regatta predates " The Game " by how many years ?
-Harvard - Yale Regatta predates " The Game " by how many years ?
-Harvard - Yale Regatta predates " The Game " by how many years ?
+Harvard - Yale Regatta predates `` The Game '' by how many years ?
+Harvard - Yale Regatta predates `` The Game '' by how many years ?
+Harvard - Yale Regatta predates `` The Game '' by how many years ?
 In what body of water is the Harvard - Yale Regatta held ?
 In what body of water is the Harvard - Yale Regatta held ?
 In what body of water is the Harvard - Yale Regatta held ?
@@ -11045,10 +11045,10 @@ What do the three richest people in the world posses more of than the lowest 48 
 What do the three richest people in the world posses more of than the lowest 48 nations together ?
 What do the three richest people in the world posses more of than the lowest 48 nations together ?
 What do the three richest people in the world posses more of than the lowest 48 nations together ?
-How much was the combined wealth of the " 10 Million dollar millionaires " in 2008 ?
-How much was the combined wealth of the " 10 Million dollar millionaires " in 2008 ?
-How much was the combined wealth of the " 10 Million dollar millionaires " in 2008 ?
-How much was the combined wealth of the " 10 Million dollar millionaires " in 2008 ?
+How much was the combined wealth of the `` 10 Million dollar millionaires '' in 2008 ?
+How much was the combined wealth of the `` 10 Million dollar millionaires '' in 2008 ?
+How much was the combined wealth of the `` 10 Million dollar millionaires '' in 2008 ?
+How much was the combined wealth of the `` 10 Million dollar millionaires '' in 2008 ?
 How much of the global wealth will the wealthiest 1 percent own by 2016 ?
 How much of the global wealth will the wealthiest 1 percent own by 2016 ?
 How much of the global wealth will the wealthiest 1 percent own by 2016 ?
@@ -11440,9 +11440,9 @@ Who does a gender pay gap tend to favor ?
 What gender is less willing to travel or relocate for work ?
 What gender is less willing to travel or relocate for work ?
 What gender is less willing to travel or relocate for work ?
-Who is the author of the book , " Knowledge and Decisions " ?
-Who is the author of the book , " Knowledge and Decisions " ?
-Who is the author of the book , " Knowledge and Decisions " ?
+Who is the author of the book , `` Knowledge and Decisions '' ?
+Who is the author of the book , `` Knowledge and Decisions '' ?
+Who is the author of the book , `` Knowledge and Decisions '' ?
 What does a U.S. census report state that even after other factors there still exists this between earnings of men and women ?
 What does a U.S. census report state that even after other factors there still exists this between earnings of men and women ?
 What does a U.S. census report state that even after other factors there still exists this between earnings of men and women ?
@@ -11519,9 +11519,9 @@ Who is best able to leverage the accumulation of wealth ?
 What can significantly contribute to the continuing inequality in a society over time ?
 What can significantly contribute to the continuing inequality in a society over time ?
 What can significantly contribute to the continuing inequality in a society over time ?
-Who wrote the book " Capital in the Twenty-First Century " ?
-Who wrote the book " Capital in the Twenty-First Century " ?
-Who wrote the book " Capital in the Twenty-First Century " ?
+Who wrote the book `` Capital in the Twenty-First Century '' ?
+Who wrote the book `` Capital in the Twenty-First Century '' ?
+Who wrote the book `` Capital in the Twenty-First Century '' ?
 What do larger fortunes generate ?
 What do larger fortunes generate ?
 What do larger fortunes generate ?
@@ -11652,9 +11652,9 @@ What political leaning does the Cato Institute have ?
 When was consumption inequality lower than it had been in 1986 ?
 When was consumption inequality lower than it had been in 1986 ?
 When was consumption inequality lower than it had been in 1986 ?
-Who wrote " The Hidden Prosperity of the Poor " ?
-Who wrote " The Hidden Prosperity of the Poor " ?
-Who wrote " The Hidden Prosperity of the Poor " ?
+Who wrote `` The Hidden Prosperity of the Poor '' ?
+Who wrote `` The Hidden Prosperity of the Poor '' ?
+Who wrote `` The Hidden Prosperity of the Poor '' ?
 What is Thomas B. Edsall 's profession ?
 What is Thomas B. Edsall 's profession ?
 What is Thomas B. Edsall 's profession ?
@@ -11670,9 +11670,9 @@ What is the most recent example of financial fault lines ?
 What does political pressure push to extend to compensate for stagnating purchasing power ?
 What does political pressure push to extend to compensate for stagnating purchasing power ?
 What does political pressure push to extend to compensate for stagnating purchasing power ?
-What has given the American economy a tendency to go " from bubble to bubble " ?
-What has given the American economy a tendency to go " from bubble to bubble " ?
-What has given the American economy a tendency to go " from bubble to bubble " ?
+What has given the American economy a tendency to go `` from bubble to bubble '' ?
+What has given the American economy a tendency to go `` from bubble to bubble '' ?
+What has given the American economy a tendency to go `` from bubble to bubble '' ?
 What is negatively correlated to the duration of economic growth ?
 What is negatively correlated to the duration of economic growth ?
 What is negatively correlated to the duration of economic growth ?
@@ -12377,12 +12377,12 @@ What alumni member also write the bestseller Before I Fall ?
 What is the name of the Pulitzer Prize novelist who was also a university alumni ?
 What is the name of the Pulitzer Prize novelist who was also a university alumni ?
 What is the name of the Pulitzer Prize novelist who was also a university alumni ?
-What alumni wrote " The Closing of the American Mind " ?
-What alumni wrote " The Closing of the American Mind " ?
-What alumni wrote " The Closing of the American Mind " ?
-What alumni wrote " The Good War " ?
-What alumni wrote " The Good War " ?
-What alumni wrote " The Good War " ?
+What alumni wrote `` The Closing of the American Mind '' ?
+What alumni wrote `` The Closing of the American Mind '' ?
+What alumni wrote `` The Closing of the American Mind '' ?
+What alumni wrote `` The Good War '' ?
+What alumni wrote `` The Good War '' ?
+What alumni wrote `` The Good War '' ?
 What is the name of the American writer and satirist who is also a university alumni ?
 What is the name of the American writer and satirist who is also a university alumni ?
 What is the name of the American writer and satirist who is also a university alumni ?
@@ -12629,9 +12629,9 @@ What rituals did Kublai follow to help his image ?
 What kinds of growth did Kublai encourage ?
 What kinds of growth did Kublai encourage ?
 What kinds of growth did Kublai encourage ?
-What does ' Pax Mongolica ' mean ?
-What does ' Pax Mongolica ' mean ?
-What does ' Pax Mongolica ' mean ?
+What does ` Pax Mongolica ' mean ?
+What does ` Pax Mongolica ' mean ?
+What does ` Pax Mongolica ' mean ?
 Where did the Grand Canal start ?
 Where did the Grand Canal start ?
 Where did the Grand Canal start ?
@@ -12725,9 +12725,9 @@ When was Geegen the emperor ?
 Who did Gegeen appoint as grand chancellor ?
 Who did Gegeen appoint as grand chancellor ?
 Who did Gegeen appoint as grand chancellor ?
-What did ' Da Yuan Tong Zhi ' mean ?
-What did ' Da Yuan Tong Zhi ' mean ?
-What did ' Da Yuan Tong Zhi ' mean ?
+What did ` Da Yuan Tong Zhi ' mean ?
+What did ` Da Yuan Tong Zhi ' mean ?
+What did ` Da Yuan Tong Zhi ' mean ?
 How many rival princes were involved in assassinating Gegeen ?
 How many rival princes were involved in assassinating Gegeen ?
 How many rival princes were involved in assassinating Gegeen ?
@@ -12967,9 +12967,9 @@ What modern math concept did Zhu Shijie do work similar to ?
 What type of math was advanced during the Yuan ?
 What type of math was advanced during the Yuan ?
 What type of math was advanced during the Yuan ?
-When did Zhu publish ' Jade Mirror of the Four Unknowns ' ?
-When did Zhu publish ' Jade Mirror of the Four Unknowns ' ?
-When did Zhu publish ' Jade Mirror of the Four Unknowns ' ?
+When did Zhu publish ` Jade Mirror of the Four Unknowns ' ?
+When did Zhu publish ` Jade Mirror of the Four Unknowns ' ?
+When did Zhu publish ` Jade Mirror of the Four Unknowns ' ?
 What did Guo Shoujing do for calendars ?
 What did Guo Shoujing do for calendars ?
 What did Guo Shoujing do for calendars ?
@@ -13098,9 +13098,9 @@ What Jewish practice did the Yuan ban ?
 Who founded the Ming dynasty ?
 Who founded the Ming dynasty ?
 Who founded the Ming dynasty ?
-What was the second meaning of a Chinese word for ' barracks ' ?
-What was the second meaning of a Chinese word for ' barracks ' ?
-What was the second meaning of a Chinese word for ' barracks ' ?
+What was the second meaning of a Chinese word for ` barracks ' ?
+What was the second meaning of a Chinese word for ` barracks ' ?
+What was the second meaning of a Chinese word for ` barracks ' ?
 Who revolted in the Ispah Rebellion ?
 Who revolted in the Ispah Rebellion ?
 Who revolted in the Ispah Rebellion ?
@@ -13594,9 +13594,9 @@ Who formulated the idea of clonal selection theory of immunity ?
 What are two examples of nonself entities in accordance with Frank Burnet 's theory ?
 What are two examples of nonself entities in accordance with Frank Burnet 's theory ?
 What are two examples of nonself entities in accordance with Frank Burnet 's theory ?
-What is the complex " two-signal " activation of T cells referred to ?
-What is the complex " two-signal " activation of T cells referred to ?
-What is the complex " two-signal " activation of T cells referred to ?
+What is the complex `` two-signal '' activation of T cells referred to ?
+What is the complex `` two-signal '' activation of T cells referred to ?
+What is the complex `` two-signal '' activation of T cells referred to ?
 What other scientist influence Frank Burnet when he was formulating his theory of immunity ?
 What other scientist influence Frank Burnet when he was formulating his theory of immunity ?
 What other scientist influence Frank Burnet when he was formulating his theory of immunity ?
@@ -13872,9 +13872,9 @@ What does the IPCC not do ?
 Where do IPCC reports get their information ?
 Where do IPCC reports get their information ?
 Where do IPCC reports get their information ?
-What is ' grey literature ' ?
-What is ' grey literature ' ?
-What is ' grey literature ' ?
+What is ` grey literature ' ?
+What is ` grey literature ' ?
+What is ` grey literature ' ?
 What kind of non-peer-reviewed sources does the IPCC use ?
 What kind of non-peer-reviewed sources does the IPCC use ?
 What kind of non-peer-reviewed sources does the IPCC use ?
@@ -13941,12 +13941,12 @@ What did Houghton say is necessary for any changes to the SPM ?
 How does the IPCC prepare Special Reports ?
 How does the IPCC prepare Special Reports ?
 How does the IPCC prepare Special Reports ?
-When was the Special Report on Renewable Energy Sources and Climate Change Mitigation ( SRREN ) issued ?
-When was the Special Report on Renewable Energy Sources and Climate Change Mitigation ( SRREN ) issued ?
-When was the Special Report on Renewable Energy Sources and Climate Change Mitigation ( SRREN ) issued ?
-When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation ( SREX ) issued ?
-When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation ( SREX ) issued ?
-When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation ( SREX ) issued ?
+When was the Special Report on Renewable Energy Sources and Climate Change Mitigation -LRB- SRREN -RRB- issued ?
+When was the Special Report on Renewable Energy Sources and Climate Change Mitigation -LRB- SRREN -RRB- issued ?
+When was the Special Report on Renewable Energy Sources and Climate Change Mitigation -LRB- SRREN -RRB- issued ?
+When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation -LRB- SREX -RRB- issued ?
+When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation -LRB- SREX -RRB- issued ?
+When was the Special Report on Managing Risks of Extreme Events and Disasters to Advance Climate Change Adaptation -LRB- SREX -RRB- issued ?
 Why were the 2011 Special Reports issued ?
 Why were the 2011 Special Reports issued ?
 Why were the 2011 Special Reports issued ?
@@ -13988,15 +13988,15 @@ What was the topic of the error ?
 What was the verdict on other alleged errors ?
 What was the verdict on other alleged errors ?
 What was the verdict on other alleged errors ?
-When was the paper published that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-When was the paper published that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-When was the paper published that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-Who wrote the paper that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-Who wrote the paper that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-Who wrote the paper that the " Millennial Northern Hemisphere temperature reconstruction " graph was based on ?
-What is the nickname for the " Millennial Northern Hemisphere temperature reconstruction " graph ?
-What is the nickname for the " Millennial Northern Hemisphere temperature reconstruction " graph ?
-What is the nickname for the " Millennial Northern Hemisphere temperature reconstruction " graph ?
+When was the paper published that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+When was the paper published that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+When was the paper published that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+Who wrote the paper that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+Who wrote the paper that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+Who wrote the paper that the `` Millennial Northern Hemisphere temperature reconstruction '' graph was based on ?
+What is the nickname for the `` Millennial Northern Hemisphere temperature reconstruction '' graph ?
+What is the nickname for the `` Millennial Northern Hemisphere temperature reconstruction '' graph ?
+What is the nickname for the `` Millennial Northern Hemisphere temperature reconstruction '' graph ?
 What reconstructions supported the 1999 paper 's information ?
 What reconstructions supported the 1999 paper 's information ?
 What reconstructions supported the 1999 paper 's information ?
@@ -14027,9 +14027,9 @@ When did Barton and Whitfield demand climate research records ?
 Who was chairman of the House Science Committee ?
 Who was chairman of the House Science Committee ?
 Who was chairman of the House Science Committee ?
-Who said Barton 's investigation was " misguided and illegitimate " ?
-Who said Barton 's investigation was " misguided and illegitimate " ?
-Who said Barton 's investigation was " misguided and illegitimate " ?
+Who said Barton 's investigation was `` misguided and illegitimate '' ?
+Who said Barton 's investigation was `` misguided and illegitimate '' ?
+Who said Barton 's investigation was `` misguided and illegitimate '' ?
 When was the IPCC Fourth Assessment Report published ?
 When was the IPCC Fourth Assessment Report published ?
 When was the IPCC Fourth Assessment Report published ?
@@ -14087,9 +14087,9 @@ What did the Kyoto Protocol try to address ?
 Whose goals often still oppose the IPCC ?
 Whose goals often still oppose the IPCC ?
 Whose goals often still oppose the IPCC ?
-Who said people involved in the ozone situation had " a better understanding of scientific ignorance and uncertainties " ?
-Who said people involved in the ozone situation had " a better understanding of scientific ignorance and uncertainties " ?
-Who said people involved in the ozone situation had " a better understanding of scientific ignorance and uncertainties " ?
+Who said people involved in the ozone situation had `` a better understanding of scientific ignorance and uncertainties '' ?
+Who said people involved in the ozone situation had `` a better understanding of scientific ignorance and uncertainties '' ?
+Who said people involved in the ozone situation had `` a better understanding of scientific ignorance and uncertainties '' ?
 What remain unsolved problems with the Kyoto Protocol ?
 What remain unsolved problems with the Kyoto Protocol ?
 What conflicts did the ozone mitigation reduce ?
@@ -14648,14 +14648,14 @@ How many bits are often in the primes used for RSA public key cryptography algor
 How many bits are often in the primes used for RSA public key cryptography algorithms ?
 How many bits are often in the primes used for RSA public key cryptography algorithms ?
 How many bits are often in the primes used for RSA public key cryptography algorithms ?
-On what type of exponentiation does the Diffie – Hellman key exchange depend on ?
-On what type of exponentiation does the Diffie – Hellman key exchange depend on ?
-On what type of exponentiation does the Diffie – Hellman key exchange depend on ?
-On what type of exponentiation does the Diffie – Hellman key exchange depend on ?
-How many bits are typically used in the primes for the Diffie – Hellman key exchange ?
-How many bits are typically used in the primes for the Diffie – Hellman key exchange ?
-How many bits are typically used in the primes for the Diffie – Hellman key exchange ?
-How many bits are typically used in the primes for the Diffie – Hellman key exchange ?
+On what type of exponentiation does the Diffie -- Hellman key exchange depend on ?
+On what type of exponentiation does the Diffie -- Hellman key exchange depend on ?
+On what type of exponentiation does the Diffie -- Hellman key exchange depend on ?
+On what type of exponentiation does the Diffie -- Hellman key exchange depend on ?
+How many bits are typically used in the primes for the Diffie -- Hellman key exchange ?
+How many bits are typically used in the primes for the Diffie -- Hellman key exchange ?
+How many bits are typically used in the primes for the Diffie -- Hellman key exchange ?
+How many bits are typically used in the primes for the Diffie -- Hellman key exchange ?
 What type of insect employs the use of prime numbers in its evolutionary strategy ?
 What type of insect employs the use of prime numbers in its evolutionary strategy ?
 What type of insect employs the use of prime numbers in its evolutionary strategy ?
@@ -14747,14 +14747,14 @@ What type of number theory utilizes and studies prime ideals ?
 What type of number theory utilizes and studies prime ideals ?
 What type of number theory utilizes and studies prime ideals ?
 What type of number theory utilizes and studies prime ideals ?
-Which theorem can be simplified to the Lasker – Noether theorem ?
-Which theorem can be simplified to the Lasker – Noether theorem ?
-Which theorem can be simplified to the Lasker – Noether theorem ?
-Which theorem can be simplified to the Lasker – Noether theorem ?
-What type of commutative ring does the Lasker – Noether theorem express every ideal as an intersection of primary ideals in ?
-What type of commutative ring does the Lasker – Noether theorem express every ideal as an intersection of primary ideals in ?
-What type of commutative ring does the Lasker – Noether theorem express every ideal as an intersection of primary ideals in ?
-What type of commutative ring does the Lasker – Noether theorem express every ideal as an intersection of primary ideals in ?
+Which theorem can be simplified to the Lasker -- Noether theorem ?
+Which theorem can be simplified to the Lasker -- Noether theorem ?
+Which theorem can be simplified to the Lasker -- Noether theorem ?
+Which theorem can be simplified to the Lasker -- Noether theorem ?
+What type of commutative ring does the Lasker -- Noether theorem express every ideal as an intersection of primary ideals in ?
+What type of commutative ring does the Lasker -- Noether theorem express every ideal as an intersection of primary ideals in ?
+What type of commutative ring does the Lasker -- Noether theorem express every ideal as an intersection of primary ideals in ?
+What type of commutative ring does the Lasker -- Noether theorem express every ideal as an intersection of primary ideals in ?
 What are the points of algebro-geometric objects ?
 What are the points of algebro-geometric objects ?
 What are the points of algebro-geometric objects ?
@@ -15799,9 +15799,9 @@ What did Kllbrandon 's report in 1973 recommend establishing ?
 Which sea was oil discovered in ?
 Which sea was oil discovered in ?
 Which sea was oil discovered in ?
-What campaigh did the Scottish National Party ( SNP ) run ?
-What campaigh did the Scottish National Party ( SNP ) run ?
-What campaigh did the Scottish National Party ( SNP ) run ?
+What campaigh did the Scottish National Party -LRB- SNP -RRB- run ?
+What campaigh did the Scottish National Party -LRB- SNP -RRB- run ?
+What campaigh did the Scottish National Party -LRB- SNP -RRB- run ?
 What did the SNP publicly opine about the oil revenues ?
 What did the SNP publicly opine about the oil revenues ?
 What did the SNP publicly opine about the oil revenues ?
@@ -16448,9 +16448,9 @@ Salafism posits that democracy is responsible for what type of horrible events o
 Conservative Islam classifies Muslims who follow Shia interpretation as what ?
 Conservative Islam classifies Muslims who follow Shia interpretation as what ?
 Conservative Islam classifies Muslims who follow Shia interpretation as what ?
-What interpretation of Islam is , for many of the adherents , the " gold standard " of their religion ?
-What interpretation of Islam is , for many of the adherents , the " gold standard " of their religion ?
-What interpretation of Islam is , for many of the adherents , the " gold standard " of their religion ?
+What interpretation of Islam is , for many of the adherents , the `` gold standard '' of their religion ?
+What interpretation of Islam is , for many of the adherents , the `` gold standard '' of their religion ?
+What interpretation of Islam is , for many of the adherents , the `` gold standard '' of their religion ?
 What type of movement is the Muslim Brotherhood ?
 What type of movement is the Muslim Brotherhood ?
 What type of movement is the Muslim Brotherhood ?
@@ -16631,9 +16631,9 @@ What was the Soviet Union trying to suppress with its army ?
 What did the conflict galvanize Muslims around the world to do ?
 What did the conflict galvanize Muslims around the world to do ?
 What did the conflict galvanize Muslims around the world to do ?
-How effective was the military use of the " Afghan Arabs " ?
-How effective was the military use of the " Afghan Arabs " ?
-How effective was the military use of the " Afghan Arabs " ?
+How effective was the military use of the `` Afghan Arabs '' ?
+How effective was the military use of the `` Afghan Arabs '' ?
+How effective was the military use of the `` Afghan Arabs '' ?
 How many Muslims came from around the world to fight in Afghanistan ?
 How many Muslims came from around the world to fight in Afghanistan ?
 How many Muslims came from around the world to fight in Afghanistan ?
@@ -16697,9 +16697,9 @@ What sin were the leaders the extremists attacked guilty of ?
 Who wrote a pamphlet outlining the radical ideas of the extremists ?
 Who wrote a pamphlet outlining the radical ideas of the extremists ?
 Who wrote a pamphlet outlining the radical ideas of the extremists ?
-What did al-Gama ' a al-Islamiyya use to get its way ?
-What did al-Gama ' a al-Islamiyya use to get its way ?
-What did al-Gama ' a al-Islamiyya use to get its way ?
+What did al-Gama ` a al-Islamiyya use to get its way ?
+What did al-Gama ` a al-Islamiyya use to get its way ?
+What did al-Gama ` a al-Islamiyya use to get its way ?
 Over 100 Egyptian police were victims of what group 's campaign of terror ?
 Over 100 Egyptian police were victims of what group 's campaign of terror ?
 Over 100 Egyptian police were victims of what group 's campaign of terror ?
@@ -16995,9 +16995,9 @@ Western Imperialism divided the globe according to which theory ?
 Western Imperialism divided the globe according to which theory ?
 Western Imperialism divided the globe according to which theory ?
 Western Imperialism divided the globe according to which theory ?
-Who suggested that imperialism was the " highest " form of capitalism ?
-Who suggested that imperialism was the " highest " form of capitalism ?
-Who suggested that imperialism was the " highest " form of capitalism ?
+Who suggested that imperialism was the `` highest '' form of capitalism ?
+Who suggested that imperialism was the `` highest '' form of capitalism ?
+Who suggested that imperialism was the `` highest '' form of capitalism ?
 One country 's authority over a number of others would constitute the original country as what ?
 One country 's authority over a number of others would constitute the original country as what ?
 Most imperialism was carried out using which method of transport ?
@@ -17109,11 +17109,11 @@ According to Ellen Churchill Semple what type of climate was necessary for human
 According to Ellen Churchill Semple what type of climate was necessary for humans to become fully human ?
 According to Ellen Churchill Semple what type of climate was necessary for humans to become fully human ?
 According to Ellen Churchill Semple what type of climate was necessary for humans to become fully human ?
-Which book by Edward Said portrayed the east as being the " others ? "
-Which book by Edward Said portrayed the east as being the " others ? "
-Which book by Edward Said portrayed the east as being the " others ? "
-Which book by Edward Said portrayed the east as being the " others ? "
-Which book by Edward Said portrayed the east as being the " others ? "
+Which book by Edward Said portrayed the east as being the `` others ? ''
+Which book by Edward Said portrayed the east as being the `` others ? ''
+Which book by Edward Said portrayed the east as being the `` others ? ''
+Which book by Edward Said portrayed the east as being the `` others ? ''
+Which book by Edward Said portrayed the east as being the `` others ? ''
 According to certain Geographical theories what type of human does a tropical climate produce ?
 According to certain Geographical theories what type of human does a tropical climate produce ?
 According to certain Geographical theories what type of human does a tropical climate produce ?
@@ -17478,11 +17478,11 @@ What religion did the French spread along with their imperialism ?
 What religion did the French spread along with their imperialism ?
 What religion did the French spread along with their imperialism ?
 What religion did the French spread along with their imperialism ?
-Jules Ferry thought that the " higher races " have a duty to what ?
-Jules Ferry thought that the " higher races " have a duty to what ?
-Jules Ferry thought that the " higher races " have a duty to what ?
-Jules Ferry thought that the " higher races " have a duty to what ?
-Jules Ferry thought that the " higher races " have a duty to what ?
+Jules Ferry thought that the `` higher races '' have a duty to what ?
+Jules Ferry thought that the `` higher races '' have a duty to what ?
+Jules Ferry thought that the `` higher races '' have a duty to what ?
+Jules Ferry thought that the `` higher races '' have a duty to what ?
+Jules Ferry thought that the `` higher races '' have a duty to what ?
 What did France offer that was rare by imperial standards ?
 What did France offer that was rare by imperial standards ?
 What did France offer that was rare by imperial standards ?
@@ -17624,16 +17624,16 @@ Who along with Russia supported post WW-II communist movements ?
 Who along with Russia supported post WW-II communist movements ?
 Who along with Russia supported post WW-II communist movements ?
 Who along with Russia supported post WW-II communist movements ?
-When was the Russian Policy " Indigenization " defunded ?
-When was the Russian Policy " Indigenization " defunded ?
-When was the Russian Policy " Indigenization " defunded ?
-When was the Russian Policy " Indigenization " defunded ?
-When was the Russian Policy " Indigenization " defunded ?
-Who asserted Russia 's right to " self-determination ? "
-Who asserted Russia 's right to " self-determination ? "
-Who asserted Russia 's right to " self-determination ? "
-Who asserted Russia 's right to " self-determination ? "
-Who asserted Russia 's right to " self-determination ? "
+When was the Russian Policy `` Indigenization '' defunded ?
+When was the Russian Policy `` Indigenization '' defunded ?
+When was the Russian Policy `` Indigenization '' defunded ?
+When was the Russian Policy `` Indigenization '' defunded ?
+When was the Russian Policy `` Indigenization '' defunded ?
+Who asserted Russia 's right to `` self-determination ? ''
+Who asserted Russia 's right to `` self-determination ? ''
+Who asserted Russia 's right to `` self-determination ? ''
+Who asserted Russia 's right to `` self-determination ? ''
+Who asserted Russia 's right to `` self-determination ? ''
 After WW-II where did Russia apply its old Tsarist regimes ?
 After WW-II where did Russia apply its old Tsarist regimes ?
 After WW-II where did Russia apply its old Tsarist regimes ?
@@ -17717,11 +17717,11 @@ How did the United States plan to subdue imperialistic tendencies ?
 How did the United States plan to subdue imperialistic tendencies ?
 How did the United States plan to subdue imperialistic tendencies ?
 How did the United States plan to subdue imperialistic tendencies ?
-What was the name of Theodore Roosevelt ’s policy of imperialism ?
-What was the name of Theodore Roosevelt ’s policy of imperialism ?
-What was the name of Theodore Roosevelt ’s policy of imperialism ?
-What was the name of Theodore Roosevelt ’s policy of imperialism ?
-What was the name of Theodore Roosevelt ’s policy of imperialism ?
+What was the name of Theodore Roosevelt 's policy of imperialism ?
+What was the name of Theodore Roosevelt 's policy of imperialism ?
+What was the name of Theodore Roosevelt 's policy of imperialism ?
+What was the name of Theodore Roosevelt 's policy of imperialism ?
+What was the name of Theodore Roosevelt 's policy of imperialism ?
 Which country besides the Cuba did the United states try to annex in 1898 ?
 Which country besides the Cuba did the United states try to annex in 1898 ?
 Which country besides the Cuba did the United states try to annex in 1898 ?
@@ -17869,9 +17869,9 @@ When did Warsaw become the capital of the Kingdom of Poland ?
 Who moved his court from Kraków to Warsaw in 1596 ?
 Who moved his court from Kraków to Warsaw in 1596 ?
 Who moved his court from Kraków to Warsaw in 1596 ?
-Why did Warsaw gain the title of the " Phoenix City " ?
-Why did Warsaw gain the title of the " Phoenix City " ?
-Why did Warsaw gain the title of the " Phoenix City " ?
+Why did Warsaw gain the title of the `` Phoenix City '' ?
+Why did Warsaw gain the title of the `` Phoenix City '' ?
+Why did Warsaw gain the title of the `` Phoenix City '' ?
 What archdiocese is Warsaw the seat of ?
 What archdiocese is Warsaw the seat of ?
 What archdiocese is Warsaw the seat of ?
@@ -18408,9 +18408,9 @@ How long was the Summer Theatre in operation ?
 What was Warsaw 's first literary cabaret ?
 What was Warsaw 's first literary cabaret ?
 What was Warsaw 's first literary cabaret ?
-What theatre was the best example of " Polish monumental theatre " ?
-What theatre was the best example of " Polish monumental theatre " ?
-What theatre was the best example of " Polish monumental theatre " ?
+What theatre was the best example of `` Polish monumental theatre '' ?
+What theatre was the best example of `` Polish monumental theatre '' ?
+What theatre was the best example of `` Polish monumental theatre '' ?
 What is the polish word for wreaths ?
 What is the polish word for wreaths ?
 What is the polish word for wreaths ?
@@ -18486,9 +18486,9 @@ Where is Polonia 's home venue located ?
 Why was Polonia relegated from the country 's top flight in 2013 ?
 Why was Polonia relegated from the country 's top flight in 2013 ?
 Why was Polonia relegated from the country 's top flight in 2013 ?
-What is polish for " mermaid " ?
-What is polish for " mermaid " ?
-What is polish for " mermaid " ?
+What is polish for `` mermaid '' ?
+What is polish for `` mermaid '' ?
+What is polish for `` mermaid '' ?
 What is Warsaw 's symbol ?
 What is Warsaw 's symbol ?
 What is Warsaw 's symbol ?

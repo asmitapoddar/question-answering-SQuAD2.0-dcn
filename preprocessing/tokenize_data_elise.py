@@ -35,8 +35,7 @@ def tokenize(client, text):
 
     tokens = []
     for sentence in ann.sentence: 
-        for token in sentence.token:
-            tokens.append(token.word)
+        tokens += [token.word for token in sentence.token]
     return tokens
 
 def get_token_index(context, context_tokens):
@@ -55,8 +54,14 @@ def get_token_index(context, context_tokens):
         current_token=context_tokens[current_token_index]
         acc+=char
 
+        if current_token=='-RRB-' :
+          current_token=')'
+        if current_token=='-LRB-' :
+          current_token='('
         if current_token=="``"or current_token=="''":
           current_token="\""
+          
+
 
         if acc==current_token:
         
@@ -104,7 +109,6 @@ def preprocess(nlp_client, dataset, type):
 
                     answer_start = ans["answer_start"]
                     answer_end = answer_start + len(answer_text)-1
-
                     assert answer_start <= answer_end
 
                     if mapping_context!=None:
@@ -134,8 +138,6 @@ def preprocess(nlp_client, dataset, type):
             ans_span_file.write(span.encode('utf8') + b'\n')
 
 # set up the client
-corenlpProps = {}
-corenlpProps["tokenize.options"] = "ptb3Escaping=false,invertible=true"
-with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G', properties=corenlpProps) as client:
+with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G') as client:
     preprocess(client, load_train_set(), "train")
     preprocess(client, load_dev_set(), "dev")
