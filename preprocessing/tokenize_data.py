@@ -35,7 +35,7 @@ def tokenize(client, text):
 
     tokens = []
     for sentence in ann.sentence: 
-        tokens += [token.word for token in sentence.token]
+        tokens += [[token.word, token.beginChar, token.endChar] for token in sentence.token]
     return tokens
 
 def preprocess(nlp_client, dataset, outFile):
