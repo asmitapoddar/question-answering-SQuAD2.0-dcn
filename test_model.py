@@ -33,7 +33,7 @@ def test_dcn_model():
       true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
     # Run model.
-    model = DCNModel(doc, que, BATCH_SIZE, device).to(device)
+    model = DCNModel(BATCH_SIZE, device).to(device)
     loss, s, e = model.forward(doc, que, true_s, true_e)
     print("Predicted start: %s \nPredicted end: %s \nloss: %s" % (str(s), str(e), str(loss)))
     model.zero_grad()
@@ -87,7 +87,7 @@ def test_optimiser():
     for i in range(BATCH_SIZE):
       true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
-    model = DCNModel(BATCH_SIZE, device)
+    model = DCNModel(BATCH_SIZE, device).to(device)
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
