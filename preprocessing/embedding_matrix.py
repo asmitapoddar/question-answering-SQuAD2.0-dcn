@@ -1,3 +1,9 @@
+"""This file contains a function to read the GloVe vectors from file,
+and return them as an embedding matrix"""
+
+from __future__ import absolute_import
+from __future__ import division
+
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -7,12 +13,6 @@ import numpy as np
 import csv
 import json
 from google.colab import files
-
-"""This file contains a function to read the GloVe vectors from file,
-and return them as an embedding matrix"""
-
-from __future__ import absolute_import
-from __future__ import division
 
 from tqdm import tqdm
 import numpy as np
@@ -46,7 +46,7 @@ def get_glove(glove_path, glove_dim):
         word2id[word] = idx
         id2word[idx] = word
         idx += 1
-        
+
     # go through glove vecs
     with open(glove_path, 'r') as fh:
         for line in tqdm(fh):
