@@ -63,11 +63,109 @@ Hey how you doing. This is my abstract. Lorem ipsum.
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \section{INTRODUCTION}
 
-Example section.
+Why did we select this paper?
+Paper summary: 
+	Set the experiment in context
+	Underlines relevant technical details
+
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
+\section{Implementation}
+\subsection{Dataset and Preprossessing}
+\subsection{Model}
+Our Dynamic Coattention Network is divided into 5 units: the Encoder, the Coattention Module, the BiLSTM Encoder, the Highway Maxout Network, ant the Dynamic Pointer Decoder.\\
+\subsubsection{The Encoder}
+
+
+The questions $Q=(x_1^Q,x_2^Q,...,x_n^Q)\in\Re^{B \times n}$  as well as their associated context documents $D=(x_1^D,x_2^D,...,x_m^D)\in\Re^{B\times m}$ are taken as inputs, B corresponding to the batch size.  
+Questions and documents are then encoded using the same LSTM : 
+\begin{equation}
+d_t= LSTMenc(d_{t-1},x_t^D)\in\Re^{l} 
+\end{equation}
+\begin{equation}
+q_t= LSTMenc(q_{t-1},x_t^Q)\in\Re^{l}
+\end{equation}
+The encoded documents $D=[d_1,d_2,...,d_m,d_{\emptyset}]\in\Re^{B \times l \times (m+1)}$ and  $Q'=[q_1,q_2,...,q_m,q_{\emptyset}]\in\Re^{B \times l \times (n+1)} $ are added $d_{\emptyset}$ and $q_{\emptyset}$ sentinels. The sentinels will allow to better predict rare and unseen words.
+The questions are then passed through non-linearities:$Q=tanh(W^{(Q)}Q'+b^{(Q)})$. This operation will permit some variation between the encoding space of the documents and the questions.\\
+ 
+\subsubsection{The Coattention Module}
+
+
+This module corresponds to the attention mechanism of the model. It permits to put focus for each document and each question on the relevant parts.
+The module takes the questions and the documents as inputs and then, outputs the co-attention context $C^D$, a shared representation of the attention of both the documents and questions.\\
+First, L is computed:
+\begin{equation}
+L=D^{T}Q \in\Re^{B \times (m+1)\times(n+1)}
+\end{equation}
+L represents the affinity score between each question and its associated document. L is then normalized row-wise to produce $A^Q$, the affinity weights for each word of the document with the words in the associated question. Likewise, $A^D$ is obtained in normalizing L column-wise and represents for each word of the question, the affinity weights with the words of the associated document.
+\begin{equation}
+A^Q= softmax (L)\in \Re^{B \times(m+1)\times(n+1)}
+\end{equation}
+\begin{equation}
+A^D= softmax(L^T)\in \Re^{B \times(n+1)\times(m+1)}
+\end{equation}
+These affinity coefficients represent the attention weights. Multiplied respectively with D and Q, the attention contexts for the documents and the questions are obtained.  
+\begin{equation}
+C^Q=DA^Q \in \Re^{B \times l \times(n+1)}
+\end{equation}
+Finally, the co-attention context $C^D \in \Re^{B \times 3l \times(m+1)}$ is computed by concatenating $QA^D$ and $C^QA^D$.\\
+
+\subsubsection{The BiLSTM Encoder}
+
+This module will concatenate the documents and the co-attention context and encode them using a BiLSTM. 
+\begin{equation}
+u_t= BiLSTM(u_{t-1},u_{t+1},[d_t;c_t^D])\in \Re^{B\times 2l}
+\end{equation}
+ 
+
+\subsubsection{The Highway Maxout Network}
+This module takes the previous encoded start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$, the co-attention encoding corresponding to the $t^{th}$ word in the document $u_{t}$ and the current hidden state of the Dynamic Pointer Decoder $h_i$ and returns the start score $\alpha_t$ and end score $\beta_t$ of the $t^{th}$ word in the document.
+\begin{equation}
+\alpha_t= HMNstart(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
+\end{equation}
+\begin{equation}
+\beta_t= HMNend(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
+\end{equation}
+The HMN is designed as follows:
+\begin{equation}
+HMN(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})=  \max(W^{(3)}[m^{(1)}_t;m^{(2)}_t]+b^{(3))}
+\end{equation}
+\begin{equation}
+r=  tanh(W^{(D)}[h_i;u_{s_{i-1}};u_{e_{i-1}}])
+\end{equation}
+\begin{equation}
+m^{(1)}_t=  \max(W^{(1)}[u_t;r] +b^{(1)})
+\end{equation}
+\begin{equation}
+m^{(2)}_t=  \max(W^{(2)}m^{(1)}_t+b^{(2)})
+\end{equation}
+Add some more information about why this architecture is relevant here.\\
+
+\subsubsection{The Dynamic Pointer Decoder}
+
+The decoder takes as input the co-attention encoding U. At each iteration, the hidden state $h_i$ is computed with the previous hidden state $h_{i-1}$, and the representation of the estimates of the start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$.
+\begin{equation}
+h_i= LSTMdec(h_{i-1},[u_{s_{i-1}};u_{e_{i-1}}])
+\end{equation}
+Furthermore, the current start position and end position are computed using $h_i$, $u_{s_{i-1}}$, $u_{e_{i-1}}$ with the following equations: 
+\begin{equation}
+s_i= \underset{t}{\mathrm{argmax}}(\alpha_1,...,\alpha_m)
+\end{equation}
+\begin{equation}
+e_i= \underset{t}{\mathrm{argmax}}(\beta_1,...,\beta_m)
+\end{equation}
+\subsection{Pipeline}
+\subsection{Design decision}
+\subsection{Difficulties and Remarks}
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Training and Evaluation }
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -76,7 +174,17 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
+\section{Observations}
+
+ How does it differ from the original paper? Why? What do we conclude?
+
+
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Extensions}
 
 Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
@@ -85,36 +193,14 @@ Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem
 
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
+\section{Conclusion}
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+Remarks on the reproducibility the paper. Which parts of the paper can be reproduced, and at what cost in terms of resources (computation, time, people, development effort, communication with the authors). Now we’re done, would we have done things differently?
 
 
 
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{ANOTHER ONE}
-
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
 
 
 
