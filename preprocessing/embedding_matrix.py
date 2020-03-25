@@ -93,4 +93,7 @@ files.download('word2id.csv') #for downloading to Google Drive
 
 #For embedding_matrix
 np.savetxt('embedding_matrix.txt', emb_matrix,fmt='%.2f')
+
+f=open("embedding_matrix.txt", "r")
+embedding_matrix = f.read()
 """
