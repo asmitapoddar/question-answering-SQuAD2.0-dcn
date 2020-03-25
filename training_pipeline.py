@@ -104,6 +104,7 @@ class Training:
 
         if is_train:
             span_var = th.from_numpy(batch.ans_span).long()
+            span_start,span_end=get_spans(span_var)
 
         if self.use_cuda:
             qn_mask_var = qn_mask_var.cuda()
@@ -112,18 +113,28 @@ class Training:
             context_seq_var = context_seq_var.cuda()
             if is_train:
                 span_var = span_var.cuda()
+                span_start,span_end=get_spans(span_var)
 
         if is_train:
-            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_var
+            return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_start, span_end 
         else:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
+
+    def get_spans(span):
+        span_start=th.zeros(span.shape[0])
+        span_end=th.zeros(span.shape[0])
+        for k in span:
+            span_start=k[0]
+            span_end=k[1]
+        return span_start, span_end
+
 
 
     def train_one_batch(self, batch, model, optimizer, params):
         model.train()
         optimizer.zero_grad()
-        q_seq, q_lens, d_seq, d_lens, span = self.get_data(batch)
-        loss, _, _ = model(q_seq, q_lens, d_seq, d_lens, span)
+        q_seq, q_lens, d_seq, d_lens, span_start,span_end = self.get_data(batch)
+        loss, _, _ = model( d_seq, q_seq,span_start,span_end)
 
         l2_reg = None
         for W in params:
