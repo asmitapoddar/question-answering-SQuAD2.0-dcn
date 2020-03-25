@@ -201,9 +201,8 @@ def get_batch_generator(word2id, context_path, qn_path, ans_path, batch_size, co
         ans_span = np.array(ans_span) # shape (batch_size, 2)
 
         # Make into a Batch object
-        print('OK')
-        batch = list[context_ids, context_mask, context_tokens, qn_ids, qn_mask, qn_tokens, ans_span, ans_tokens]
-        print('Hi', batch)
+        
+        batch = Batch(context_ids,context_mask,context_tokens,qn_ids,qn_mask,qn_tokens,ans_span,ans_tokens)
         #yield batch
         yield batch
 
