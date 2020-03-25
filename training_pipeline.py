@@ -27,13 +27,16 @@ import sys
 import time
 import torch as th
 
-from preprocessing.batching import *
 from constants import *
-
 from datetime import datetime
-
 from model import *
+from preprocessing.batching import *
 from preprocessing.embedding_matrix import get_glove
+
+SERIALISATION_KEY_EPOCH = 'epoch'
+SERIALISATION_KEY_MODEL = 'model'
+SERIALISATION_KEY_OPTIM = 'optim'
+
 
 def get_grad_norm(parameters, norm_type=2):
     parameters = list(filter(lambda p: p.grad is not None, parameters))
@@ -74,8 +77,11 @@ def split_by_whitespace(sentence):
 class Training:
 
     def __init__(self):
+        self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
         self.use_cuda = th.cuda.is_available() and (not DISABLE_CUDA)
-        self.device = th.device("cuda:0" if th.cuda.is_available() else "cpu")
+        
+        self.model = None
+        self.optimizer = None
 
         #TO BE UPDATED
         self.word2id_path = "word_vectors/word2id.csv"
@@ -85,9 +91,8 @@ class Training:
         self.question_path = "train_dev_files/preprocessed_training_question.txt"
         self.context_path = "train_dev_files/preprocessed_training_context.txt"
         self.ans_path = "train_dev_files/preprocessed_training_ans_span.txt"
-        self.model = " "
-        self.optimizer = " "
-        self.params = " " 
+                
+        self.params = " " # What's this?
         self.global_step = 0
 
 
@@ -173,7 +178,8 @@ class Training:
         return loss.item(), param_norm, grad_norm
 
 
-    def training(self):
+    # Pass state_file_path to resume training from an existing checkpoint.
+    def training(self, state_file_path=None):
         #print("Reading word2id and id2word...", end='')
         #word2id = pd.read_csv(self.word2id_path).to_dict()
         #id2word = pd.read_csv(self.id2word_path).to_dict()
@@ -183,12 +189,29 @@ class Training:
         #emb_mat = np.loadtxt(self.emb_mat_path)
         #print("done.")
 
+        self.model = DCNModel(BATCH_SIZE, self.device) 
+        self.optimizer = optim.Adam(self.model.parameters(), lr=0.1, amsgrad=True)
+        start_epoch = 0
+
+        # Continue training from a saved serialised model.
+        if state_file_path is not None:
+            if not os.path.isfile(state_file_path):
+                print("Failed to read path %s, aborting." % state_file_path)
+                return
+            state = th.load(state_file_path)
+            if len(state) != 3:
+                print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
+                return
+            start_epoch = state[SERIALISATION_KEY_EPOCH] + 1
+            self.model.load_state_dict(state[SERIALISATION_KEY_MODEL])
+            self.optim.load_state_dict(state[SERIALISATION_KEY_OPTIM])
+
         self.emb_mat, self.word2id, self.id2word = get_glove(self.glove_path, EMBEDDING_DIM) 
 
         serial_path = "model/" + datetime.now().strftime("%Y%m%d_%H%M%S") + "/"
         os.mkdir(serial_path)
         
-        for epoch in range(NUM_EPOCHS):
+        for epoch in range(start_epoch, NUM_EPOCHS):
             iter_tic = time.time()
              
             for batch in get_batch_generator(self.word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
@@ -196,18 +219,16 @@ class Training:
                 # global_step += 1
 
                 # TODO build doc and que matrix
-                
-                self.model = DCNModel(BATCH_SIZE, self.device) 
-                self.optimizer = optim.Adam(self.model.parameters(), lr=0.1, amsgrad=True)
                 loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
+
             iter_toc = time.time()
             iter_time = iter_toc - iter_tic
             print("Epoch %i completed in %i seconds" % (epoch, iter_time))
 
-            # save model
-
-            print("Serialising model parameters ...", end='')
-            th.save(self.model.state_dict(), serial_path + "epoch_%i.par" % epoch) 
+            # save model after each epoch:
+            print("Saving training state ... ", end='')
+            state = {SERIALISATION_KEY_EPOCH: epoch, SERIALISATION_KEY_MODEL: model.state_dict(), SERIALISATION_KEY_OPTIM: optimizer.state_dict() }
+            th.save(state, serial_path + "epoch_%i.par" % epoch) 
             print("done.")
 
 Training().training()
