@@ -4,25 +4,18 @@ and return them as an embedding matrix"""
 from __future__ import absolute_import
 from __future__ import division
 
+import csv
+import json
+import numpy as np
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
 import torch.optim as optim
-from torch.autograd import Variable
-import numpy as np
-import csv
-import json
+
+from constants import *
 from google.colab import files
-
 from tqdm import tqdm
-import numpy as np
-
-_PAD = b"<pad>"
-_UNK = b"<unk>"
-_START_VOCAB = [_PAD, _UNK]
-PAD_ID = 0
-UNK_ID = 1
-
+from torch.autograd import Variable
 
 def get_glove(glove_path, glove_dim):
 
