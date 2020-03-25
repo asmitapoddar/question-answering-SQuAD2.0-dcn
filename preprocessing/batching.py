@@ -184,11 +184,11 @@ def get_batch_generator(word2id, context_path, qn_path, ans_path, batch_size, co
 
         # Get next batch. These are all lists length batch_size
         (context_ids, context_tokens, qn_ids, qn_tokens, ans_span, ans_tokens) = batches.pop(0)
-
+        
         # Pad context_ids and qn_ids
-        qn_ids = padded(qn_ids, question_len) # pad questions to length question_len
-        context_ids = padded(context_ids, context_len) # pad contexts to length context_len
-
+        qn_ids = list(padded(qn_ids, question_len)) # pad questions to length question_len
+        context_ids = list(padded(context_ids, context_len)) # pad contexts to length context_len
+        
         # Make qn_ids into a np array and create qn_mask
         qn_ids = np.array(qn_ids) # shape (batch_size, question_len)
         qn_mask = (qn_ids != PAD_ID).astype(np.int32) # shape (batch_size, question_len)
@@ -196,15 +196,13 @@ def get_batch_generator(word2id, context_path, qn_path, ans_path, batch_size, co
         # Make context_ids into a np array and create context_mask
         context_ids = np.array(context_ids) # shape (batch_size, context_len)
         context_mask = (context_ids != PAD_ID).astype(np.int32) # shape (batch_size, context_len)
-
+        
         # Make ans_span into a np array
         ans_span = np.array(ans_span) # shape (batch_size, 2)
 
         # Make into a Batch object
-        
-        batch = Batch(context_ids,context_mask,context_tokens,qn_ids,qn_mask,qn_tokens,ans_span,ans_tokens)
-        #yield batch
+        batch = Batch(context_ids, context_mask, context_tokens, qn_ids, qn_mask, qn_tokens, ans_span, ans_tokens)
         yield batch
 
-    return batch
+    #return batch
     

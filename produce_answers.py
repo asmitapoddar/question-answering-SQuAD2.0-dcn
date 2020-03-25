@@ -5,6 +5,8 @@ import sys
 
 import torch as th
 
+
+
 # Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
 DIMENSIONALITY = 300
 
@@ -57,18 +59,26 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	# batch[1] question embeddings
 	# batch[2] question identifiers
 	# batch[3] document strings
-	batch = ([], [], [], [])
+	# batch[4] document (token, start pos, end pos) list
+	batch = ([], [], [], [], [])
 	for item in tqdm(data): 
 		for para in item["paragraphs"]:
+
 			context = para["context"]
 
-			context_embeddings = encode_token_list(embeddings, context)
-			para["context_embedding"] = context_embeddings
+			# list of (token string, start index, end index)
+			context_enriched = para["context_tokens"]
+
+			just_context_tokens = list(map(lambda x : x[0], context_enriched)) 
+
+			context_embeddings = encode_token_list(embeddings, just_context_tokens)
 
 			for qas in para["qas"]:
 				question = qas["question"]
-				question_embeddings = encode_token_list(embeddings, question)
-				qas["question_embedding"] = question_embeddings
+				
+				question_enriched = qas["question_tokens"]
+				just_question_tokens = list(map(lambda x : x[0], question_enriched))
+				question_embeddings = encode_token_list(embeddings, just_question_tokens)
 
 				# Unique identifier for (question, corresponding answers)
 				qas_id = qas["id"]
@@ -77,10 +87,11 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				batch[1].append(question_embeddings)
 				batch[2].append(qas_id)
 				batch[3].append(context)
+				batch[4].append(context_enriched)
 
 				if len(batch[2]) == evaluation_batch_size:
 					yield batch
-					batch = ([], [], [], [])
+					batch = ([], [], [], [], [])
 
 	if len(batch[2]) > 0:
 		yield batch
@@ -88,7 +99,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 def run_evaluation(model_path, output_path = "predictions.json"):
 
 	# Load glove word vectors into a dictionary 
-	glove = load_embeddings_index(small=False)
+	# glove = load_embeddings_index(small=False)
+	glove = {}
 
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
@@ -107,7 +119,7 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 	for batch in tqdm(batch_iterator):
 
-		context_vectors, question_vectors, context_ids, context_paras = batch
+		context_vectors, question_vectors, context_ids, context_paras, context_enriched = batch
 		context_vectors = context_vectors[0].unsqueeze(dim=0)
 		question_vectors = question_vectors[0].unsqueeze(dim=0)
 		
@@ -122,15 +134,29 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 		if model is None:
 			model = DCNModel(context_vectors, question_vectors, evaluation_batch_size, device).to(device)
+			# TODO
 			model.load_state_dict(th.load(model_path))
 			model.eval()
 
 		# Run model
-		loss, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
-		answer_substring = " ".join(context_paras[0][s:e])
-		answer_mapping[context_ids[0]] = answer_substring
+		_, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
+
+		ansStartTok = context_enriched[0][s]
+		ansStartIdx = ansStartTok[1]
+
+		ansEndTok = context_enriched[0][e]
+		ansEndIdx = ansEndTok[2]
+
+		answer_mapping[context_ids[0]] = context_paras[0][ansStartIdx:ansEndIdx]
+		print(answer_mapping)
 
 	with open(output_path, "w") as f:
 		json.dump(answer_mapping, f)
 
-# run_evaluation("")
+	# Call evaluation script
+	os.system("evaluate-v2.0.py " + output_path + " preprocessing/data/dev-v2.0.json")
+
+# TODO: provide path to serialised model
+run_evaluation("")
+
+
