@@ -48,12 +48,12 @@ def preprocess(nlp_client, dataset, outFile):
         for para in item["paragraphs"]:
             # This is the short paragraph of context for the question
             context = para["context"]
-            para["context"] = tokenize(nlp_client, context)
+            para["context_tokens"] = tokenize(nlp_client, context)
 
             for qas in para["qas"]:
                 # Question text
                 question = qas["question"]
-                qas["question"] = tokenize(nlp_client, question)
+                qas["question_tokens"] = tokenize(nlp_client, question)
 
                 # Unique identifier for (question, corresponding answers)
                 qas_id = qas["id"]
@@ -64,7 +64,7 @@ def preprocess(nlp_client, dataset, outFile):
                 # Could be empty (if is_impossible = True, new in SQuAD v2)
                 for ans in qas["answers"]:
                     answer_text = ans["text"]
-                    ans["text"] = tokenize(nlp_client, answer_text)
+                    ans["text_tokens"] = tokenize(nlp_client, answer_text)
     
     # Write to file 
     with open(outFile, "w") as outFile: 
