@@ -35,7 +35,7 @@ def tokenize(client, text):
 
     tokens = []
     for sentence in ann.sentence: 
-        tokens += [token.word for token in sentence.token]
+        tokens += [[token.word, token.beginChar, token.endChar] for token in sentence.token]
     return tokens
 
 def preprocess(nlp_client, dataset, outFile):
@@ -48,12 +48,12 @@ def preprocess(nlp_client, dataset, outFile):
         for para in item["paragraphs"]:
             # This is the short paragraph of context for the question
             context = para["context"]
-            para["context"] = tokenize(nlp_client, context)
+            para["context_tokens"] = tokenize(nlp_client, context)
 
             for qas in para["qas"]:
                 # Question text
                 question = qas["question"]
-                qas["question"] = tokenize(nlp_client, question)
+                qas["question_tokens"] = tokenize(nlp_client, question)
 
                 # Unique identifier for (question, corresponding answers)
                 qas_id = qas["id"]
@@ -64,13 +64,15 @@ def preprocess(nlp_client, dataset, outFile):
                 # Could be empty (if is_impossible = True, new in SQuAD v2)
                 for ans in qas["answers"]:
                     answer_text = ans["text"]
-                    ans["text"] = tokenize(nlp_client, answer_text)
+                    ans["text_tokens"] = tokenize(nlp_client, answer_text)
     
     # Write to file 
     with open(outFile, "w") as outFile: 
         json.dump(dataset, outFile)
 
 # set up the client
+corenlpProps = {}
+corenlpProps["tokenize.options"] = "ptb3Escaping=false,invertible=true"
 with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G') as client:
     preprocess(client, load_train_set(), "data/train-v2.0-tokenized.json")
     preprocess(client, load_dev_set(), "data/dev-v2.0-tokenized.json")
