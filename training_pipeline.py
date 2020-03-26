@@ -48,7 +48,7 @@ def get_grad_norm(parameters, norm_type=2):
     return total_norm
 
 
-def get_mask_from_seq_len(self, seq_mask):
+def get_mask_from_seq_len(seq_mask):
     seq_lens = np.sum(seq_mask, axis=1)
     max_len = np.max(seq_lens)
     indices = np.arange(0, max_len)
@@ -107,7 +107,7 @@ class Training:
         qn_mask = get_mask_from_seq_len(batch.qn_mask)
         qn_mask_var = th.from_numpy(qn_mask).long().to(self.device)
 
-        context_mask = self.get_mask_from_seq_len(batch.context_mask)
+        context_mask = get_mask_from_seq_len(batch.context_mask)
         context_mask_var = th.from_numpy(context_mask).long().to(self.device)
 
         qn_seq_var = th.from_numpy(batch.qn_ids).long().to(self.device)
@@ -133,7 +133,7 @@ class Training:
     def seq_to_emb(self, seq):
         seq_list = seq.tolist()
         emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
-        return th.Tensor(emb_list, device=self.device)
+        return th.tensor(emb_list, device=self.device)
 
     def train_one_batch(self, batch, model, optimizer, params):
         model.train()
