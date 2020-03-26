@@ -1,5 +1,6 @@
 # Don't push the word embedding files 
 preprocessing/glove/
+word_vectors/
 
 .DS_Store
 *.pyc

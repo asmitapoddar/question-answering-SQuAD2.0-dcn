@@ -97,9 +97,9 @@ class Training:
         self.id2word_path = "word_vectors/id2word.csv"
         self.glove_path = "word_vectors/glove.6B.300d.txt"
         self.emb_mat_path = "word_vectors/embedding_matrix.txt"
-        self.question_path = "train_dev_files/preprocessed_training_question.txt"
-        self.context_path = "train_dev_files/preprocessed_training_context.txt"
-        self.ans_path = "train_dev_files/preprocessed_training_ans_span.txt"
+        self.question_path = "preprocessing/data/preprocessed_train_question.txt"
+        self.context_path = "preprocessing/data/preprocessed_train_context.txt"
+        self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
                 
         self.params = " " # What's this?
         self.global_step = 0
