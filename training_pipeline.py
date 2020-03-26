@@ -179,7 +179,7 @@ class Training:
         #emb_mat = np.loadtxt(self.emb_mat_path)
         #print("done.")
 
-        self.model = DCNModel(BATCH_SIZE, self.device) 
+        self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
         self.optimizer = optim.Adam(self.model.parameters(), lr=0.1, amsgrad=True)
         start_epoch = 0
 
