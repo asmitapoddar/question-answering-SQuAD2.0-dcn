@@ -114,55 +114,62 @@ class Training:
         context_seq_var = th.from_numpy(batch.context_ids).long().to(self.device)
 
         if is_train:
-            span_var = th.from_numpy(batch.ans_span).long().to(self.device)
-            span_s, span_e = self.get_spans(span_var)
-
+            #span_var = th.from_numpy(batch.ans_span).long().to(self.device)
+            span_s, span_e = self.get_spans(batch.ans_span)
+        
         if is_train:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_s, span_e 
         else:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
 
     def get_spans(self, span):
-        span_start=th.zeros(span.shape[0], device=self.device)
-        span_end=th.zeros(span.shape[0], device=self.device)
-        for k in span:
-            span_start=k[0]
-            span_end=k[1]
-        return span_start, span_end
+        def to_th(x):
+            return th.tensor(list(x)).long().to(self.device)
+        
+        span_s = to_th(map(lambda p: p[0], span))
+        span_e = to_th(map(lambda p: p[1], span))
+        return span_s, span_e
 
     def seq_to_emb(self, seq):
         seq_list = seq.tolist()
         emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
-        return th.tensor(emb_list, device=self.device)
+        return th.tensor(emb_list, dtype=th.float32, device=self.device)
 
     def train_one_batch(self, batch, model, optimizer, params):
         model.train()
         optimizer.zero_grad()
         q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
-
+        
         # convert sequence into embedding
         q_emb = self.seq_to_emb(q_seq)
         d_emb = self.seq_to_emb(d_seq)
 
-        print(q_seq.shape, d_seq.shape)
-        print(q_emb.shape, d_emb.shape)
+        print("a", q_seq.shape, d_seq.shape)
+        print("b", q_emb.shape, d_emb.shape)
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
+        print("params they're missing!", params)
+        """
         l2_reg = None
         for W in params:
+            print("param", W)
             if l2_reg is None:
                 l2_reg = W.norm(2)
             else:
                 l2_reg = l2_reg + W.norm(2)
-
+        """
+        l2_reg = 0
         loss = loss + REG_LAMBDA * l2_reg
 
-        loss.backward()
+        loss.backward(retain_graph=True)
 
-        param_norm = get_param_norm(params)
-        grad_norm = get_grad_norm(params)
+        #TODO fix L2 Regularisation
+        #param_norm = get_param_norm(params)
+        #grad_norm = get_grad_norm(params)
+        param_norm = 0
+        grad_norm = 0
 
-        clip_grad_norm_(params, MAX_GRAD_NORM)
+        #clip_grad_norm_(params, MAX_GRAD_NORM)
         optimizer.step()
         print(loss.item())
         return loss.item(), param_norm, grad_norm

@@ -59,7 +59,6 @@ class CoattentionModule(nn.Module):
 
         # Fusion BiLSTM.
         input_to_BiLSTM = th.transpose(th.cat((D,CD), dim=1), 1, 2) # B x (m+1) x 3l
-        # print("input_to_BiLSTM.size():",input_to_BiLSTM.size())
 
         U = self.bilstm_encoder(input_to_BiLSTM)
         return U
@@ -78,8 +77,8 @@ class BiLSTMEncoder(nn.Module):
     def init_hidden(self):
         # TODO: Is initialisation zeros or randn? 
         # First is the hidden h, second is the cell c.
-        return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device),
-              th.zeros(2, self.batch_size,self.hidden_dim, device=self.device))
+        return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+              th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
         lstm_out, self.hidden = self.lstm(
@@ -245,9 +244,7 @@ class DynamicPointerDecoder(nn.Module):
       # after each step, hidden contains the hidden state.
       s_index = s.view(-1,1,1).repeat(1,U.size()[1],1)
       u_si_m_1 = th.gather(U,2,s_index)
-      # print("u_si_m_1.size():", u_si_m_1.size())
       e_index = e.view(-1,1,1).repeat(1,U.size()[1],1)
-      # print("e.size()", e.size())
       u_ei_m_1 = th.gather(U,2,e_index)
       
       lstm_input = th.cat((u_si_m_1, u_ei_m_1), dim=1).view(U.size()[0], -1, 1)
@@ -262,13 +259,7 @@ class DynamicPointerDecoder(nn.Module):
 
       for t in range(doc_length):
         u_t = U[:,:,t].unsqueeze(dim=2)
-        #print("u_t.size()", u_t.size())
-        #print("h_i.size()", h_i.size())
-        #print("u_si_m_1.size()", u_si_m_1.size())
-        #print("u_ei_m_1.size()", u_ei_m_1.size())
         t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
-        #print("t_hmn_alpha.size()", t_hmn_alpha.size())
-        # print("alpha.size()", alpha.size())
         alpha = th.cat((alpha, t_hmn_alpha), dim=1)
         
       _, s = th.max(alpha, dim=1)
@@ -316,7 +307,8 @@ class DCNModel(nn.Module):
     print("doc_word_vec", doc_word_vecs.shape)
     # TODO: how should we initialise the hidden state of the LSTM? For now:
     initial_hidden = self.encoder.generate_initial_hidden_state()
-    outp, _ = self.encoder(doc_word_vecs, initial_hidden)
+    outp, _ = self.encoder(doc_word_vecs.float(), initial_hidden)
+    
     # outp: B x m x l
     D_T = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector # l X n+1
     # D: B x (m+1) x l
@@ -336,7 +328,10 @@ class DCNModel(nn.Module):
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
+    print(loss.shape)
     for it in range(self.decoder.max_iter):
+      print(alphas[:,it,:].shape, true_s.shape)
+      print(criterion(alphas[:,it,:], true_s).shape)
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
  
