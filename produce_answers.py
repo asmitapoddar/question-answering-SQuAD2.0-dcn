@@ -99,8 +99,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 def run_evaluation(model_path, output_path = "predictions.json"):
 
 	# Load glove word vectors into a dictionary 
-	# glove = load_embeddings_index(small=False)
-	glove = {}
+	glove = load_embeddings_index(small=False)
 
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
