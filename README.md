@@ -25,6 +25,7 @@ No snitching either.
 - [x] Get backward pass to run (Kuba -- this was quick)
 - [x] Debug why predicted end indices are all 0 (Richie)
 - [x] Complete batching (Asmita)
+- [x] Create word2id, id2word, embedding matrix (Asmita)
 - [ ] Training pipeline (Asmita + Kuba's minor cleanup)
 - [x] Model serialisation (~~Kuba~~ / Richie :p)
 - [ ] Run Training on real data ( ? )
