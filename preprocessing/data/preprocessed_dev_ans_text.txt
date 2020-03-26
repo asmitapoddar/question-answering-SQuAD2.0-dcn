@@ -282,9 +282,9 @@ William of Volpiano and John of Ravenna
 southern Italy
 southern Italy
 southern Italy
-Latin monastery at Sant ` Eufemia .
-a Latin monastery at Sant ` Eufemia
-Sant ` Eufemia
+Latin monastery at Sant ' Eufemia .
+a Latin monastery at Sant ' Eufemia
+Sant ' Eufemia
 Robert Guiscard
 Robert Guiscard
 Robert Guiscard
@@ -409,7 +409,7 @@ as decision problems
 as decision problems
 set of triples
 triple
-the set of triples -LRB- a , b , c -RRB- such that the relation a × b = c holds
+the set of triples ( a , b , c ) such that the relation a × b = c holds
 how much time the best algorithm requires to solve the problem
 time
 time
@@ -434,9 +434,9 @@ the time taken
 worst-case time complexity
 worst-case time complexity
 the worst-case time complexity
-T -LRB- n -RRB-
-T -LRB- n -RRB-
-T -LRB- n -RRB-
+T ( n )
+T ( n )
+T ( n )
 polynomial time algorithm
 polynomial time
 polynomial time algorithm
@@ -505,9 +505,9 @@ total number of state transitions , or steps , the machine makes before it halts
 difficulty
 difficulty
 difficulty
-DTIME -LRB- f -LRB- n -RRB- -RRB-
-DTIME -LRB- f -LRB- n -RRB- -RRB- .
-DTIME -LRB- f -LRB- n -RRB- -RRB-
+DTIME ( f ( n ) )
+DTIME ( f ( n ) ) .
+DTIME ( f ( n ) )
 time
 time
 time
@@ -544,9 +544,9 @@ the deterministic sorting algorithm quicksort
 worst-case
 worst
 worst-case
-O -LRB- n2 -RRB-
-O -LRB- n2 -RRB-
-O -LRB- n2 -RRB-
+O ( n2 )
+O ( n2 )
+O ( n2 )
 the most efficient algorithm
 the most efficient algorithm
 the most efficient algorithm solving a given problem
@@ -568,9 +568,9 @@ big O notation
 constant factors and smaller terms
 constant factors and smaller terms
 constant factors and smaller terms
-T -LRB- n -RRB- = O -LRB- n2 -RRB-
-T -LRB- n -RRB- = O -LRB- n2 -RRB-
-T -LRB- n -RRB- = O -LRB- n2 -RRB-
+T ( n ) = O ( n2 )
+T ( n ) = O ( n2 )
+T ( n ) = O ( n2 )
 the computational model
 specific details of the computational model used
 the specific details of the computational model used
@@ -625,9 +625,9 @@ Interactive
 computation time
 computation time
 computation time
-DTIME -LRB- n2 -RRB-
-DTIME -LRB- n2 -RRB-
-DTIME -LRB- n2 -RRB-
+DTIME ( n2 )
+DTIME ( n2 )
+DTIME ( n2 )
 time and space hierarchy theorems
 time and space hierarchy theorems
 time and space hierarchy theorems
@@ -700,9 +700,9 @@ NP
 P
 P
 P
-Cobham -- Edmonds thesis
-Cobham -- Edmonds thesis
-Cobham -- Edmonds thesis
+Cobham – Edmonds thesis
+Cobham – Edmonds thesis
+Cobham – Edmonds thesis
 NP
 NP
 NP
@@ -839,7 +839,7 @@ a computer
 a computer
 On the Computational Complexity of Algorithms
 On the Computational Complexity of Algorithms
-`` On the Computational Complexity of Algorithms ''
+" On the Computational Complexity of Algorithms "
 Juris Hartmanis and Richard Stearns
 Juris Hartmanis and Richard Stearns
 Juris Hartmanis and Richard Stearns
@@ -873,9 +873,9 @@ Manuel Blum
 speed-up theorem
 speed-up theorem
 speed-up theorem
-`` Reducibility Among Combinatorial Problems ''
+" Reducibility Among Combinatorial Problems "
 Reducibility Among Combinatorial Problems
-`` Reducibility Among Combinatorial Problems ''
+" Reducibility Among Combinatorial Problems "
 21
 21
 21
@@ -933,9 +933,9 @@ Colorado Desert
 Mojave Desert
 the Mojave Desert
 Mojave Desert
-Mexico -- United States border
-the Mexico -- United States border
-Mexico -- United States border
+Mexico – United States border
+the Mexico – United States border
+Mexico – United States border
 California
 California
 California
@@ -1005,9 +1005,9 @@ southern
 open spaces
 nearby open spaces
 nearby open spaces
-37 ° 9 ' 58.23 ''
-37 ° 9 ' 58.23 ''
-37 ° 9 ' 58.23 ''
+37 ° 9 ' 58.23 "
+37 ° 9 ' 58.23 "
+37 ° 9 ' 58.23 "
 11
 11
 11
@@ -1612,7 +1612,7 @@ Virgin Media
 Virgin Media
 English Premier League Football
 English Premier League Football
-sport -LRB- including English Premier League Football -RRB- , films , entertainment and news
+sport ( including English Premier League Football ) , films , entertainment and news
 free-to-view
 free-to-view
 free-to-air
@@ -1646,9 +1646,9 @@ BBC
 Ofcom
 Ofcom
 Ofcom
-£ 15 -- 100,000
-£ 15 -- 100,000
-£ 15 -- 100,000
+£ 15 – 100,000
+£ 15 – 100,000
+£ 15 – 100,000
 no
 no
 Third-party channels
@@ -1681,7 +1681,7 @@ Virgin Media
 Virgin Media
 Video On Demand
 Video On Demand service
--LRB- HDTV -RRB-
+( HDTV )
 BBC HD
 BBC HD
 BBC HD
@@ -1707,13 +1707,13 @@ Welfare Cash Card
 Welfare Cash Card
 Welfare Cash Card
 essentials
-only `` essentials ''
+only " essentials "
 essentials
 often damaging
 often damaging
 often damaging
 Sky TV bills
-claimants ' `` Sky TV bills
+claimants ' " Sky TV bills
 claimants
 a man 's presence
 mother is wrongly claiming to be living alone
@@ -1862,9 +1862,9 @@ the 1855 colonial constitution
 Parliament of Victoria
 the Parliament of Victoria
 Parliament of Victoria
-`` entrenched '' provisions
-certain `` entrenched '' provisions
-`` entrenched '' provisions
+" entrenched " provisions
+certain " entrenched " provisions
+" entrenched " provisions
 Victoria Constitution Act 1855
 the Victoria Constitution Act 1855
 Victoria Constitution Act 185
@@ -1873,13 +1873,13 @@ semi-deserts
 semi-deserts
 32 °C
 32 °C
-32 °C -LRB- 90 °F -RRB-
+32 °C ( 90 °F )
 15 °C
 15 °C
-15 °C -LRB- 59 °F -RRB-
+15 °C ( 59 °F )
 48.8 °C
 48.8 °C
-48.8 °C -LRB- 119.8 °F -RRB-
+48.8 °C ( 119.8 °F )
 2009
 the 2009 southeastern Australia heat wave
 7 February 2009
@@ -1938,10 +1938,10 @@ east-west
 east-west
 below 0 °C
 below 0 °C
-below 0 °C -LRB- 32 °F -RRB-
+below 0 °C ( 32 °F )
 − 11.7 °C
 − 11.7 °C
-− 11.7 °C -LRB- 10.9 °F -RRB-
+− 11.7 °C ( 10.9 °F )
 government-owned
 government
 several private and public railway operators
@@ -2018,14 +2018,14 @@ Asia
 Asia
 Asia
 1,600 mm
-1,600 mm -LRB- 5 ft 3 in -RRB- broad gauge
-1,600 mm -LRB- 5 ft 3 in -RRB- broad gauge
+1,600 mm ( 5 ft 3 in ) broad gauge
+1,600 mm ( 5 ft 3 in ) broad gauge
 1,435 mm
-1,435 mm -LRB- 4 ft 8 1⁄2 in -RRB- standard gauge
-1,435 mm -LRB- 4 ft 8 1⁄2 in -RRB- standard gauge
+1,435 mm ( 4 ft 8 1⁄2 in ) standard gauge
+1,435 mm ( 4 ft 8 1⁄2 in ) standard gauge
 760 mm
-760 mm -LRB- 2 ft 6 in -RRB- narrow gauge lines
-760 mm -LRB- 2 ft 6 in -RRB- narrow gauge lines
+760 mm ( 2 ft 6 in ) narrow gauge lines
+760 mm ( 2 ft 6 in ) narrow gauge lines
 mountainous areas
 mountainous areas
 mountainous areas
@@ -2150,7 +2150,7 @@ Paris
 Paris
 Paris
 villes de sûreté
-`` villes de sûreté ''
+" villes de sûreté "
 villes de sûreté
 Montpellier
 Montpellier
@@ -2187,7 +2187,7 @@ Jessé de Forest
 Jessé de Forest
 L'Église française à la Nouvelle-Amsterdam
 L'Église française à la Nouvelle-Amsterdam
-L'Église française à la Nouvelle-Amsterdam -LRB- the French church in New Amsterdam -RRB-
+L'Église française à la Nouvelle-Amsterdam ( the French church in New Amsterdam )
 L'Eglise du Saint-Esprit
 L'Eglise du Saint-Esprit
 L'Eglise du Saint-Esprit
@@ -2286,9 +2286,9 @@ New Rochelle
 New Paltz
 New Paltz
 New Paltz
-`` Huguenot Street Historic District '' in New Paltz
+" Huguenot Street Historic District " in New Paltz
 Huguenot Street Historic District
-The `` Huguenot Street Historic District '' in New Paltz
+The " Huguenot Street Historic District " in New Paltz
 the oldest street in the United States of America
 the oldest street in the United States of America
 the oldest street in the United States of America
@@ -2394,8 +2394,8 @@ prohibited emigration
 Four thousand
 Four thousand
 Four thousand
-`` new converts ''
-`` new converts ''
+" new converts "
+" new converts "
 new converts
 Holland , Prussia , and South Africa
 Holland , Prussia , and South Africa
@@ -2444,7 +2444,7 @@ Texas
 lace
 lace
 British lace
-` Bucks Point '
+' Bucks Point '
 Bucks Point
 Bucks Point
 twenty-five widows who settled in Dover
@@ -2465,9 +2465,9 @@ in protest against the occupation of Prussia by Napoleon
 1806-07
 1806-07 .
 1806-07
-Fredericia -LRB- Denmark -RRB- , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
-Fredericia -LRB- Denmark -RRB- , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
-Fredericia -LRB- Denmark -RRB- , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
+Fredericia ( Denmark ) , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
+Fredericia ( Denmark ) , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
+Fredericia ( Denmark ) , Berlin , Stockholm , Hamburg , Frankfurt , Helsinki , and Emden
 Prussia
 Great Elector Frederick William
 Prussia
@@ -2528,14 +2528,14 @@ Manakin Town
 12 May 1705
 1705
 12 May 1705
-1568 -- 1609
-1568 -- 1609
-1568 -- 1609
+1568 – 1609
+1568 – 1609
+1568 – 1609
 Spain
 Spain
 Spain
-`` Apologie ''
-Apologie '' of William the Silent
+" Apologie "
+Apologie " of William the Silent
 Apologie
 William the Silent
 Pierre L'Oyseleur
@@ -2606,8 +2606,8 @@ they were accepted and allowed to worship freely
 Hugues Capet
 Hugues Capet
 Hugues Capet
-The `` Hugues hypothesis ''
-`` Hugues hypothesis ''
+The " Hugues hypothesis "
+" Hugues hypothesis "
 Hugues hypothesis
 Janet Gray
 Janet Gray
@@ -2629,12 +2629,12 @@ University of Paris
 William Farel
 William Farel
 William Farel
-Jean Cauvin -LRB- John Calvin -RRB-
+Jean Cauvin ( John Calvin )
 Jean Cauvin
 Jean Cauvin
-24 August -- 3 October 1572
-24 August -- 3 October 1572
-24 August -- 3 October 1572
+24 August – 3 October 1572
+24 August – 3 October 1572
+24 August – 3 October 1572
 Catholics
 Catholics
 Catholics
@@ -2665,7 +2665,7 @@ dragonnades
 Westchester
 Westchester
 Westchester
-`` Bauffet 's Point ''
+" Bauffet 's Point "
 Bauffet 's Point
 Bauffet 's Point
 John Pell , Lord of Pelham Manor
@@ -3235,7 +3235,7 @@ road engines
 road engines
 road engines
 shortening the cutoff
-`` shortening the cutoff ''
+" shortening the cutoff "
 shortening the cutoff
 kick back
 kick back
@@ -3273,7 +3273,7 @@ drive shaft
 a drive shaft
 drive shaft
 static discs
-static discs -RRB-
+static discs )
 static discs
 turbine casing
 turbine casing
@@ -3311,7 +3311,7 @@ thermal expansion
 thermal expansion
 thermal expansion
 1775
-1763 -- 1775
+1763 – 1775
 1775
 1775
 condenser
@@ -3581,10 +3581,10 @@ clergyman
 clergyman
 clergyman
 clergyman
-mercuric oxide -LRB- HgO -RRB-
+mercuric oxide ( HgO )
 mercuric oxide
 mercuric oxide
-mercuric oxide -LRB- HgO -RRB-
+mercuric oxide ( HgO )
 mercuric oxide
 HgO
 HgO
@@ -3594,13 +3594,13 @@ HgO
 mercuric oxide
 mercuric oxide
 mercuric oxide
-mercuric oxide -LRB- HgO -RRB-
+mercuric oxide ( HgO )
 mercuric oxide
 dephlogisticated air
 dephlogisticated air
 dephlogisticated air
 dephlogisticated air
-`` dephlogisticated air
+" dephlogisticated air
 1775
 1775
 1775
@@ -3769,7 +3769,7 @@ complex silicates
 complex silicates
 silicates
 silicates
-silicates -LRB- in silicate minerals -RRB-
+silicates ( in silicate minerals )
 monatomic
 monatomic
 monatomic
@@ -3942,7 +3942,7 @@ a protective radiation shield
 UV
 ultraviolet
 UV
-ultraviolet -LRB- UV -RRB-
+ultraviolet ( UV )
 ultraviolet
 dioxygen
 dioxygen
@@ -4210,9 +4210,9 @@ about 2.5 billion years ago
 2.5 billion years ago during the Great Oxygenation Event
 90.20 K
 90.20 K
-90.20 K -LRB- − 182.95 °C , − 297.31 °F -RRB-
+90.20 K ( − 182.95 °C , − 297.31 °F )
 90.20 K
-90.20 K -LRB- − 182.95 °C , − 297.31 °F -RRB-
+90.20 K ( − 182.95 °C , − 297.31 °F )
 clear
 clear substances with a light sky-blue color
 clear
@@ -4276,11 +4276,11 @@ banded iron
 1.7 billion years ago
 1.7 billion years ago
 around 1.7 billion years ago
-3 -- 2.7 billion years ago
-3 -- 2.7 billion years ago
-3 -- 2.7 billion years ago
-3 -- 2.7 billion years ago
-3 -- 2.7 billion years ago
+3 – 2.7 billion years ago
+3 – 2.7 billion years ago
+3 – 2.7 billion years ago
+3 – 2.7 billion years ago
+3 – 2.7 billion years ago
 oxygen cycle
 the oxygen cycle
 oxygen cycle
@@ -4364,7 +4364,7 @@ performance
 performance
 performance
 performance
-a `` boost '' in performance
+a " boost " in performance
 aerobic
 aerobic
 aerobic
@@ -4375,7 +4375,7 @@ placebo
 placebo
 a placebo effect
 placebo
-Hyperbaric -LRB- high-pressure -RRB- medicine
+Hyperbaric ( high-pressure ) medicine
 special oxygen chambers
 oxygen chambers
 oxygen chambers
@@ -4393,7 +4393,7 @@ anaerobic bacteria
 Decompression sickness
 bubbles of inert gas , mostly nitrogen and helium , forming in their blood
 Decompression sickness
-decompression sickness -LRB- the ` bends ' -RRB-
+decompression sickness ( the ' bends ' )
 Decompression sickness
 respiration
 respiration
@@ -4515,7 +4515,7 @@ biomolecules
 biomolecules
 biomolecules
 biomolecules
-almost all biomolecules that are important to -LRB- or generated by -RRB- life
+almost all biomolecules that are important to ( or generated by ) life
 Only a few
 Only a few
 a few
@@ -4548,8 +4548,8 @@ permanent pulmonary fibrosis
 pulmonary fibrosis
 160 kPa
 160 kPa
-160 kPa -LRB- about 1.6 atm -RRB-
-160 kPa -LRB- about 1.6 atm -RRB-
+160 kPa ( about 1.6 atm )
+160 kPa ( about 1.6 atm )
 160 kPa
 Acute oxygen toxicity
 Acute oxygen toxicity
@@ -4570,7 +4570,7 @@ the low total pressures used
 about 30 kPa
 about 30 kPa
 30 kPa
-about 30 kPa -LRB- 1.4 times normal -RRB-
+about 30 kPa ( 1.4 times normal )
 1.4 times normal
 1.4 times
 1.4 times
@@ -4604,10 +4604,10 @@ mechanical ventilators
 mechanical ventilators
 oxygen masks
 mechanical ventilators
-30 % -- 50 %
-30 % -- 50 %
-30 % -- 50 %
-30 % -- 50 %
+30 % – 50 %
+30 % – 50 %
+30 % – 50 %
+30 % – 50 %
 October 1973
 October 1973
 October 1973
@@ -4658,13 +4658,13 @@ August 15 , 1971
 August 15 , 1971
 August 15 , 1971
 August 15 , 1971
-to `` float '' -LRB- rise and fall according to market demand -RRB-
--LRB- rise and fall according to market demand
+to " float " ( rise and fall according to market demand )
+( rise and fall according to market demand
 rise and fall according to market demand
 rise and fall according to market demand
 rise and fall according to market demand
 industrialized nations increased their reserves
-industrialized nations increased their reserves -LRB- by expanding their money supplies -RRB- in amounts far greater than before
+industrialized nations increased their reserves ( by expanding their money supplies ) in amounts far greater than before
 industrialized nations increased their reserves
 industrialized nations increased their reserves
 the industrialized nations increased their reserves
@@ -4684,15 +4684,15 @@ less than two percent per year
 by less than two percent per year
 less than two percent per year
 After 1971
-1973 -- 1974
+1973 – 1974
 1971
 After 1971
 1971
-1973 -- 1974
+1973 – 1974
 1974
-1973 -- 1974
-1973 -- 1974
-1973 -- 1974
+1973 – 1974
+1973 – 1974
+1973 – 1974
 Until the oil shock
 the oil shock
 the oil shock
@@ -4717,10 +4717,10 @@ Iran
 Iran
 Iran
 Iran
-renewal of hostilities in the Arab -- Israeli conflict
+renewal of hostilities in the Arab – Israeli conflict
 renewal of hostilities
 .
-the Arab -- Israeli conflict released the underlying economic pressure on oil prices
+the Arab – Israeli conflict released the underlying economic pressure on oil prices
 In response to American aid to Israel
 In response to American aid to Israel
 In response to American aid to Israel
@@ -4742,7 +4742,7 @@ $ 2.2 billion
 $ 2.2 billion
 American aid to Israel
 Nixon requested Congress to appropriate $ 2.2 billion in emergency aid to Israel
-OAPEC proclaimed the embargo that curbed exports to various countries and blocked all oil deliveries to the US as a `` principal hostile country
+OAPEC proclaimed the embargo that curbed exports to various countries and blocked all oil deliveries to the US as a " principal hostile country
 OAPEC proclaimed the embargo that curbed exports to various countries
 American aid to Israel
 over 100 billion dollars
@@ -4843,11 +4843,11 @@ a series of strikes by coal miners and railroad workers
 a series of strikes by coal miners and railroad workers
 strikes by coal miners and railroad workers
 a series of strikes
-winter of 1973 -- 74
-over the winter of 1973 -- 74
-1973 -- 74
-winter of 1973 -- 74
-the winter of 1973 -- 74
+winter of 1973 – 74
+over the winter of 1973 – 74
+1973 – 74
+winter of 1973 – 74
+the winter of 1973 – 74
 Germany
 Germany
 Italy
@@ -4866,12 +4866,12 @@ encourage investment
 to encourage investment
 to encourage investment
 to encourage investment
-The system limited the price of `` old oil ''
+The system limited the price of " old oil "
 Price controls
 Price controls
 promote oil exploration
 discouraged development of alternative energies
-The system limited the price of `` old oil ''
+The system limited the price of " old oil "
 rationing
 rationing
 rationing
@@ -4967,10 +4967,10 @@ Japan
 71 %
 71 %
 5 % production cut
-declared Japan a `` nonfriendly '' country
-declared Japan a `` nonfriendly '' country
-declared Japan a `` nonfriendly '' country
-declared Japan a `` nonfriendly '' country
+declared Japan a " nonfriendly " country
+declared Japan a " nonfriendly " country
+declared Japan a " nonfriendly " country
+declared Japan a " nonfriendly " country
 November 22
 November 22
 November 22
@@ -5218,10 +5218,10 @@ case law by the Court of Justice , international law and general principles of E
 general principles of European Union law
 case law by the Court of Justice
 case law by the Court of Justice
-Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
+Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
 The European Commission
 The European Commission
 The European Commission
@@ -5234,14 +5234,14 @@ The European Court of Justice
 The European Court of Justice
 The European Court of Justice
 The European Court of Justice
-The `` European Council ''
-The `` European Council ''
-The `` European Council ''
-The `` European Council ''
-Treaty on European Union -LRB- TEU -RRB-
-Treaty on European Union -LRB- TEU -RRB-
-Treaty on European Union -LRB- TEU -RRB-
-Treaty on European Union -LRB- TEU -RRB-
+The " European Council "
+The " European Council "
+The " European Council "
+The " European Council "
+Treaty on European Union ( TEU )
+Treaty on European Union ( TEU )
+Treaty on European Union ( TEU )
+Treaty on European Union ( TEU )
 the Faroe Islands
 the Faroe Islands
 the Faroe Islands
@@ -5258,10 +5258,10 @@ as soon as they enter into force , unless stated otherwise
 Treaties apply as soon as they enter into force
 as soon as they enter into force
 as soon as they enter into force
-Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
-the Treaty on European Union -LRB- TEU -RRB- and the Treaty on the Functioning of the European Union -LRB- TFEU -RRB-
+Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
+the Treaty on European Union ( TEU ) and the Treaty on the Functioning of the European Union ( TFEU )
 Gibraltar and the Åland islands
 Gibraltar and the Åland islands
 Gibraltar and the Åland islands
@@ -5280,13 +5280,13 @@ with common rules for coal and steel
 with common rules for coal and steel
 Treaty of Rome 1957 and the Maastricht Treaty 1992
 the Treaty of Rome 1957 and the Maastricht Treaty 1992
-the Treaty of Rome 1957 and the Maastricht Treaty 1992 -LRB- now : TFEU -RRB-
-the Treaty of Rome 1957 and the Maastricht Treaty 1992 -LRB- now : TFEU -RRB-
+the Treaty of Rome 1957 and the Maastricht Treaty 1992 ( now : TFEU )
+the Treaty of Rome 1957 and the Maastricht Treaty 1992 ( now : TFEU )
 1985
 1985
 1985
 1985
-in 1972 -LRB- though Norway did not end up joining -RRB-
+in 1972 ( though Norway did not end up joining )
 not
 not
 not
@@ -5361,7 +5361,7 @@ the Commission
 The Commission 's President
 The Commission 's President
 The Commission 's President
-The Commission 's President -LRB-
+The Commission 's President (
 one Commissioner for each of the 28 member states
 one
 one
@@ -5370,10 +5370,10 @@ Federica Mogherini
 Jean-Claude Juncker
 Jean-Claude Juncker
 Jean-Claude Juncker
-Article 17 -LRB- 3 -RRB-
-Article 17 -LRB- 3 -RRB-
-Article 17 -LRB- 3 -RRB-
-Article 17 -LRB- 3 -RRB-
+Article 17 ( 3 )
+Article 17 ( 3 )
+Article 17 ( 3 )
+Article 17 ( 3 )
 The Commission 's President
 The Commission 's President
 The Commission 's President
@@ -5462,7 +5462,7 @@ each six months
 352
 352
 352
-at least 55 per cent of the Council members -LRB- not votes -RRB- representing 65 per cent of the population of the EU
+at least 55 per cent of the Council members ( not votes ) representing 65 per cent of the population of the EU
 74 per cent , or 260 of the 352 votes
 74 per cent , or 260 of the 352 votes
 74 per cent , or 260 of the 352 votes
@@ -5499,17 +5499,17 @@ TEU articles 4 and 5
 TEU articles 4 and 5
 TEU articles 4 and 5
 Conciliation Committee
-a `` Conciliation Committee ''
-a `` Conciliation Committee ''
-a `` Conciliation Committee ''
+a " Conciliation Committee "
+a " Conciliation Committee "
+a " Conciliation Committee "
 judicial branch
 The judicial branch
 The judicial branch
 The judicial branch
-Court of Justice of the European Union -LRB- CJEU -RRB-
-the Court of Justice of the European Union -LRB- CJEU -RRB-
-the Court of Justice of the European Union -LRB- CJEU -RRB-
-the Court of Justice of the European Union -LRB- CJEU -RRB-
+Court of Justice of the European Union ( CJEU )
+the Court of Justice of the European Union ( CJEU )
+the Court of Justice of the European Union ( CJEU )
+the Court of Justice of the European Union ( CJEU )
 28
 28
 28
@@ -5519,17 +5519,17 @@ member state courts
 member state courts
 member state courts
 ensure that in the interpretation and application of the Treaties the law is observed
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
+" ensure that in the interpretation and application of the Treaties the law is observed "
+" ensure that in the interpretation and application of the Treaties the law is observed "
+" ensure that in the interpretation and application of the Treaties the law is observed "
 by assuming the task of interpreting the treaties , and accelerating economic and political integration
 assuming the task of interpreting the treaties , and accelerating economic and political integration
 has the ability to expand and develop the law according to the principles it deems to be appropriate
 has the ability to expand and develop the law according to the principles it deems to be appropriate
 the Court of Justice of the European Union
-the Court of Justice of the European Union -LRB- CJEU -RRB-
-the Court of Justice of the European Union -LRB- CJEU -RRB-
-the Court of Justice of the European Union -LRB- CJEU -RRB-
+the Court of Justice of the European Union ( CJEU )
+the Court of Justice of the European Union ( CJEU )
+the Court of Justice of the European Union ( CJEU )
 Civil Service Tribunal
 Civil Service Tribunal
 Civil Service Tribunal
@@ -5538,10 +5538,10 @@ three years
 three years
 three years
 three years
-to `` ensure that in the interpretation and application of the Treaties the law is observed ''
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
-`` ensure that in the interpretation and application of the Treaties the law is observed ''
+to " ensure that in the interpretation and application of the Treaties the law is observed "
+" ensure that in the interpretation and application of the Treaties the law is observed "
+" ensure that in the interpretation and application of the Treaties the law is observed "
+" ensure that in the interpretation and application of the Treaties the law is observed "
 EU law
 EU law has primacy
 EU law has primacy
@@ -5607,8 +5607,8 @@ a postal company
 a postal company
 a postal company
 Treaty provisions
-EU Regulations are the same as Treaty provisions in this sense , because as TFEU article 288 states , they are ` directly applicable in all Member States '
-they are ` directly applicable in all Member States '
+EU Regulations are the same as Treaty provisions in this sense , because as TFEU article 288 states , they are ‘ directly applicable in all Member States ’
+they are ‘ directly applicable in all Member States ’
 Directives
 Directives
 Directives
@@ -5625,7 +5625,7 @@ the member state can not enforce conflicting laws , and a citizen may rely on th
 the member state can not enforce conflicting laws
 the member state can not enforce conflicting laws
 a citizen or company can invoke a Directive , not just in a dispute with a public authority , but in a dispute with another citizen or company
-a citizen may rely on the Directive in such an action -LRB- so called `` vertical '' direct effect -RRB-
+a citizen may rely on the Directive in such an action ( so called " vertical " direct effect )
 a citizen may rely on the Directive in such an action
 10 years
 10 years
@@ -5651,9 +5651,9 @@ to set up an insurance fund for employees to claim unpaid wages if their employe
 the European Court of Justice
 the European Court of Justice
 the European Court
-fundamental rights -LRB- see human rights -RRB- , proportionality , legal certainty , equality before the law and subsidiarity
-fundamental rights -LRB- see human rights -RRB- , proportionality , legal certainty , equality before the law and subsidiarity
-fundamental rights -LRB- see human rights -RRB- , proportionality , legal certainty , equality before the law and subsidiarity
+fundamental rights ( see human rights ) , proportionality , legal certainty , equality before the law and subsidiarity
+fundamental rights ( see human rights ) , proportionality , legal certainty , equality before the law and subsidiarity
+fundamental rights ( see human rights ) , proportionality , legal certainty , equality before the law and subsidiarity
 since the 1950s
 since the 1950s
 since the 1950s
@@ -5729,9 +5729,9 @@ the 1997 Treaty of Amsterdam
 The UK
 UK
 UK
-the `` Social Chapter ''
-the `` Social Chapter ''
-`` Social Chapter ''
+the " Social Chapter "
+the " Social Chapter "
+" Social Chapter "
 1992
 1992
 1992
@@ -5765,9 +5765,9 @@ article 66
 1957
 1957
 1957
-Article 101 -LRB- 1 -RRB-
-Article 101 -LRB- 1 -RRB-
-Article 101 -LRB- 1 -RRB-
+Article 101 ( 1 )
+Article 101 ( 1 )
+Article 101 ( 1 )
 the abuse of dominant position
 the abuse of dominant position
 abuse of dominant position
@@ -5841,12 +5841,12 @@ the European Community
 the European Community
 the European Community
 citizenship
-`` citizenship ''
-`` citizenship ''
+" citizenship "
+" citizenship "
 Steymann v Staatssecretaris van Justitie
 Steymann v Staatssecretaris van Justitie
 Steymann v Staatssecretaris van Justitie
-to stay , so long as there was at least an `` indirect quid pro quo '' for the work he did
+to stay , so long as there was at least an " indirect quid pro quo " for the work he did
 stay
 stay
 articles 1 to 7
@@ -5880,8 +5880,8 @@ the Treaty on the Functioning of the European Union
 the Treaty on the Functioning of the European Union
 the Treaty on the Functioning of the European Union
 if they were non-discriminatory
-if they were non-discriminatory , `` justified by imperative requirements in the general interest '' and proportionately applied
-participate in economic life `` on a stable and continuous basis ''
+if they were non-discriminatory , " justified by imperative requirements in the general interest " and proportionately applied
+participate in economic life " on a stable and continuous basis "
 Reyners v Belgium
 Reyners v Belgium the Court of Justice
 Reyners v Belgium
@@ -5903,9 +5903,9 @@ October 2007
 2005
 2005
 2005
-to people who give services `` for remuneration ''
-people who give services `` for remuneration '' , especially commercial or professional activity
-people who give services `` for remuneration ''
+to people who give services " for remuneration "
+people who give services " for remuneration " , especially commercial or professional activity
+people who give services " for remuneration "
 because Dutch law said only people established in the Netherlands could give legal advice
 Dutch law said only people established in the Netherlands could give legal advice
 Dutch law said only people established in the Netherlands could give legal advice
@@ -5933,13 +5933,13 @@ Denmark 's minimum capital law
 also known in English as Amazonia or the Amazon Jungle ,
 Amazonia or the Amazon Jungle
 Amazonia
-5,500,000 square kilometres -LRB- 2,100,000 sq mi -RRB- are covered by the rainforest .
+5,500,000 square kilometres ( 2,100,000 sq mi ) are covered by the rainforest .
 5,500,000
 5,500,000
 This region includes territory belonging to nine nations .
 nine
 nine
-States or departments in four nations contain `` Amazonas '' in their names .
+States or departments in four nations contain " Amazonas " in their names .
 four
 four
 The Amazon represents over half of the planet 's remaining rainforests
@@ -5962,7 +5962,7 @@ over half
 moist broadleaf forest
 moist broadleaf forest
 tropical
-7,000,000 square kilometres -LRB- 2,70
+7,000,000 square kilometres ( 2,70
 7,000,000
 7,000,000 square kilometres
 nine nations
@@ -6003,11 +6003,11 @@ Oligocene
 It expanded
 expanded
 expanded
-Cretaceous -- Paleogene extinction event
+Cretaceous – Paleogene extinction event
 dinosaurs
 dinosaurs
-66 -- 34 Mya
-66 -- 34
+66 – 34 Mya
+66 – 34
 Middle Miocene
 Middle Miocene
 Middle Miocene
@@ -6026,9 +6026,9 @@ toward the Atlantic
 Solimões Basin
 Solimões Basin
 Solimões Basin
-Within the last 5 -- 10 million years
-Within the last 5 -- 10 million years
-last 5 -- 10 million years
+Within the last 5 – 10 million years
+Within the last 5 – 10 million years
+last 5 – 10 million years
 joining the easterly flow toward the Atlantic .
 the easterly flow
 easterly
@@ -6079,7 +6079,7 @@ reasonably well
 21,000
 21,000
 21,000
-the Last Glacial Maximum -LRB- LGM -RRB- and subsequent deglaciation
+the Last Glacial Maximum ( LGM ) and subsequent deglaciation
 rainfall in the basin during the LGM was lower than for the present
 rainfall
 sediment deposits
@@ -6202,18 +6202,18 @@ spread of diseases from Europe
 1970s
 Since the 1970s
 1970s
-AD 0 -- 1250
-between AD 0 -- 1250
-AD 0 -- 1250
+AD 0 – 1250
+between AD 0 – 1250
+AD 0 – 1250
 Francisco de Orellana
 Francisco de Orellana
 Francisco de Orellana
 1542
 1542
 1542
-AD 0 -- 1250
-between AD 0 -- 1250
-AD 0 -- 1250
+AD 0 – 1250
+between AD 0 – 1250
+AD 0 – 1250
 Ondemar Dias
 Ondemar Dias
 Ondemar Dias
@@ -6235,7 +6235,7 @@ Xingu
 Michael Heckenberger and colleagues of the University of Florida
 Michael Heckenberger and colleagues of the University of Florida
 Michael Heckenberger and colleagues of the University of Florida
-Terra preta -LRB- black earth -RRB-
+Terra preta ( black earth )
 Terra preta
 black earth
 agriculture and silviculture
@@ -6451,7 +6451,7 @@ Tatiana Kuplich
 2006
 2006
 2006
-Synthetic aperture radar -LRB- SAR -RRB-
+Synthetic aperture radar ( SAR )
 Synthetic aperture
 Synthetic aperture radar
 2005
@@ -6487,35 +6487,35 @@ three
 phylum of animals that live in marine waters
 a phylum of animals
 comb jellies
-` combs ' -- groups of cilia
+‘ combs ’ – groups of cilia
 cilia
 cilia
 water flow through the body cavity
 water flow
 water flow through the body cavity
-1.5 m -LRB- 4 ft 11 in -RRB-
+1.5 m ( 4 ft 11 in )
 a few millimeters to 1.5 m
-` combs ' -- groups of cilia
+‘ combs ’ – groups of cilia
 combs
-the ` combs '
+the ‘ combs ’
 comb jellies
 comb jellies
 comb jellies
-1.5 m -LRB- 4 ft 11 in -RRB-
-1.5 m -LRB- 4 ft 11 in -RRB-
+1.5 m ( 4 ft 11 in )
+1.5 m ( 4 ft 11 in )
 a few millimeters to 1.5 m
 water flow through the body cavity
-κτείς kteis ` comb ' and φέρω pherō ` carry '
+κτείς kteis ' comb ' and φέρω pherō ' carry '
 water flow through the body cavity
-κτείς kteis ` comb ' and φέρω pherō ` carry '
-κτείς kteis ` comb ' and φέρω pherō ` carry '
-kteis ` comb ' and φέρω pherō ` carry '
+κτείς kteis ' comb ' and φέρω pherō ' carry '
+κτείς kteis ' comb ' and φέρω pherō ' carry '
+kteis ' comb ' and φέρω pherō ' carry '
 marine waters
 marine waters worldwide
 marine waters
-100 -- 150 species
-100 -- 150
-100 -- 150
+100 – 150 species
+100 – 150
+100 – 150
 tentilla
 tentilla
 tentilla
@@ -6540,9 +6540,9 @@ stiffened cilia
 colloblasts
 retractable tentacles fringed with tentilla
 colloblasts
-100 -- 150 species
-100 -- 150
-100 -- 150 species have been validated
+100 – 150 species
+100 – 150
+100 – 150 species have been validated
 can produce both eggs and sperm , meaning it can fertilize its own egg
 it can fertilize its own egg
 a single animal can produce both eggs and sperm
@@ -6604,7 +6604,7 @@ accidental introduction of Beroe
 66 million years ago
 monophyletic
 monophyletic
-`` cydippids '' are not monophyletic
+" cydippids " are not monophyletic
 515 million years
 66 million years ago
 515 million years
@@ -6614,9 +6614,9 @@ tentacles
 515 million years
 66 million years
 515 million years
-Cretaceous -- Paleogene extinction
-the Cretaceous -- Paleogene extinction
-Cretaceous -- Paleogene extinction
+Cretaceous – Paleogene extinction
+the Cretaceous – Paleogene extinction
+Cretaceous – Paleogene extinction
 monophyletic
 monophyletic
 monophyletic
@@ -6675,7 +6675,7 @@ ctenes
 ctenes
 ctenes
 comb-bearing
-`` comb '' and the Greek suffix - φορος meaning `` carrying ''
+" comb " and the Greek suffix - φορος meaning " carrying "
 comb-bearing
 Pleurobrachia
 Pleurobrachia
@@ -6698,7 +6698,7 @@ bioluminescence
 pharynx
 pharynx
 pharynx
-a mouth that can usually be closed by muscles ; a pharynx -LRB- `` throat '' -RRB- ; a wider area in the center that acts as a stomach ; and a system of internal canals .
+a mouth that can usually be closed by muscles ; a pharynx ( " throat " ) ; a wider area in the center that acts as a stomach ; and a system of internal canals .
 a system of internal canals
 the gastrodermis
 the mouth and pharynx ;
@@ -6707,8 +6707,8 @@ the mouth and pharynx
 swimming-plates
 swimming-plates
 swimming-plates
-also called `` ctenes '' or `` comb plates
-`` ctenes '' or `` comb plates ''
+also called " ctenes " or " comb plates
+" ctenes " or " comb plates "
 ctenes
 supporting function
 suspected to have a supporting function
@@ -6716,7 +6716,7 @@ a supporting function
 in the direction in which the mouth is pointing ,
 the direction in which the mouth is pointing
 direction in which the mouth is pointing
-2 millimeters -LRB- 0.079 in -RRB-
+2 millimeters ( 0.079 in )
 2 millimeters
 2 millimeters
 osmotic pressure
@@ -6821,27 +6821,27 @@ Nuda
 The Beroida
 Beroida
 Beroida
-zip '' the mouth shut when the animal is not feeding ,
-`` zip '' the mouth shut when the animal is not feeding
-`` zip '' the mouth shut when the animal is not feeding
-`` zip '' the mouth shut
+zip " the mouth shut when the animal is not feeding ,
+" zip " the mouth shut when the animal is not feeding
+" zip " the mouth shut when the animal is not feeding
+" zip " the mouth shut
 streamlines the front of the animal
 tight closure streamlines the front of the animal
 large pharynx
 large cilia
-`` macrocilia ''
+" macrocilia "
 The Cestida
 Cestida
 Cestida
 belt animals
 belt animals
-`` belt animals ''
+" belt animals "
 by undulating their bodies as well as by the beating of their comb-rows .
 undulating their bodies
 by undulating their bodies as well as by the beating of their comb-rows
 Cestum veneris
 Cestum veneris
-up to 1.5 meters -LRB- 4.9 ft -RRB- long
+up to 1.5 meters ( 4.9 ft ) long
 Velamen parallelum
 Velamen parallelum
 Velamen parallelum
@@ -6849,8 +6849,8 @@ a pair of tentilla-bearing tentacles
 tentilla-bearing tentacles
 a pair of tentilla-bearing tentacles
 cling to and creep on surfaces
-as a muscular `` foot ''
-as a muscular `` foot ''
+as a muscular " foot "
+as a muscular " foot "
 comb-rows
 comb-rows
 comb-rows
@@ -6887,9 +6887,9 @@ like true larvae
 Beroe
 Beroe
 Beroe
-they produce secretions -LRB- ink -RRB- that luminesce
-they produce secretions -LRB- ink -RRB- that luminesce at much the same wavelengths as their bodies
-they produce secretions -LRB- ink -RRB- that luminesce
+they produce secretions ( ink ) that luminesce
+they produce secretions ( ink ) that luminesce at much the same wavelengths as their bodies
+they produce secretions ( ink ) that luminesce
 are disturbed ,
 disturbed
 are disturbed
@@ -6905,9 +6905,9 @@ predators
 jellyfish
 jellyfish
 jellyfish
-incorporate their prey 's nematocysts -LRB- stinging cells -RRB- into their own tentacles instead of colloblasts
-incorporate their prey 's nematocysts -LRB- stinging cells -RRB- into their own tentacles
-incorporate their prey 's nematocysts -LRB- stinging cells -RRB- into their own tentacles
+incorporate their prey 's nematocysts ( stinging cells ) into their own tentacles instead of colloblasts
+incorporate their prey 's nematocysts ( stinging cells ) into their own tentacles
+incorporate their prey 's nematocysts ( stinging cells ) into their own tentacles
 smaller , weaker swimmers such as rotifers and mollusc and crustacean larvae .
 smaller , weaker swimmers such as rotifers and mollusc and crustacean larvae
 rotifers and mollusc and crustacean larvae
@@ -6995,16 +6995,16 @@ Richard Harbison
 Fresno
 Fresno
 Fresno
-220 miles -LRB- 350 km -RRB-
-220 miles -LRB- 350 km -RRB-
-220 miles -LRB- 350 km -RRB-
+220 miles ( 350 km )
+220 miles ( 350 km )
+220 miles ( 350 km )
 ash tree
 ash tree
 ash tree
 ash leaf
 ash leaf
 an ash leaf
--LRB- / ˈfrɛznoʊ / FREZ-noh -RRB-
+( / ˈfrɛznoʊ / FREZ-noh )
 FREZ-noh
 FREZ-noh
 1872
@@ -7084,9 +7084,9 @@ Kearney Park
 Between the 1880s and World War II
 Between the 1880s and World War II
 Between the 1880s and World War II
-Fresno County Courthouse -LRB- demolished -RRB- , the Fresno Carnegie Public Library
-Fresno County Courthouse -LRB- demolished -RRB- , the Fresno Carnegie Public Library
-the original Fresno County Courthouse -LRB- demolished -RRB- , the Fresno Carnegie Public Library -LRB- demolished -RRB-
+Fresno County Courthouse ( demolished ) , the Fresno Carnegie Public Library
+Fresno County Courthouse ( demolished ) , the Fresno Carnegie Public Library
+the original Fresno County Courthouse ( demolished ) , the Fresno Carnegie Public Library ( demolished )
 San Joaquin Light & Power Building
 San Joaquin Light & Power Building
 San Joaquin Light & Power Building
@@ -7194,7 +7194,7 @@ William Stranahan
 Fresno Traction Company
 Fresno Traction Company
 Fresno Traction Company
-`` Southwest Fresno ''
+" Southwest Fresno "
 Southwest Fresno
 Southwest Fresno
 southwest
@@ -7206,7 +7206,7 @@ African-American
 Hmong or Laotian
 Hmong or Laotian
 Hmong or Laotian
-`` West Side ''
+" West Side "
 West Side
 West Side
 M. Theo Kearney
@@ -7274,7 +7274,7 @@ July
 July
 July
 around 11.5 inches
-11.5 inches -LRB- 292.1 mm -RRB-
+11.5 inches ( 292.1 mm )
 11.5 inches
 northwest
 northwest
@@ -7283,7 +7283,7 @@ December , January and February
 December , January and February
 December , January and February
 115 °F
-115 °F -LRB- 46.1 °C -RRB-
+115 °F ( 46.1 °C )
 115 °F
 January 6 , 1913
 January 6 , 1913
@@ -7291,10 +7291,10 @@ January 6 , 1913
 1885
 July 1982 to June 1983
 2.2 inches
-2.2 inches -LRB- 0.06 m -RRB-
+2.2 inches ( 0.06 m )
 2.2 inches
 3.55 inches
-3.55 inches -LRB- 90.2 mm -RRB-
+3.55 inches ( 90.2 mm )
 3.55 inches
 494,665
 494,665
@@ -7519,8 +7519,8 @@ connection-oriented operations
 Frame Relay was used to interconnect LANs across wide area networks . However , X. 25 and well as Frame Relay have been supplanted
 provide connection-oriented operations
 standardized interface
-supplanted by the Internet Protocol -LRB- IP -RRB- at the network layer , and the Asynchronous Transfer Mode -LRB- ATM -RRB- and or versions of Multi-Protocol Label Switching
-Internet Protocol -LRB- IP -RRB-
+supplanted by the Internet Protocol ( IP ) at the network layer , and the Asynchronous Transfer Mode ( ATM ) and or versions of Multi-Protocol Label Switching
+Internet Protocol ( IP )
 Internet Protocol
 A typical configuration is to run IP over ATM or a version of MPLS
 run IP over ATM or a version of MPLS
@@ -7567,7 +7567,7 @@ suite of network protocols created by Digital Equipment Corporation
 connect two PDP-11 minicomputers
 connect two PDP-11 minicomputers
 connect two PDP-11 minicomputers
-Initially built with three layers , it later -LRB- 1982 -RRB- evolved into a seven-layer OSI-compliant networking protocol
+Initially built with three layers , it later ( 1982 ) evolved into a seven-layer OSI-compliant networking protocol
 seven
 seven
 were open standards with published specifications , and several implementations were developed outside DEC , including one for Linux
@@ -7582,8 +7582,8 @@ world 's first commercial online service
 They lost money from the beginning , and Sinback , a high-level marketing manager , was given the job of turning the business around
 They lost money
 lost money
-that a time-sharing system , based on Kemney 's work at Dartmouth -- which used a computer on loan from GE -- could be profitable
-a time-sharing system , based on Kemney 's work at Dartmouth -- which used a computer on loan from GE -- could be profitable
+that a time-sharing system , based on Kemney 's work at Dartmouth — which used a computer on loan from GE — could be profitable
+a time-sharing system , based on Kemney 's work at Dartmouth — which used a computer on loan from GE — could be profitable
 could be profitable
 as a means to help the state 's educational and economic development
 to explore computer networking between three of Michigan 's public universities
@@ -7612,13 +7612,13 @@ GTE
 an international data communications network headquartered in San Jose , CA
 an international data communications network
 international data communications network
-connect host computers -LRB- servers -RRB- at thousands of large companies , educational institutions , and government agencies
-host computers -LRB- servers -RRB- at thousands of large companies , educational institutions , and government agencies
+connect host computers ( servers ) at thousands of large companies , educational institutions , and government agencies
+host computers ( servers ) at thousands of large companies , educational institutions , and government agencies
 host computers
 connected via dial-up connections or dedicated async connections
 dial-up connections or dedicated async connections
 dial-up
-government agencies and large companies -LRB- mostly banks and airlines -RRB- to build their own dedicated networks
+government agencies and large companies ( mostly banks and airlines ) to build their own dedicated networks
 build their own dedicated networks
 build their own dedicated networks
 private networks were often connected via gateways to the public network to reach locations not on the private network
@@ -7648,14 +7648,14 @@ public switched data network
 Datanet 1 only referred to the network and the connected users via leased lines
 the network
 the network and the connected users
-public PAD service Telepad -LRB- using the DNIC 2049
+public PAD service Telepad ( using the DNIC 2049
 the public PAD service Telepad
 public PAD service Telepad
 use of the name was incorrect all these services were managed by the same people within one department of KPN contributed to the confusion
 the name was incorrect
 Dutch PTT Telecom
 The Computer Science Network
-a computer network funded by the U.S. National Science Foundation -LRB- NSF -RRB-
+a computer network funded by the U.S. National Science Foundation ( NSF )
 Computer Science Network
 to extend networking benefits , for computer science departments at academic and research institutions that could not be directly connected to ARPANET
 to extend networking benefits
@@ -7699,8 +7699,8 @@ National Science Foundation
 By 1998 , the vBNS had grown to connect more than 100 universities and research and engineering institutions via 12 national points of presence with DS-3
 more than 100 universities
 100
-vBNS installed one of the first ever production OC-48c -LRB- 2.5 Gbit/s -RRB- IP links in February 1999 and went on to upgrade the entire backbone to OC-48c
-one of the first ever production OC-48c -LRB- 2.5 Gbit/s -RRB- IP links
+vBNS installed one of the first ever production OC-48c ( 2.5 Gbit/s ) IP links in February 1999 and went on to upgrade the entire backbone to OC-48c
+one of the first ever production OC-48c ( 2.5 Gbit/s ) IP links
 OC-48c
 the arid plains of Central Asia
 Central Asia
@@ -7708,9 +7708,9 @@ Central Asia
 merchant ships .
 merchant ships
 Silk Road
-30 -- 60 % of Europe 's total population
-30 -- 60 % of Europe 's total population
-30 -- 60 %
+30 – 60 % of Europe 's total population
+30 – 60 % of Europe 's total population
+30 – 60 %
 the 17th century
 17th century
 17th century
@@ -7720,9 +7720,9 @@ until the 19th century
 commonly present
 commonly present
 commonly present
-dating to 1338 -- 39
-1338 -- 39
-1338 -- 39
+dating to 1338 – 39
+1338 – 39
+1338 – 39
 China
 China
 China
@@ -7831,11 +7831,11 @@ rats and fleas
 the Justinian plague that was prevalent in the Eastern Roman Empire from 541 to 700 CE .
 Justinian plague
 Justinian plague
-30 -- 75 %
-30 -- 75 %
-30 -- 75 %
-100 -- 106 °F
-38 -- 41 °C
+30 – 75 %
+30 – 75 %
+30 – 75 %
+100 – 106 °F
+38 – 41 °C
 41 °C
 80 percent
 80
@@ -7852,9 +7852,9 @@ October 2010
 a new investigation into the role of Yersinia pestis in the Black Death
 role of Yersinia pestis in the Black Death
 the role of Yersinia pestis in the Black Death
-with Polymerase Chain Reaction -LRB- PCR -RRB-
-Polymerase Chain Reaction -LRB- PCR -RRB- techniques
-Polymerase Chain Reaction -LRB- PCR -RRB- techniques
+with Polymerase Chain Reaction ( PCR )
+Polymerase Chain Reaction ( PCR ) techniques
+Polymerase Chain Reaction ( PCR ) techniques
 from the tooth sockets in human skeletons
 mass graves in northern , central and southern Europe
 tooth sockets in human skeletons
@@ -7942,9 +7942,9 @@ a combination of anthrax and other pandemics
 typhus , smallpox and respiratory infections
 typhus , smallpox and respiratory infections
 typhus , smallpox and respiratory infections
--LRB- a type of `` blood poisoning ''
-a type of `` blood poisoning ''
-a type of `` blood poisoning ''
+( a type of " blood poisoning "
+a type of " blood poisoning "
+a type of " blood poisoning "
 25
 25
 25
@@ -7978,9 +7978,9 @@ propose a range of preincident population figures
 By the end of 1350
 1350
 By the end of 1350
-10 -- 15 % of the population
-10 -- 15 % of the population
-10 -- 15 % of the population
+10 – 15 % of the population
+10 – 15 % of the population
+10 – 15 % of the population
 1665
 1665
 1665
@@ -7993,7 +7993,7 @@ Russia
 22 times between 1361 and 1528
 22
 22
-the Italian Plague of 1629 -- 1631
+the Italian Plague of 1629 – 1631
 Italian Plague
 Italian Plague
 The last plague outbreak ravaged Oslo in 1654 .
@@ -8026,10 +8026,10 @@ until the second quarter of the 19th century
 two-thirds of its population
 two-thirds of its population
 two-thirds of its population
-melt -LRB- magma and/or lava -RRB-
+melt ( magma and/or lava )
 melt
-rock crystallizes from melt -LRB- magma and/or lava -RRB-
-melt -LRB- magma and/or lava -RRB-
+rock crystallizes from melt ( magma and/or lava )
+melt ( magma and/or lava )
 metamorphic rock
 metamorphic
 metamorphic rock
@@ -8449,9 +8449,9 @@ specialised education and training
 other senior pharmacy technicians
 senior pharmacy technicians
 other senior pharmacy technicians
-the General Pharmaceutical Council -LRB- GPhC -RRB- register
-General Pharmaceutical Council -LRB- GPhC -RRB-
-General Pharmaceutical Council -LRB- GPhC -RRB- register
+the General Pharmaceutical Council ( GPhC ) register
+General Pharmaceutical Council ( GPhC )
+General Pharmaceutical Council ( GPhC ) register
 regulates the practice of pharmacists and pharmacy technicians
 governing body for pharmacy health care professionals
 regulates the practice of pharmacists and pharmacy technicians
@@ -8479,9 +8479,9 @@ many middle eastern scientists
 highly respected
 highly respected
 highly respected
-the Taihō Code -LRB- 701 -RRB- and re-stated in the Yōrō Code -LRB- 718 -RRB-
-Taihō Code -LRB- 701 -RRB- and re-stated in the Yōrō Code
-Taihō Code -LRB- 701 -RRB- and re-stated in the Yōrō Code
+the Taihō Code ( 701 ) and re-stated in the Yōrō Code ( 718 )
+Taihō Code ( 701 ) and re-stated in the Yōrō Code
+Taihō Code ( 701 ) and re-stated in the Yōrō Code
 the pre-Heian Imperial court
 Taihō Code
 pre-Heian Imperial court
@@ -8635,9 +8635,9 @@ more convenient and private method
 the method by which the medications are requested and received
 method by which the medications are requested and received
 the method by which the medications are requested and received
-to avoid the `` inconvenience '' of visiting a doctor or to obtain medications which their doctors were unwilling to prescribe
-avoid the `` inconvenience '' of visiting a doctor
-avoid the `` inconvenience '' of visiting a doctor or to obtain medications which their doctors were unwilling to prescribe
+to avoid the " inconvenience " of visiting a doctor or to obtain medications which their doctors were unwilling to prescribe
+avoid the " inconvenience " of visiting a doctor
+avoid the " inconvenience " of visiting a doctor or to obtain medications which their doctors were unwilling to prescribe
 those who feel that only doctors can reliably assess contraindications , risk/benefit ratios , and an individual 's overall suitability for use of a medication .
 by those who feel that only doctors can reliably assess contraindications , risk/benefit ratios , and an individual 's overall suitability for use of a medication
 those who feel that only doctors can reliably assess contraindications , risk/benefit ratios , and an individual 's overall suitability for use of a medication
@@ -8719,15 +8719,15 @@ separately from physicians
 only pharmacists
 only pharmacists
 only pharmacists may supply scheduled pharmaceuticals to the public
-the American Medical Association -LRB- AMA -RRB-
+the American Medical Association ( AMA )
 American Medical Association
-American Medical Association -LRB- AMA -RRB-
+American Medical Association ( AMA )
 7 to 10 percent
 7 to 10 percent
 7 to 10 percent of American physicians
-form business partnerships with physicians or give them `` kickback '' payments
+form business partnerships with physicians or give them " kickback " payments
 form business partnerships with physicians
-pharmacists can not form business partnerships with physicians or give them `` kickback '' payments
+pharmacists can not form business partnerships with physicians or give them " kickback " payments
 In some rural areas in the United Kingdom
 rural areas in the United Kingdom
 prescribe and dispense prescription-only medicines to their patients from within their practices
@@ -8751,7 +8751,7 @@ checks and balances system of the U.S. and many other governments
 similarity to the checks and balances system of the U.S. and many other governments
 in obtaining cost-effective medication and avoiding the unnecessary use of medication that may have side-effects
 obtaining cost-effective medication
-the physician has a financial self-interest in `` diagnosing '' as many conditions as possible
+the physician has a financial self-interest in " diagnosing " as many conditions as possible
 exaggerating their seriousness
 avoiding the unnecessary use of medication that may have side-effects
 because he or she can then sell more medications to the patient
@@ -8764,9 +8764,9 @@ pharmacists are increasingly expected to be compensated for their patient care s
 clinical services that pharmacists can provide for their patients
 clinical services that pharmacists can provide for their patients
 the clinical services that pharmacists can provide for their patients
-thorough analysis of all medication -LRB- prescription , non-prescription , and herbals -RRB- currently being taken by an individual
-thorough analysis of all medication -LRB- prescription , non-prescription , and herbals -RRB- currently being taken by an individual .
-the thorough analysis of all medication -LRB- prescription , non-prescription , and herbals -RRB- currently being taken by an individual
+thorough analysis of all medication ( prescription , non-prescription , and herbals ) currently being taken by an individual
+thorough analysis of all medication ( prescription , non-prescription , and herbals ) currently being taken by an individual .
+the thorough analysis of all medication ( prescription , non-prescription , and herbals ) currently being taken by an individual
 a reconciliation of medication and patient education resulting in increased patient health outcomes and decreased costs to the health care system
 increased patient health outcomes and decreased costs
 a reconciliation of medication and patient education resulting in increased patient health outcomes and decreased costs to the health care system
@@ -8782,12 +8782,12 @@ medicine use reviews
 pharmaceutical care or clinical pharmacy
 pharmaceutical care or clinical pharmacy
 pharmaceutical care or clinical pharmacy
-Doctor of Pharmacy -LRB- Pharm . D. -RRB-
+Doctor of Pharmacy ( Pharm . D. )
 Doctor of Pharmacy
-the Doctor of Pharmacy -LRB- Pharm . D. -RRB- degree
-the mortar and pestle and the ℞ -LRB- recipere -RRB- character
-mortar and pestle and the ℞ -LRB- recipere -RRB- character
-the mortar and pestle and the ℞ -LRB- recipere -RRB- character
+the Doctor of Pharmacy ( Pharm . D. ) degree
+the mortar and pestle and the ℞ ( recipere ) character
+mortar and pestle and the ℞ ( recipere ) character
+the mortar and pestle and the ℞ ( recipere ) character
 The show globe
 show globe
 show globe
@@ -9165,7 +9165,7 @@ Brownlee
 Brownlee
 a larger challenge to the legal system
 challenge to the legal system that permits those decisions to be taken
-it reflects `` a larger challenge to the legal system that permits those decisions to be taken
+it reflects " a larger challenge to the legal system that permits those decisions to be taken
 a larger challenge to the legal system
 universities
 private universities
@@ -9187,7 +9187,7 @@ hiding a Jew
 hiding a Jew in their house
 hiding a Jew in their house
 hiding a Jew
--LRB- Exodus 1 : 15-19 -RRB-
+( Exodus 1 : 15-19 )
 Book of Exodus
 the Book of Exodus
 Shiphrah and Puah refused a direct order of Pharaoh but misrepresented how they did it
@@ -9294,11 +9294,11 @@ Non-revolutionary civil disobedience
 Non-revolutionary civil disobedience
 Non-revolutionary
 cultural revolution
-judged `` wrong '' by an individual conscience
-they are judged `` wrong '' by an individual conscience
-they are judged `` wrong '' by an individual conscience
+judged " wrong " by an individual conscience
+they are judged " wrong " by an individual conscience
+they are judged " wrong " by an individual conscience
 to cause their repeal
-they are judged `` wrong '' by an individual conscience
+they are judged " wrong " by an individual conscience
 render certain laws ineffective
 to render certain laws ineffective , to cause their repeal , or to exert pressure to get one 's political wishes on some other issue
 render certain laws ineffective , to cause their repeal
@@ -9418,9 +9418,9 @@ sending an email
 sending an email to the Lebanon , New Hampshire city councilors
 sending an email
 sending an email to the Lebanon
-`` Wise up or die . ''
+" Wise up or die . "
 Wise up or die
-`` Wise up or die . ''
+" Wise up or die . "
 Wise up or die
 Wise up or die
 criminalized behavior
@@ -9593,7 +9593,7 @@ protest
 arrested
 arrest
 were immediately arrested
-one at a time they stepped across the `` line '' and were immediately arrested
+one at a time they stepped across the " line " and were immediately arrested
 put on a bus and taken to the Nye County seat of Tonopah , Nevada , and arraigned for trial before the local Justice of the Peace
 nolo contendere
 nolo contendere
@@ -9622,8 +9622,8 @@ the spirit of protest should be maintained all the way
 spirit of protest
 accept jail penitently
 is to switch suddenly to a spirit of subservience
-To accept jail penitently as an accession to ` the rules ' is to switch suddenly to a spirit of subservience
-To accept jail penitently as an accession to ` the rules ' is to switch suddenly to a spirit of subservience
+To accept jail penitently as an accession to ' the rules ' is to switch suddenly to a spirit of subservience
+To accept jail penitently as an accession to ' the rules ' is to switch suddenly to a spirit of subservience
 plea bargain
 plead guilty to one misdemeanor count and receive no jail time
 plea bargain
@@ -9759,7 +9759,7 @@ whether it would do more harm than good
 whether it would do more harm than good .
 the state
 judges
-the state -LRB- including the judges -RRB-
+the state ( including the judges )
 the judges
 judges
 moral reasons to follow this law
@@ -9776,9 +9776,9 @@ manufacturing
 six to nine percent
 six to nine percent
 six to nine percent
-planning , -LSB- citation needed -RSB- design , and financing
-planning , -LSB- citation needed -RSB- design , and financing
-planning , -LSB- citation needed -RSB- design , and financing and continues until the project is built
+planning , [ citation needed ] design , and financing
+planning , [ citation needed ] design , and financing
+planning , [ citation needed ] design , and financing and continues until the project is built
 a known client
 client
 known client
@@ -9801,8 +9801,8 @@ buildings , infrastructure and industrial
 buildings , infrastructure and industrial
 buildings , infrastructure and industrial
 residential and non-residential
-residential and non-residential -LRB- commercial/institutional -RRB-
-residential and non-residential -LRB- commercial/institutional -RRB-
+residential and non-residential ( commercial/institutional )
+residential and non-residential ( commercial/institutional )
 heavy/highway , heavy civil or heavy engineering
 heavy/highway , heavy civil or heavy engineering
 heavy/highway , heavy civil or heavy engineering
@@ -9816,8 +9816,8 @@ a trade magazine for the construction industry
 a trade magazine for the construction industry
 trade magazine for the construction industry
 ENR
-Engineering News-Record -LRB- ENR -RRB-
-Engineering News-Record -LRB- ENR -RRB-
+Engineering News-Record ( ENR )
+Engineering News-Record ( ENR )
 2014
 2014
 2014
@@ -9827,15 +9827,15 @@ transportation , sewer , hazardous waste and water
 building construction , heavy and civil engineering construction , and specialty trade contractors
 building construction , heavy and civil engineering construction , and specialty trade contractors
 building construction , heavy and civil engineering construction , and specialty trade contractors
-construction service firms -LRB- e.g. , engineering , architecture -RRB- and construction managers
+construction service firms ( e.g. , engineering , architecture ) and construction managers
 service firms
-construction service firms -LRB- e.g. , engineering , architecture -RRB- and construction managers
+construction service firms ( e.g. , engineering , architecture ) and construction managers
 The Standard Industrial Classification and the newer North American Industry Classification System
 Standard Industrial Classification
 The Standard Industrial Classification and the newer North American Industry Classification System
 firms engaged in managing construction projects without assuming direct financial responsibility for completion of the construction project
 firms engaged in managing construction projects
--LRB- firms engaged in managing construction projects without assuming direct financial responsibility for completion of the construction project -RRB-
+( firms engaged in managing construction projects without assuming direct financial responsibility for completion of the construction project )
 Building construction
 Building construction
 Building construction
@@ -9872,9 +9872,9 @@ around 20 hours
 Working versions of 3D-printing building technology are already printing
 2014
 2014
-2 metres -LRB- 6 ft 7 in -RRB-
-2 metres -LRB- 6 ft 7 in -RRB-
-2 metres -LRB- 6 ft 7 in -RRB-
+2 metres ( 6 ft 7 in )
+2 metres ( 6 ft 7 in )
+2 metres ( 6 ft 7 in )
 designs into reality
 designs into reality
 designs into reality
@@ -9896,12 +9896,12 @@ previously separated specialties , especially among large firms
 entirely separate companies
 entirely separate companies
 entirely separate companies
-`` one-stop shopping ''
+" one-stop shopping "
 one-stop shopping
-`` one-stop shopping ''
-`` design build '' contract
+" one-stop shopping "
+" design build " contract
 design build
-`` design build '' contract
+" design build " contract
 design-build , partnering and construction management
 design-build , partnering and construction management
 design-build , partnering and construction management
@@ -9974,9 +9974,9 @@ relationship contracting
 Public-Private Partnering
 Public-Private Partnering
 Public-Private Partnering
-private finance initiatives -LRB- PFIs -RRB-
-private finance initiatives -LRB- PFIs -RRB-
-private finance initiatives -LRB- PFIs -RRB-
+private finance initiatives ( PFIs )
+private finance initiatives ( PFIs )
+private finance initiatives ( PFIs )
 co-operation
 co-operation
 co-operation
@@ -10076,7 +10076,7 @@ select their students
 $ 45,000
 more than $ 45,000
 $ 45,000
-` tuition-free
+' tuition-free
 tuition-free
 tuition-free
 Australia
@@ -10382,7 +10382,7 @@ Massachusetts
 1972
 268 U.S. 510
 268 U.S. 510
-268 U.S. 510 -LRB- 1925 -RRB-
+268 U.S. 510 ( 1925 )
 McCrary
 McCrary
 McCrary
@@ -10526,7 +10526,7 @@ half a mile
 half a mile
 Allston
 Allston
-on a 358-acre -LRB- 145 ha -RRB- campus
+on a 358-acre ( 145 ha ) campus
 The John W. Weeks Bridge
 John W. Weeks Bridge
 John W. Weeks Bridge
@@ -10772,9 +10772,9 @@ golf
 two
 two
 two
-`` Jacksonvillians '' or `` Jaxsons ''
-`` Jacksonvillians ''
-`` Jacksonvillians '' or `` Jaxsons ''
+" Jacksonvillians " or " Jaxsons "
+" Jacksonvillians "
+" Jacksonvillians " or " Jaxsons "
 thousands
 thousands of years
 thousands of years
@@ -10862,9 +10862,9 @@ declare martial law and sent the state militia to maintain order
 Great Fire of 1901
 Great Fire of 1901
 Great Fire of 1901
-New York -- based filmmakers
+New York – based filmmakers
 filmmakers
-New York -- based filmmakers
+New York – based filmmakers
 silent film
 silent film
 silent
@@ -10880,7 +10880,7 @@ The construction of highways
 55.1 %
 55.1 %
 55.1 %
-`` white flight ''
+" white flight "
 white flight
 white flight
 Mayor W. Haydon Burns
@@ -10917,7 +10917,7 @@ governments merged to create the Consolidated City of Jacksonville
 Hans Tanzler
 Hans Tanzler
 Hans Tanzler
-`` Bold New City of the South ''
+" Bold New City of the South "
 Bold New City of the South
 Consolidated City of Jacksonville
 Better Jacksonville Plan
@@ -10949,7 +10949,7 @@ Barnett Center
 Barnett Center
 617 ft
 617 ft
-617 ft -LRB-
+617 ft (
 28
 42
 42
@@ -11032,7 +11032,7 @@ $ 759,900
 $ 759,900
 the methodology used
 basis of the methodology used
-`` silly argument '' and `` a non-issue ... a diversion . ''
+" silly argument " and " a non-issue . . . a diversion . "
 basis of the methodology
 a diversion
 the basis of the methodology used
@@ -11047,7 +11047,7 @@ possess more financial assets than the lowest 48 nations combined .
 financial assets
 nearly $ 41 trillion
 $ 41 trillion
-the `` 10 million dollar millionaires '' grew to nearly $ 41 trillion in 2008
+the " 10 million dollar millionaires " grew to nearly $ 41 trillion in 2008
 $ 41 trillion
 half
 more than half
@@ -11125,7 +11125,7 @@ rising levels of property income
 rising levels of property income
 downward pressure on wages
 labor inputs
-labor inputs -LRB- workers -RRB-
+labor inputs ( workers )
 labor inputs
 reduce costs and maximize profits
 to reduce costs and maximize profits
@@ -11191,7 +11191,7 @@ competition between workers
 competition
 competition
 expendable nature of the worker
--LRB- high supply -RRB- competing for a job that few require -LRB- low demand -RRB-
+( high supply ) competing for a job that few require ( low demand )
 the expendable nature of the worker in relation to his or her particular job
 high
 high wages
@@ -11206,11 +11206,11 @@ Necessity-based entrepreneurship
 Necessity-based entrepreneurship
 Necessity-based entrepreneurship
 push
-`` push '' motivations
-`` push ''
+" push " motivations
+" push "
 pull
-`` pull ''
-`` pull ''
+" pull "
+" pull "
 opportunity-based entrepreneurship
 opportunity-based entrepreneurship
 opportunity-based
@@ -11223,7 +11223,7 @@ Necessity-based
 Necessity-based entrepreneurship
 Necessity-based
 achievement-oriented
-achievement-oriented motivations -LRB- `` pull '' -RRB-
+achievement-oriented motivations ( " pull " )
 achievement-oriented motivations
 positive
 positive
@@ -11308,9 +11308,9 @@ $ 105 billion
 boom-and-bust cycles
 boom-and-bust cycles
 boom-and-bust cycles
-1910 -- 1940
-1910 -- 1940
-1910 -- 1940
+1910 – 1940
+1910 – 1940
+1910 – 1940
 increase
 an increase
 increase
@@ -11323,9 +11323,9 @@ education
 period of compression
 decrease in wages
 decrease in wages
-from 1910 -- 1940
-1910 -- 1940
-1910 -- 1940
+from 1910 – 1940
+1910 – 1940
+1910 – 1940
 a decrease in the price of skilled labor
 decrease in the price of skilled labor
 decrease in the price of skilled labor
@@ -11633,7 +11633,7 @@ greatest good
 good
 distributive efficiency
 distributive efficiency
-`` distributive efficiency ''
+" distributive efficiency "
 a great deal of utility
 a great deal of utility
 basic necessities
@@ -11664,9 +11664,9 @@ economist
 systematic economic inequalities
 systematic economic inequalities
 systematic economic inequalities
-the Financial crisis of 2007 -- 08
-Financial crisis of 2007 -- 08
-Financial crisis of 2007 -- 08
+the Financial crisis of 2007 – 08
+Financial crisis of 2007 – 08
+Financial crisis of 2007 – 08
 easier credit
 easier credit to the lower and middle income earners
 easier credit to the lower and middle income earners
@@ -11760,9 +11760,9 @@ Thomas Piketty
 Economist
 Economist
 Economist
-wars and `` violent economic and political shocks ''
+wars and " violent economic and political shocks "
 violent economic and political shocks
-wars and `` violent economic and political shocks ''
+wars and " violent economic and political shocks "
 the 1970s
 1970s
 1970s
@@ -11849,8 +11849,8 @@ environmental degradation
 this as well
 environmental degradation
 environmental degradation
-If -LRB- as WWF argued -RRB- , population levels would start to drop to a sustainable level
-If -LRB- as WWF argued -RRB- , population levels would start to drop to a sustainable level
+If ( as WWF argued ) , population levels would start to drop to a sustainable level
+If ( as WWF argued ) , population levels would start to drop to a sustainable level
 population levels would start to drop to a sustainable level
 population levels would start to drop to a sustainable level
 private ownership of the means of production
@@ -11884,15 +11884,15 @@ when they improve society as a whole
 when they improve society as a whole
 capability deprivation
 capability deprivation
-`` capability deprivation ''
+“ capability deprivation ”
 the end itself
 the end itself
 the end itself
-to `` wid -LSB- en -RSB- people 's choices and the level of their achieved well-being ''
-wid -LSB- en -RSB- people 's choices and the level of their achieved well-being
-`` wid -LSB- en -RSB- people 's choices and the level of their achieved well-being ''
+to “ wid [ en ] people ’s choices and the level of their achieved well-being ”
+wid [ en ] people ’s choices and the level of their achieved well-being
+“ wid [ en ] people ’s choices and the level of their achieved well-being ”
 through increasing functionings
-increasing functionings -LRB- the things a person values doing -RRB- , capabilities -LRB- the freedom to enjoy functionings -RRB- and agency -LRB- the ability to pursue valued goals -RRB-
+increasing functionings ( the things a person values doing ) , capabilities ( the freedom to enjoy functionings ) and agency ( the ability to pursue valued goals )
 through increasing functionings
 the ability to pursue valued goals
 the ability to pursue valued goals
@@ -12235,8 +12235,8 @@ shaping ideas about the free market
 shaping ideas about the free market
 Chicago Pile-1
 Chicago Pile-1
-Miller -- Urey experiment
-Miller -- Urey experiment
+Miller – Urey experiment
+Miller – Urey experiment
 Chicago Pile-1
 1953
 1953
@@ -12272,8 +12272,8 @@ international students
 international students
 international students
 the University Athletic Association
-University Athletic Association -LRB- UAA -RRB-
-University Athletic Association -LRB- UAA -RRB-
+University Athletic Association ( UAA )
+University Athletic Association ( UAA )
 NCAA 's Division III
 NCAA 's Division III
 the Big Ten Conference
@@ -12289,7 +12289,7 @@ over 400
 over 400
 over 400
 Recognized Student Organizations
-Recognized Student Organizations -LRB- RSOs -RRB-
+Recognized Student Organizations ( RSOs )
 the University of Chicago College Bowl Team
 University of Chicago College Bowl Team
 University of Chicago College Bowl Team
@@ -12511,7 +12511,7 @@ Genghis Khan
 1271
 1271
 1271
-the Commentaries on the Classic of Changes -LRB- I Ching -RRB-
+the Commentaries on the Classic of Changes ( I Ching )
 the Commentaries on the Classic of Changes
 Dai Ön Ulus , also rendered as Ikh Yuan Üls or Yekhe Yuan Ulus
 Dai Ön Ulus
@@ -12677,7 +12677,7 @@ after 1279
 an inauspicious typhoon
 inauspicious typhoon
 inauspicious typhoon
-Annam -LRB- Dai Viet -RRB-
+Annam ( Dai Viet )
 Annam
 Annam
 Battle of Bạch Đằng
@@ -12725,7 +12725,7 @@ from 1321 to 1323
 Baiju
 Baiju
 Baiju
-`` the comprehensive institutions of the Great Yuan ''
+" the comprehensive institutions of the Great Yuan "
 the comprehensive institutions of the Great Yuan
 the comprehensive institutions of the Great Yuan
 five
@@ -12801,9 +12801,9 @@ fear of betrayal
 the Red Turban rebels
 Red Turban rebels
 the Red Turban rebels
-1368 -- 1644
-1368 -- 1644
-1368 -- 1644
+1368 – 1644
+1368 – 1644
+1368 – 1644
 The political unity of China and much of central Asia
 political unity of China and much of central Asia
 political unity
@@ -13070,7 +13070,7 @@ allied groups from Central Asia and the western end of the empire
 various allied groups from Central Asia and the western end of the empire
 various allied groups
 colonial
-somewhat strong `` colonial '' coloration
+somewhat strong " colonial " coloration
 colonial
 Ilkhanate
 Ilkhanate
@@ -13087,7 +13087,7 @@ Bukhara
 artisans and farmers
 artisans and farmers
 artisans and farmers
-a Qara-Khitay -LRB- Khitan
+a Qara-Khitay ( Khitan
 Ahai
 Ahai
 restricting Halal slaughter and other Islamic practices like circumcision
@@ -13169,10 +13169,10 @@ neuroimmune system
 neuroimmune
 neuroimmune
 neuroimmune system
-blood -- brain barrier , blood -- cerebrospinal fluid barrier
-blood -- brain barrier , blood -- cerebrospinal fluid barrier , and similar fluid -- brain barriers
-blood -- brain barrier , blood -- cerebrospinal fluid barrier , and similar fluid -- brain barriers
-fluid -- brain barriers
+blood – brain barrier , blood – cerebrospinal fluid barrier
+blood – brain barrier , blood – cerebrospinal fluid barrier , and similar fluid – brain barriers
+blood – brain barrier , blood – cerebrospinal fluid barrier , and similar fluid – brain barriers
+fluid – brain barriers
 pathogens
 pathogens
 pathogens
@@ -13342,7 +13342,7 @@ interleukin 1
 Leukocytes
 Leukocytes
 Leukocytes
-Leukocytes -LRB- white blood cells -RRB-
+Leukocytes ( white blood cells )
 white blood cells
 white blood cells
 adaptive immune system
@@ -13369,12 +13369,12 @@ Natural killer cells
 missing self
 missing self
 missing self
-MHC I -LRB- major histocompatibility complex -RRB-
+MHC I ( major histocompatibility complex )
 MHC I
-MHC I -LRB- major histocompatibility complex -RRB-
-killer cell immunoglobulin receptors -LRB- KIR
+MHC I ( major histocompatibility complex )
+killer cell immunoglobulin receptors ( KIR
 killer cell immunoglobulin
-killer cell immunoglobulin receptors -LRB- KIR -RRB-
+killer cell immunoglobulin receptors ( KIR )
 vertebrates
 vertebrates
 early vertebrates
@@ -13402,9 +13402,9 @@ Class II MHC molecules
 Killer T cells
 Killer T
 Killer T cells
-T cell receptor -LRB- TCR -RRB-
+T cell receptor ( TCR )
 T cell receptor
-T cell receptor -LRB- TCR -RRB-
+T cell receptor ( TCR )
 CD8
 CD8
 CD8
@@ -13413,13 +13413,13 @@ perforin
 perforin
 granulysin
 granulysin
-granulysin -LRB- a protease -RRB-
+granulysin ( a protease )
 CD4 co-receptor
 CD4
 CD4 co-receptor
-around 200 -- 300
-around 200 -- 300
-around 200 -- 300
+around 200 – 300
+around 200 – 300
+around 200 – 300
 a single MHC : antigen molecule
 single
 a single MHC : antigen molecule
@@ -13432,9 +13432,9 @@ CD40 ligand
 helper T cells , cytotoxic T cells and NK cells
 helper T cells , cytotoxic T cells
 helper T cells
-alternative T cell receptor -LRB- TCR -RRB-
+alternative T cell receptor ( TCR )
 T cell
-T cell receptor -LRB- TCR -RRB-
+T cell receptor ( TCR )
 γδ T cells
 γδ
 γδ T cells
@@ -13531,9 +13531,9 @@ Pathogen-associated molecular patterns or PAMPs
 apoptosis
 apoptosis
 rapid apoptosis
-Systemic acquired resistance -LRB- SAR -RRB-
+Systemic acquired resistance ( SAR )
 Systemic acquired resistance
-Systemic acquired resistance -LRB- SAR -RRB-
+Systemic acquired resistance ( SAR )
 RNA silencing mechanisms
 RNA silencing mechanisms
 RNA silencing mechanisms
@@ -13546,9 +13546,9 @@ self and non-self
 thymus and bone marrow
 thymus and bone marrow
 thymus and bone marrow
-`` self '' peptides
+" self " peptides
 self
-self '' peptides
+self " peptides
 Immunodeficiencies
 Immunodeficiencies
 Immunodeficiencies
@@ -13612,9 +13612,9 @@ methotrexate or azathioprine
 cyclosporin
 cyclosporin
 cyclosporin
-cytotoxic natural killer cells and CTLs -LRB- cytotoxic T lymphocytes -RRB-
+cytotoxic natural killer cells and CTLs ( cytotoxic T lymphocytes )
 cytotoxic natural killer cells and CTLs
-cytotoxic natural killer cells and CTLs -LRB- cytotoxic T lymphocytes -RRB-
+cytotoxic natural killer cells and CTLs ( cytotoxic T lymphocytes )
 cortisol and catecholamines
 cortisol and catecholamines
 cortisol and catecholamines
@@ -13657,9 +13657,9 @@ immunoglobulins
 the lamprey and hagfish
 lamprey and hagfish
 the lamprey and hagfish
-Variable lymphocyte receptors -LRB- VLRs -RRB-
+Variable lymphocyte receptors ( VLRs )
 Variable lymphocyte receptors
-Variable lymphocyte receptors -LRB- VLRs -RRB-
+Variable lymphocyte receptors ( VLRs )
 adaptive immune system
 adaptive
 the adaptive immune system
@@ -13675,9 +13675,9 @@ bacteriophages
 CRISPR
 CRISPR sequences
 CRISPR
-`` cellular '' and `` humoral '' theories of immunity
-`` cellular '' and `` humoral ''
-`` cellular '' and `` humoral '' theories
+" cellular " and " humoral " theories of immunity
+" cellular " and " humoral "
+" cellular " and " humoral " theories
 Elie Metchnikoff
 Elie Metchnikoff
 Elie Metchnikoff
@@ -13687,9 +13687,9 @@ phagocytes
 Robert Koch and Emil von Behring
 Robert Koch and Emil von Behring
 Robert Koch and Emil von Behring ,
-soluble components -LRB- molecules -RRB-
+soluble components ( molecules )
 soluble components
-soluble components -LRB- molecules -RRB-
+soluble components ( molecules )
 cancers
 cancers
 cancers
@@ -13705,7 +13705,7 @@ macrophages and lymphocytes
 Hypersensitivity
 Hypersensitivity
 Hypersensitivity
-four classes -LRB- Type I -- IV -RRB-
+four classes ( Type I – IV )
 four
 four classes
 Type I
@@ -13731,7 +13731,7 @@ Mycobacterium tuberculosis
 Mycobacterium tuberculosis
 protein A
 G
-Streptococcus -LRB- protein G -RRB-
+Streptococcus ( protein G )
 antigenic variation
 antigenic variation
 antigenic variation
@@ -13794,9 +13794,9 @@ defensins
 vaccination
 vaccination
 vaccination
-Adaptive -LRB- or acquired -RRB- immunity
-Adaptive -LRB- or acquired -RRB- immunity
-Adaptive -LRB- or acquired -RRB- immunity
+Adaptive ( or acquired ) immunity
+Adaptive ( or acquired ) immunity
+Adaptive ( or acquired ) immunity
 carbohydrates
 carbohydrates
 carbohydrates
@@ -13812,15 +13812,15 @@ disrupting their plasma membrane .
 the United Nations
 the United Nations
 the United Nations
-the World Meteorological Organization -LRB- WMO -RRB- and the United Nations Environment Programme -LRB- UNEP -RRB-
-World Meteorological Organization -LRB- WMO -RRB- and the United Nations Environment Programme -LRB- UNEP -RRB- ,
-the World Meteorological Organization -LRB- WMO -RRB- and the United Nations Environment Programme -LRB- UNEP -RRB-
+the World Meteorological Organization ( WMO ) and the United Nations Environment Programme ( UNEP )
+World Meteorological Organization ( WMO ) and the United Nations Environment Programme ( UNEP ) ,
+the World Meteorological Organization ( WMO ) and the United Nations Environment Programme ( UNEP )
 greenhouse gas concentrations in the atmosphere
 greenhouse gas concentrations in the atmosphere
 stabilize greenhouse gas concentrations in the atmosphere
 United Nations Framework Convention on Climate Change
-United Nations Framework Convention on Climate Change -LRB- UNFCCC -RRB-
-the United Nations Framework Convention on Climate Change -LRB- UNFCCC -RRB- ,
+United Nations Framework Convention on Climate Change ( UNFCCC )
+the United Nations Framework Convention on Climate Change ( UNFCCC ) ,
 Resolution 43/53
 Resolution 43/53
 Resolution 43/53
@@ -13854,9 +13854,9 @@ about seven-eighths
 1989
 1989
 1989
-the United Nations Environment Programme -LRB- UNEP -RRB- and the World Meteorological Organization -LRB- WMO -RRB-
-United Nations Environment Programme -LRB- UNEP -RRB- and the World Meteorological Organization -LRB- WMO -RRB-
-the United Nations Environment Programme -LRB- UNEP -RRB- and the World Meteorological Organization -LRB- WMO -RRB- ,
+the United Nations Environment Programme ( UNEP ) and the World Meteorological Organization ( WMO )
+United Nations Environment Programme ( UNEP ) and the World Meteorological Organization ( WMO )
+the United Nations Environment Programme ( UNEP ) and the World Meteorological Organization ( WMO ) ,
 World Meteorological Organization
 WMO
 the WMO
@@ -13885,7 +13885,7 @@ ten to fifteen
 ten to fifteen
 ten to fifteen
 a somewhat larger number
-a somewhat larger number of `` contributing authors ''
+a somewhat larger number of " contributing authors "
 a somewhat larger number
 The coordinating lead authors
 coordinating lead authors
@@ -13902,9 +13902,9 @@ additional warming of the Earth 's surface
 over half
 over half
 over half
-`` business as usual '' -LRB- BAU -RRB-
+" business as usual " ( BAU )
 enhanced greenhouse effect
-`` business as usual '' -LRB- BAU -RRB-
+" business as usual " ( BAU )
 increased by 0.3 to 0.6 °C
 0.3 to 0.6 °C
 0.3 to 0.6 °C
@@ -13965,13 +13965,13 @@ WMO Executive Council and UNEP Governing Council
 the date
 the date
 the date
-`` the poor application of well-established IPCC procedures in this instance ''
+" the poor application of well-established IPCC procedures in this instance "
 the poor application of well-established IPCC procedures
 poor application of well-established IPCC procedures
 the WWF report
 the IPCC from the WWF report
 the WWF report
-`` Variations of Snow and Ice in the past and at present on a Global and Regional Scale ''
+" Variations of Snow and Ice in the past and at present on a Global and Regional Scale "
 the IPCC from the WWF report
 the WWF report
 IPCC chairman
@@ -13985,7 +13985,7 @@ co-chair of the IPCC working group II
 co-chair of the IPCC working group II
 Himalayan glaciers
 Himalayan glaciers
-`` generally unfounded and also marginal to the assessment ''
+" generally unfounded and also marginal to the assessment "
 generally unfounded and also marginal to the assessment
 generally unfounded and also marginal to the assessment
 1999
@@ -13994,7 +13994,7 @@ generally unfounded and also marginal to the assessment
 Michael E. Mann , Raymond S. Bradley and Malcolm K. Hughes
 Michael E. Mann , Raymond S. Bradley and Malcolm K. Hughes
 Michael E. Mann , Raymond S. Bradley and Malcolm K. Hughes
-the `` hockey stick graph ''
+the " hockey stick graph "
 hockey stick graph
 hockey stick graph
 Jones et al. 1998 , Pollack , Huang & Shen 1998 , Crowley & Lowery 2000 and Briffa 2000
@@ -14060,12 +14060,12 @@ the actual sea level rise was above the top of the range
 projected rises in sea levels
 rises in sea levels
 projected rises in sea levels
-9 -- 88 cm
-0.5 -- 1.4 m
-9 -- 88 cm
-50 -- 140 cm
-9 -- 88 cm
-0.5 -- 1.4 m -LSB- 50 -- 140 cm -RSB-
+9 – 88 cm
+0.5 – 1.4 m
+9 – 88 cm
+50 – 140 cm
+9 – 88 cm
+0.5 – 1.4 m [ 50 – 140 cm ]
 2001
 2001
 2001
@@ -14113,9 +14113,9 @@ five
 the journal Nature
 the journal Nature
 the journal Nature
-turning the whole climate science assessment process into a moderated `` living '' Wikipedia-IPCC
-turning the whole climate science assessment process into a moderated `` living '' Wikipedia-IPCC
-turning the whole climate science assessment process into a moderated `` living '' Wikipedia-IPCC
+turning the whole climate science assessment process into a moderated " living " Wikipedia-IPCC
+turning the whole climate science assessment process into a moderated " living " Wikipedia-IPCC
+turning the whole climate science assessment process into a moderated " living " Wikipedia-IPCC
 remove government oversight from its processes
 remove government oversight
 remove government oversight from its processes
@@ -14153,11 +14153,11 @@ trial division
 trial division
 trial division
 trial division
-the Miller -- Rabin primality test
-Miller -- Rabin primality test
-Miller -- Rabin primality test
-Miller -- Rabin primality test
-Miller -- Rabin primality test
+the Miller – Rabin primality test
+Miller – Rabin primality test
+Miller – Rabin primality test
+Miller – Rabin primality test
+Miller – Rabin primality test
 the AKS primality test
 AKS primality test
 AKS primality test
@@ -14262,11 +14262,11 @@ primes up to 10,006,721
 10,006,721
 10,006,721
 10,006,721
-its own special category as a `` unit ''
+its own special category as a " unit "
 unit
-a `` unit ''
+a " unit "
 unit
-a `` unit
+a " unit
 Euclid 's fundamental theorem of arithmetic
 Euclid 's fundamental theorem of arithmetic
 arithmetic
@@ -14291,7 +14291,7 @@ only the single number 1
 1
 only the single number 1
 eliminate all multiples of 1
-eliminate all multiples of 1 -LRB- that is , all other numbers -RRB- and produce as output only the single number 1 .
+eliminate all multiples of 1 ( that is , all other numbers ) and produce as output only the single number 1 .
 the Rhind papyrus
 Rhind
 Rhind
@@ -14332,8 +14332,8 @@ Euler
 22n + 1
 22n + 1
 22n + 1
-up to n = 4 -LRB- or 216 + 1 -RRB-
-up to n = 4 -LRB- or 216 + 1 -RRB-
+up to n = 4 ( or 216 + 1 )
+up to n = 4 ( or 216 + 1 )
 216 + 1
 n = 4
 n = 4
@@ -14372,8 +14372,8 @@ two
 two
 two
 two
-probabilistic -LRB- or `` Monte Carlo '' -RRB-
-probabilistic -LRB- or `` Monte Carlo '' -RRB-
+probabilistic ( or " Monte Carlo " )
+probabilistic ( or " Monte Carlo " )
 probabilistic
 probabilistic
 probabilistic
@@ -14387,22 +14387,22 @@ deterministic algorithm
 deterministic
 deterministic
 deterministic
-1 / -LRB- 1-p -RRB- n
-1 / -LRB- 1-p -RRB- n
-1 / -LRB- 1-p -RRB- n
-1 / -LRB- 1-p -RRB- n
-1 / -LRB- 1-p -RRB- n
+1 / ( 1-p ) n
+1 / ( 1-p ) n
+1 / ( 1-p ) n
+1 / ( 1-p ) n
+1 / ( 1-p ) n
 the Fermat primality test ,
 Fermat primality test
 Fermat primality test
 Fermat primality test
 the Fermat primality test
-np ≡ n -LRB- mod p -RRB-
-np ≡ n -LRB- mod p -RRB- for any n if p is a prime number
-np ≡ n -LRB- mod p -RRB- for any n if p is a prime number
-np ≡ n -LRB- mod p -RRB- for any n if p is a prime number
-the fact -LRB- Fermat 's little theorem -RRB- that np ≡ n -LRB- mod p -RRB- for any n if p is a prime number
-composite numbers -LRB- the Carmichael numbers -RRB-
+np ≡ n ( mod p )
+np ≡ n ( mod p ) for any n if p is a prime number
+np ≡ n ( mod p ) for any n if p is a prime number
+np ≡ n ( mod p ) for any n if p is a prime number
+the fact ( Fermat 's little theorem ) that np ≡ n ( mod p ) for any n if p is a prime number
+composite numbers ( the Carmichael numbers )
 Carmichael
 Carmichael
 Carmichael numbers
@@ -14427,11 +14427,11 @@ Miller-Rabin
 2p − 1 , where p is an arbitrary prime
 2p − 1
 2p − 1 ,
-The Lucas -- Lehmer test
-Lucas -- Lehmer
-Lucas -- Lehmer
-Lucas -- Lehmer
-Lucas -- Lehmer test
+The Lucas – Lehmer test
+Lucas – Lehmer
+Lucas – Lehmer
+Lucas – Lehmer
+Lucas – Lehmer test
 primorial primes
 Fermat
 Sophie Germain
@@ -14462,11 +14462,11 @@ Electronic Frontier Foundation
 Electronic Frontier Foundation
 . The Electronic Frontier Foundation
 $ 150,000
--LSB- 256kn + 1 , 256k -LRB- n + 1 -RRB- − 1 -RSB-
--LSB- 256kn + 1 , 256k -LRB- n + 1 -RRB- − 1 -RSB-
--LSB- 256kn + 1 , 256k -LRB- n + 1 -RRB- − 1 -RSB-
--LSB- 256kn + 1 , 256k -LRB- n + 1 -RRB- − 1 -RSB-
--LSB- 256kn + 1 , 256k -LRB- n + 1 -RRB- − 1 -RSB- .
+[ 256kn + 1 , 256k ( n + 1 ) − 1 ]
+[ 256kn + 1 , 256k ( n + 1 ) − 1 ]
+[ 256kn + 1 , 256k ( n + 1 ) − 1 ]
+[ 256kn + 1 , 256k ( n + 1 ) − 1 ]
+[ 256kn + 1 , 256k ( n + 1 ) − 1 ] .
 the floor function
 floor
 floor
@@ -14621,16 +14621,16 @@ p − 1
 p − 1 or a divisor of p − 1
 p − 1 or a divisor of p − 1
 p − 1 or a divisor of p − 1
--LRB- p − 1 -RRB- ! + 1
--LRB- p − 1 -RRB- ! + 1
--LRB- p − 1 -RRB- ! + 1
--LRB- p − 1 -RRB- ! + 1
--LRB- p − 1 -RRB- ! + 1
--LRB- n − 1 -RRB- !
--LRB- n − 1 -RRB- !
--LRB- n − 1 -RRB- !
--LRB- n − 1 -RRB- !
--LRB- n − 1 -RRB- !
+( p − 1 ) ! + 1
+( p − 1 ) ! + 1
+( p − 1 ) ! + 1
+( p − 1 ) ! + 1
+( p − 1 ) ! + 1
+( n − 1 ) !
+( n − 1 ) !
+( n − 1 ) !
+( n − 1 ) !
+( n − 1 ) !
 p is not a prime factor of q
 p is not a prime factor of q
 p is not a prime factor of q
@@ -14640,10 +14640,10 @@ RSA
 RSA
 RSA
 RSA
-the Diffie -- Hellman key exchange
-Diffie -- Hellman
-Diffie -- Hellman key exchange
-Diffie -- Hellman key exchange
+the Diffie – Hellman key exchange
+Diffie – Hellman
+Diffie – Hellman key exchange
+Diffie – Hellman key exchange
 512-bit
 512
 512
@@ -14720,10 +14720,10 @@ The fundamental theorem of arithmetic
 theorem of arithmetic
 fundamental theorem of arithmetic
 The fundamental theorem of arithmetic
-the Gaussian integers Z -LSB- i -RSB-
+the Gaussian integers Z [ i ]
 Gaussian integers
-Gaussian integers Z -LSB- i -RSB- ,
-Gaussian integers Z -LSB- i -RSB-
+Gaussian integers Z [ i ] ,
+Gaussian integers Z [ i ]
 a + bi
 a + bi
 a + bi
@@ -14775,10 +14775,10 @@ norm gets smaller
 gets smaller
 gets smaller
 gets smaller
-completed -LRB- or local -RRB- fields
-completed -LRB- or local -RRB- fields
-the completed -LRB- or local -RRB- fields
-the completed -LRB- or local -RRB- fields
+completed ( or local ) fields
+completed ( or local ) fields
+the completed ( or local ) fields
+the completed ( or local ) fields
 the absolute value
 the absolute value
 absolute value
@@ -14818,8 +14818,8 @@ Danube
 the Danube
 Danube
 Danube
-1,230 km -LRB- 760 mi -RRB-
-1,230 km -LRB- 760 mi -RRB-
+1,230 km ( 760 mi )
+1,230 km ( 760 mi )
 1,230 km
 1,230 km
 Europe
@@ -14831,7 +14831,7 @@ Germany
 Netherlands
 Netherlands
 1,230 km
-1,230 km -LRB- 760 mi -RRB-
+1,230 km ( 760 mi )
 1,230 km
 1,230 km
 Gaulish name Rēnos
@@ -14880,7 +14880,7 @@ Rhijn
 Rhijn
 Rhine-kilometers
 Rhine-kilometers
-`` Rhine-kilometers ''
+" Rhine-kilometers "
 Rhine-kilometers
 Rhine-kilometers
 1939
@@ -14895,7 +14895,7 @@ Old Rhine Bridge at Constance
 Old Rhine Bridge
 Hoek van Holland
 Hoek van Holland
--LRB- 1036.20 km -RRB-
+( 1036.20 km )
 Hoek van Holland
 Hoek van Holland
 canalisation projects
@@ -14903,7 +14903,7 @@ canalisation projects
 the river 's natural course due to number of canalisation projects completed in the 19th and 20th century
 canalisation projects
 canalisation projects
-Rhine-kilometers ''
+Rhine-kilometers "
 Rhine-kilometers
 kilometres
 Rhine-kilometers
@@ -14990,11 +14990,11 @@ modern canalized section
 canalized section
 Isel
 Isel
-`` Isel ''
+" Isel "
 Isel
 Donkey
 Donkey
-`` Donkey '' -RRB-
+" Donkey " )
 Donkey
 Lake Constance
 Lake Constance
@@ -15014,7 +15014,7 @@ small islands
 islands
 Isel
 Isel
-`` Isel ''
+" Isel "
 Isel
 Diepoldsau
 Diepoldsau
@@ -15066,11 +15066,11 @@ Untersee
 Seerhein
 upper lake
 upper lake
--LRB- `` upper lake ''
+( " upper lake "
 upper lake
 lower lake
 lower lake
-`` lower lake ''
+" lower lake "
 lower lake
 Swiss-Austrian border
 Swiss-Austrian
@@ -15130,7 +15130,7 @@ westward
 river Aare
 Aare
 river Aare
-1,000 m3/s -LRB- 35,000 cu ft/s -RRB-
+1,000 m3/s ( 35,000 cu ft/s )
 1,000 m3/s
 Finsteraarhorn
 summit of Finsteraarhorn
@@ -15144,7 +15144,7 @@ westward
 Aare
 Aare
 river Aare
-1,000 m3/s -LRB- 35,000 cu ft/s -RRB- ,
+1,000 m3/s ( 35,000 cu ft/s ) ,
 1,000 m3/s
 Finsteraarhorn
 summit of Finsteraarhorn
@@ -15218,13 +15218,13 @@ The Rhine
 Germany
 Germany
 Germany
-300 m3/s -LRB- 11,000 cu ft/s -RRB-
+300 m3/s ( 11,000 cu ft/s )
 300 m3/s
 300 m3/s
 Moselle
 Moselle
 the Moselle
-400 m -LRB- 1,300 ft -RRB- .
+400 m ( 1,300 ft ) .
 400 m
 400 m
 Germany
@@ -15239,7 +15239,7 @@ Neckar
 France
 France
 France
-2,290 m3/s -LRB- 81,000 cu ft/s -RRB-
+2,290 m3/s ( 81,000 cu ft/s )
 2,290 m3/s
 2,290 m3/s
 Middle Rhine
@@ -15494,9 +15494,9 @@ Mediterranean geography
 Iberia
 Iberia
 Iberia
-N -- S
-N -- S
-N -- S rift system
+N – S
+N – S
+N – S rift system
 Upper Rhine Graben
 Upper Rhine Graben
 Upper Rhine Graben
@@ -15530,12 +15530,12 @@ northwest
 Brest
 Brest , France
 offshore of Brest ,
-74,000 -LRB- BP
-~ 74,000 -LRB- BP = Before Present -RRB-
-~ 74,000 -LRB- BP = Before Present -RRB-
+74,000 ( BP
+~ 74,000 ( BP = Before Present )
+~ 74,000 ( BP = Before Present )
 11,600 BP
--LRB- ~ 11,600 BP
-end of the Pleistocene -LRB- ~ 11,600 BP -RRB-
+( ~ 11,600 BP
+end of the Pleistocene ( ~ 11,600 BP )
 west
 west
 west
@@ -15551,9 +15551,9 @@ a glacier
 tundra
 tundra
 A tundra
-22,000 -- 14,000 yr BP
-22,000 -- 14,000 yr BP
-ca. 22,000 -- 14,000 yr BP
+22,000 – 14,000 yr BP
+22,000 – 14,000 yr BP
+ca. 22,000 – 14,000 yr BP
 ice-sheets
 ice-sheets
 ice-sheets
@@ -15587,9 +15587,9 @@ last 7000 years
 tectonic subsidence
 tectonic subsidence
 ongoing tectonic subsidence
-1 -- 3 cm -LRB- 0.39 -- 1.18 in -RRB- per century
-1 -- 3 cm -LRB- 0.39 -- 1.18 in -RRB- per century
-1 -- 3 cm -LRB- 0.39 -- 1.18 in -RRB- per century
+1 – 3 cm ( 0.39 – 1.18 in ) per century
+1 – 3 cm ( 0.39 – 1.18 in ) per century
+1 – 3 cm ( 0.39 – 1.18 in ) per century
 11,700 years ago
 ~ 11,700 years ago
 ~ 11,700 years ago
@@ -15614,9 +15614,9 @@ increased flooding and sedimentation
 80
 80
 80
-11 -- 13th century
-11 -- 13th century AD
-11 -- 13th century AD
+11 – 13th century
+11 – 13th century AD
+11 – 13th century AD
 North Sea
 North Sea
 North Sea
@@ -15709,9 +15709,9 @@ Archduke Sigismund of Austria
 Peace of Westphalia
 Peace of Westphalia
 Peace of Westphalia
-Establishing `` natural borders ''
-Establishing `` natural borders ''
-Establishing `` natural borders '' on the Rhine
+Establishing " natural borders "
+Establishing " natural borders "
+Establishing " natural borders " on the Rhine
 Napoleon
 Napoleon
 Napoleon
@@ -15751,13 +15751,13 @@ Ludendorff Bridge
 Seven Days to the River Rhine
 plan for an invasion of Western Europe
 plan for an invasion of Western Europe during the Cold War
-1,230 kilometres -LRB- 764 miles -RRB-
+1,230 kilometres ( 764 miles )
 1,230 kilometres
 1,230 kilometres
 Knaurs Lexikon
 Knaurs Lexikon
 Knaurs Lexikon
-1,320 kilometres -LRB- 820 miles -RRB-
+1,320 kilometres ( 820 miles )
 1,320 kilometres
 1,320 kilometres
 typographical error
@@ -15774,7 +15774,7 @@ Scotland Act 1998
 Scotland Act
 in which it can make laws
 the areas in which it can make laws
-powers that are `` reserved '' to the Parliament of the United Kingdom
+powers that are " reserved " to the Parliament of the United Kingdom
 Parliament of the United Kingdom
 Parliament of the United Kingdom
 The British Parliament
@@ -15799,9 +15799,9 @@ a directly elected Scottish Assembly
 North
 North Sea
 the North Sea
-`` It 's Scotland 's oil ''
+" It 's Scotland 's oil "
 It 's Scotland 's oil
-`` It 's Scotland 's oil ''
+" It 's Scotland 's oil "
 not benefitting Scotland as much as they should
 not benefitting Scotland as much as they should
 the revenues from the oil were not benefitting Scotland as much as they should
@@ -15988,9 +15988,9 @@ Scots , Gaelic , or any other language with the agreement of the Presiding Offic
 5 pm
 5 pm
 5 pm
-`` Decision Time ''
+" Decision Time "
 Decision Time
-`` Decision Time ''
+" Decision Time "
 vote
 vote
 vote
@@ -16029,7 +16029,7 @@ other members
 other members
 winds up
 winds up
-`` winds up '' the debate
+" winds up " the debate
 committee
 committee
 in committee
@@ -16064,8 +16064,8 @@ beginning of each parliamentary session
 beginning of each parliamentary session
 at the beginning of each parliamentary session
 one
-one -LRB- or more
-one -LRB- or more -RRB- of the departments -LRB- or ministries -RRB- of the Scottish Government
+one ( or more
+one ( or more ) of the departments ( or ministries ) of the Scottish Government
 current Subject Committees
 Subject Committees
 Subject Committees
@@ -16146,7 +16146,7 @@ introductory
 introductory stage of the bill
 accompanying documents
 accompanying documents
-accompanying documents -- Explanatory Notes
+accompanying documents – Explanatory Notes
 whether the bill is within the legislative competence of the Parliament
 whether the bill is within the legislative competence of the Parliament
 whether the bill is within the legislative competence of the Parliament
@@ -16167,7 +16167,7 @@ final
 final vote
 wrecking
 wrecking
-`` wrecking amendments ''
+" wrecking amendments "
 Decision Time
 Decision Time
 After a general debate on the final form of the bill
@@ -16183,9 +16183,9 @@ a 4-week period
 Supreme Court of the United Kingdom
 Supreme Court of the United Kingdom
 the Supreme Court
--LSB- Date -RSB-
--LSB- Date -RSB-
-`` The Bill for this Act of the Scottish Parliament was passed by the Parliament on -LSB- Date -RSB- and received royal assent on -LSB- Date -RSB- '' .
+[ Date ]
+[ Date ]
+" The Bill for this Act of the Scottish Parliament was passed by the Parliament on [ Date ] and received royal assent on [ Date ] " .
 hold the majority of seats
 hold the majority of seats
 The party , or parties , that hold the majority of seats in the Parliament
@@ -16285,9 +16285,9 @@ over the age of 18
 police and the armed forces
 police and the armed forces
 the police and the armed forces
-Mental Health -LRB- Care and Treatment -RRB- -LRB- Scotland -RRB- Act 2003
-Mental Health -LRB- Care and Treatment -RRB- -LRB- Scotland -RRB- Act 2003
-Mental Health -LRB- Care and Treatment -RRB- -LRB- Scotland -RRB- Act 2003
+Mental Health ( Care and Treatment ) ( Scotland ) Act 2003
+Mental Health ( Care and Treatment ) ( Scotland ) Act 2003
+Mental Health ( Care and Treatment ) ( Scotland ) Act 2003
 a party has commanded a parliamentary majority
 a parliamentary majority
 a party has commanded a parliamentary majority
@@ -16530,8 +16530,8 @@ gradual
 Islamic revolution
 gradual
 an educational process
-an educational process or da ` wah
-educational process or da ` wah
+an educational process or da ' wah
+educational process or da ' wah
 1928
 1928
 1928
@@ -16541,9 +16541,9 @@ Egypt
 Hassan al Banna
 Hassan al Banna
 Hassan al Banna
-the Qur ` an
-the Qur ` an
-Qur ` an
+the Qur ' an
+the Qur ' an
+Qur ' an
 imperialist
 imperialist influence
 imperialist
@@ -16565,7 +16565,7 @@ Gamal Abdul Nasser
 one of the most influential movements
 one of the most influential movements
 one of the most influential
-`` semi-legal ''
+" semi-legal "
 semi-legal
 semi-legal
 field candidates
@@ -16689,7 +16689,7 @@ Egyptian Islamic Jihad
 1981
 1981
 apostate
-`` apostate '' leaders of Muslim states ,
+" apostate " leaders of Muslim states ,
 apostate
 promoted Western/foreign ideas and practices into Islamic societies
 held secular leanings or who had introduced or promoted Western/foreign ideas and practices into Islamic societies
@@ -16700,8 +16700,8 @@ Muhammad Abd al-Salaam Farag
 violence
 violence
 violence
-al-Gama ` a al-Islamiyya
-al-Gama ` a al-Islamiyya
+al-Gama ' a al-Islamiyya
+al-Gama ' a al-Islamiyya
 Islamic Group
 unsuccessful
 unsuccessful
@@ -16857,7 +16857,7 @@ March 2011
 March 2011
 March 2011
 notorious intransigence
-its failure to consult and `` notorious intransigence ''
+its failure to consult and " notorious intransigence "
 notorious intransigence
 a terrorist organisation
 a terrorist organisation
@@ -16947,9 +16947,9 @@ influence
 influence
 influence
 influence
-`` Formal imperialism ''
+" Formal imperialism "
 formal
-`` Formal imperialism
+" Formal imperialism
 Formal imperialism
 Formal
 othering
@@ -16962,11 +16962,11 @@ direct
 direct
 direct
 direct
-`` informal '' imperialism
+" informal " imperialism
 Informal rule
-informal '' imperialism
+informal " imperialism
 imperialism
-`` formal ''
+" formal "
 formal
 formal
 formal
@@ -17055,11 +17055,11 @@ defense and justification of empire-building
 is the defense and justification of empire-building based on seemingly rational grounds
 defense and justification of empire-building based on seemingly rational grounds
 defense and justification of empire-building
-highest ` social efficiency '
-highest ` social efficiency '
-the races of highest ` social efficiency ' ''
-of highest ` social efficiency
-races of highest ` social efficiency ' ''
+highest ' social efficiency '
+highest ' social efficiency '
+the races of highest ' social efficiency ' "
+of highest ' social efficiency
+races of highest ' social efficiency ' "
 imperialism
 imperialism
 imperialism
@@ -17090,7 +17090,7 @@ Political
 Political
 Political
 geographical societies in Europe
-necessary for a state 's survival
+necessary for a state ’s survival
 survival
 necessary
 necessary
@@ -17175,7 +17175,7 @@ nineteenth-century maps
 nineteenth-century maps
 the role of nineteenth-century maps
 the role of nineteenth-century maps
-the role of nineteenth-century maps during the `` scramble for Africa ''
+the role of nineteenth-century maps during the " scramble for Africa "
 blank spaces on contemporary maps
 fill in blank spaces on contemporary maps
 maps
@@ -17620,10 +17620,10 @@ Thailand
 Thailand
 Thailand
 China
-People 's Republic of China
-the People 's Republic of China
-People 's Republic of China
-People 's Republic of China
+People ’s Republic of China
+the People ’s Republic of China
+People ’s Republic of China
+People ’s Republic of China
 1932
 1932
 1932
@@ -17637,7 +17637,7 @@ Lenin
 Eastern Europe
 Eastern Europe
 in areas its forces occupied in Eastern Europe
-1919 -- 20
+1919 – 20
 Eastern Europe
 Bolshevik leaders
 Bolshevik leaders
@@ -17732,10 +17732,10 @@ a war erupted
 war
 war
 war
-a `` racket ''
+a " racket "
 racket
 racket
-a `` racket ''
+a " racket "
 racket
 Isiah Bowman
 Isiah Bowman
@@ -17752,11 +17752,11 @@ American delegation from the Paris Peace Conference
 the American delegation from the Paris Peace Conference
 American delegation from the Paris Peace Conference
 American delegation from the Paris Peace Conference
-U.S authorship of a ` new world '
-allow for U.S authorship of a ` new world ' which was to be characterized by geographical order
-allow for U.S authorship of a ` new world ' which was to be characterized by geographical order
-allow for U.S authorship of a ` new world '
-U.S authorship of a ` new world '
+U.S authorship of a ' new world '
+allow for U.S authorship of a ' new world ' which was to be characterized by geographical order
+allow for U.S authorship of a ' new world ' which was to be characterized by geographical order
+allow for U.S authorship of a ' new world '
+U.S authorship of a ' new world '
 Wilson 's geographer
 Wilson 's geographer
 Wilson 's geographer
@@ -17767,7 +17767,7 @@ internal strife
 internal strife
 internal strife
 internal strife
-`` internal colonialism ''
+" internal colonialism "
 internal colonialism
 internal colonialism
 internal colonialism
@@ -17781,7 +17781,7 @@ the contemporary Orient
 the contemporary Orient
 the contemporary Orient
 contemporary Orient
-contemporary Orient , ''
+contemporary Orient , "
 1923
 1923
 1923
@@ -17923,7 +17923,7 @@ General Sejm
 1569
 1569
 religious freedom
-religious freedom in the Polish -- Lithuanian Commonwealth
+religious freedom in the Polish – Lithuanian Commonwealth
 religious freedom
 Due to its central location
 its central location
@@ -17990,7 +17990,7 @@ the Red Army was nearing the city
 between 150,000 and 200,000
 between 150,000 and 200,000
 between 150,000 and 200,000
-`` Bricks for Warsaw ''
+" Bricks for Warsaw "
 Bricks for Warsaw
 Bricks for Warsaw
 prefabricated
@@ -18097,18 +18097,18 @@ mannerist
 17th century
 17th century
 17th century .
-1688 -- 1692
-1677 -- 1683
-1688 -- 1692
+1688 – 1692
+1677 – 1683
+1688 – 1692
 rococo
 rococo
 rococo
 neoclassical architecture
 neoclassical architecture
 neoclassical architecture
-1775 -- 1795
+1775 – 1795
 1696
-1775 -- 1795
+1775 – 1795
 bourgeois
 bourgeois
 bourgeois
@@ -18272,9 +18272,9 @@ President
 Jan Andrzej Menich
 Jan Andrzej Menich
 Jan Andrzej Menich
-1695 -- 1696
-1695 -- 1696
-1695 -- 1696
+1695 – 1696
+1695 – 1696
+1695 – 1696
 the City council
 City council
 City council
@@ -18417,9 +18417,9 @@ Wianki
 thousands
 thousands
 thousands
-Midsummer 's Night
-Midsummer 's Night
-Midsummer 's Night
+Midsummer ’s Night
+Midsummer ’s Night
+Midsummer ’s Night
 when they would be married
 when they would be married , and to whom
 when they would be married ,
@@ -18546,11 +18546,11 @@ poet
 Isaac Bashevis Singer
 Isaac Bashevis Singer
 Isaac Bashevis Singer
-1754 -- 1763
-1754 -- 1763
-1754 -- 1763
-1754 -- 1763
-1754 -- 1763
+1754 – 1763
+1754 – 1763
+1754 – 1763
+1754 – 1763
+1754 – 1763
 colonies of British America and New France
 colonies of British America and New France
 British America and New France
@@ -18630,11 +18630,11 @@ France
 territory east of the Mississippi
 east of the Mississippi
 territory east of the Mississippi
-French Louisiana west of the Mississippi River -LRB- including New Orleans -RRB- to its ally Spain
+French Louisiana west of the Mississippi River ( including New Orleans ) to its ally Spain
 French Louisiana
-French Louisiana west of the Mississippi River -LRB- including New Orleans -RRB-
+French Louisiana west of the Mississippi River ( including New Orleans )
 Louisiana west of the Mississippi River
-French Louisiana west of the Mississippi River -LRB- including New Orleans -RRB-
+French Louisiana west of the Mississippi River ( including New Orleans )
 confirming Britain 's position as the dominant colonial power in eastern North America
 confirming Britain 's position as the dominant colonial power in eastern North America
 confirming Britain 's position as the dominant colonial power in eastern North America
@@ -18714,11 +18714,11 @@ native tribes
 native tribes
 native tribes
 native tribes
-Mi ` kmaq and the Abenaki
-Mi ` kmaq and the Abenaki
-the Mi ` kmaq and the Abenaki
-Mi ` kmaq and the Abenaki
-the Mi ` kmaq and the Abenaki
+Mi ' kmaq and the Abenaki
+Mi ' kmaq and the Abenaki
+the Mi ' kmaq and the Abenaki
+Mi ' kmaq and the Abenaki
+the Mi ' kmaq and the Abenaki
 present-day Upstate New York and the Ohio Country
 present-day Upstate New York and the Ohio Country
 Upstate New York and the Ohio Country
@@ -18759,7 +18759,7 @@ local militia companies
 local militia companies
 militia support
 local militia companies
-about 3,000 miles -LRB- 4,800 km -RRB- between June and November 1749 .
+about 3,000 miles ( 4,800 km ) between June and November 1749 .
 about 3,000 miles
 3,000 miles
 3,000 miles
@@ -18783,16 +18783,16 @@ village of Pickawillany
 village of Pickawillany
 Pickawillany
 village of Pickawillany
-threatened `` Old Briton '' with severe consequences if he continued to trade with the British
-Céloron threatened `` Old Briton '' with severe consequences
-threatened `` Old Briton '' with severe consequences
+threatened " Old Briton " with severe consequences if he continued to trade with the British
+Céloron threatened " Old Briton " with severe consequences
+threatened " Old Briton " with severe consequences
 threatened
-Céloron threatened `` Old Briton ''
+Céloron threatened " Old Briton "
 ignored the warning .
 ignored the warning
 ignored the warning
 ignored the warning
-`` Old Briton '' ignored the warning
+" Old Briton " ignored the warning
 very badly disposed towards the French , and are entirely devoted to the English
 very badly disposed towards the French
 are very badly disposed towards the French , and are entirely devoted to the English
@@ -18827,7 +18827,7 @@ Treaty of Logstown
 1752 Treaty of Logstown
 Treaty of Logstown
 Treaty of Logstown
-mouth of the Monongahela River -LRB- the site of present-day Pittsburgh , Pennsylvania -RRB-
+mouth of the Monongahela River ( the site of present-day Pittsburgh , Pennsylvania )
 mouth of the Monongahela River
 mouth of the Monongahela River
 Pittsburgh , Pennsylvania
@@ -18876,12 +18876,12 @@ Paul Marin de la Malgue
 Paul Marin de la Malgue
 Paul Marin de la Malgue
 Paul Marin de la Malgue
-Fort Presque Isle -LRB- near present-day Erie , Pennsylvania
+Fort Presque Isle ( near present-day Erie , Pennsylvania
 Fort Presque Isle
 near present-day Erie , Pennsylvania
 Fort Presque Isle
 near present-day Erie , Pennsylvania
-Fort Le Boeuf -LRB- present-day Waterford , Pennsylvania
+Fort Le Boeuf ( present-day Waterford , Pennsylvania
 Fort Le Boeuf
 present-day Waterford , Pennsylvania
 Fort Le Boeuf
@@ -18901,7 +18901,7 @@ British Superintendent for Indian Affairs
 British Superintendent for Indian Affairs in the New York region and beyond
 British Superintendent for Indian Affairs
 British Superintendent for Indian Affairs
-Warraghiggey , meaning `` He who does great things . ''
+Warraghiggey , meaning " He who does great things . "
 Warraghiggey
 Warraghiggey
 Warraghiggey
@@ -18946,10 +18946,10 @@ from Dinwiddie demanding an immediate French withdrawal from the Ohio Country
 immediate French withdrawal
 the letter from Dinwiddie
 As to the Summons you send me to retire , I do not think myself obliged to obey it .
-said , `` As to the Summons you send me to retire , I do not think myself obliged to obey it . ''
-`` As to the Summons you send me to retire , I do not think myself obliged to obey it . ''
+said , " As to the Summons you send me to retire , I do not think myself obliged to obey it . "
+" As to the Summons you send me to retire , I do not think myself obliged to obey it . "
 I do not think myself obliged to obey
-`` As to the Summons you send me to retire , I do not think myself obliged to obey it . ''
+" As to the Summons you send me to retire , I do not think myself obliged to obey it . "
 France 's claim to the region was superior to that of the British
 Sieur de La Salle had explored the Ohio Country nearly a century earlier
 René-Robert Cavelier , Sieur de La Salle had explored the Ohio Country nearly a century earlier .
@@ -19023,9 +19023,9 @@ became the prototype for confederation during the War of Independence
 became the prototype for confederation during the War of Independence
 prototype for confederation
 became the prototype for confederation during the War of Independence
-Braddock -LRB- with George Washington as one of his aides -RRB- led about 1,500 army troops
+Braddock ( with George Washington as one of his aides ) led about 1,500 army troops
 Braddock
-Braddock -LRB- with George Washington
+Braddock ( with George Washington
 Braddock
 Braddock
 The expedition was a disaster
@@ -19196,7 +19196,7 @@ returned to New York
 returned to New York
 returned to New York
 returned to New York
-French irregular forces -LRB- Canadian scouts and Indians -RRB-
+French irregular forces ( Canadian scouts and Indians )
 French irregular forces
 French irregular forces
 French irregular forces
@@ -19662,7 +19662,7 @@ experimentation
 vector quantities
 vector quantities
 vector quantities
-`` vector quantities ''
+" vector quantities "
 dependent upon how strong
 denoted scalar quantities
 scalar quantities
@@ -19696,7 +19696,7 @@ magnitude and direction
 magnitude and direction
 net force
 net force
-the resultant -LRB- also called the net force -RRB-
+the resultant ( also called the net force )
 net force
 net force
 respective lines of application
@@ -19842,12 +19842,12 @@ force
 force
 force
 force
-The notion `` force ''
+The notion " force "
 spin
 spin
 spin
 spin
-the `` spin
+the " spin
 Pauli
 Pauli principle
 Pauli principle
@@ -19946,15 +19946,15 @@ at larger distances
 at larger distances
 at larger distances
 the Moon
-the mass -LRB- -RRB- and the radius -LRB- -RRB- of the Earth
+the mass ( ) and the radius ( ) of the Earth
 force of gravity
 the same force of gravity if the acceleration due to gravity decreased as an inverse square law .
 mass
 the mass of the attracting body
 the mass of the attracting body
 the mass of the attracting body
-radius -LRB- -RRB- of the Earth
-the radius -LRB- -RRB- of the Earth
+radius ( ) of the Earth
+the radius ( ) of the Earth
 radius
 Newton 's Universal Gravitation Constant ,
 dimensional constant
@@ -19981,7 +19981,7 @@ Vulcan
 Vulcan
 Vulcan
 theory of general relativity
-theory of general relativity -LRB- GR -RRB-
+theory of general relativity ( GR )
 general relativity
 general relativity
 Albert Einstein
@@ -20021,9 +20021,9 @@ unified electromagnetic force
 electromagnetic
 unified electromagnetic force
 electrostatic force
-the electrostatic force -LRB- due to the electric field -RRB- and the magnetic force -LRB- due to the magnetic field -RRB- .
-electrostatic force -LRB- due to the electric field -RRB- and the magnetic force
-the electrostatic force -LRB- due to the electric field -RRB- and the magnetic force
+the electrostatic force ( due to the electric field ) and the magnetic force ( due to the magnetic field ) .
+electrostatic force ( due to the electric field ) and the magnetic force
+the electrostatic force ( due to the electric field ) and the magnetic force
 James Clerk Maxwell
 James Clerk Maxwell
 James Clerk Maxwell
@@ -20053,7 +20053,7 @@ quantum mechanics
 quantum mechanics
 the work of leading theoretical physicists
 quantum electrodynamics
-quantum electrodynamics -LRB- or QED -RRB-
+quantum electrodynamics ( or QED )
 quantum electrodynamics
 quantum electrodynamics
 photons
@@ -20105,7 +20105,7 @@ weak force
 weak force
 weak force
 beta decay
-beta decay -LRB- of neutrons in atomic nuclei -RRB-
+beta decay ( of neutrons in atomic nuclei )
 beta decay
 beta decay
 radioactivity
@@ -20180,9 +20180,9 @@ deformations
 The stress tensor
 pressure terms
 stress tensor
-pressure terms associated with forces that act normal to the cross-sectional area -LRB- the matrix diagonals of the tensor -RRB- as well as shear terms
+pressure terms associated with forces that act normal to the cross-sectional area ( the matrix diagonals of the tensor ) as well as shear terms
 pressure terms
-matrix diagonals of the tensor -RRB-
+matrix diagonals of the tensor )
 pressure terms
 formalism
 the relevant cross-sectional area for the volume for which the stress-tensor is being calculated
@@ -20213,7 +20213,7 @@ unbalanced centripetal force
 unbalanced centripetal force
 centripetal
 radial
-radial -LRB- centripetal -RRB- force
+radial ( centripetal ) force
 radial
 radial
 tangential force
@@ -20277,9 +20277,9 @@ nonconservative forces
 nonconservative forces
 kilogram-force
 pound-force
-kilogram-force -LRB- kgf -RRB-
+kilogram-force ( kgf )
 kilogram-force
-the kilogram-force -LRB-
+the kilogram-force (
 kilopond
 kilopond
 kilopond
