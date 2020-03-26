@@ -33,6 +33,8 @@ from model import *
 from preprocessing.batching import *
 from preprocessing.embedding_matrix import get_glove
 
+from torch.nn.utils import clip_grad_norm
+
 SERIALISATION_KEY_EPOCH = 'epoch'
 SERIALISATION_KEY_MODEL = 'model'
 SERIALISATION_KEY_OPTIM = 'optim'
@@ -149,27 +151,20 @@ class Training:
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
         print("params they're missing!", params)
-        """
-        l2_reg = None
+        l2_reg = 0.0 
         for W in params:
-            print("param", W)
-            if l2_reg is None:
-                l2_reg = W.norm(2)
-            else:
-                l2_reg = l2_reg + W.norm(2)
-        """
-        l2_reg = 0
+            l2_reg = l2_reg + W.norm(2)
         loss = loss + REG_LAMBDA * l2_reg
 
         loss.backward(retain_graph=True)
 
         #TODO fix L2 Regularisation
-        #param_norm = get_param_norm(params)
-        #grad_norm = get_grad_norm(params)
+        param_norm = get_param_norm(params)
+        grad_norm = get_grad_norm(params)
         param_norm = 0
         grad_norm = 0
 
-        #clip_grad_norm_(params, MAX_GRAD_NORM)
+        clip_grad_norm(params, MAX_GRAD_NORM)
         optimizer.step()
         print(loss.item())
         return loss.item(), param_norm, grad_norm
@@ -187,8 +182,13 @@ class Training:
         #print("done.")
 
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
-        self.optimizer = optim.Adam(self.model.parameters(), lr=0.1, amsgrad=True)
+        self.params = self.model.parameters()
+        self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True)
         start_epoch = 0
+
+        print("Parameters", list(self.params))
+        for i, p in enumerate(self.params):
+            print(i, p)
 
         # Continue training from a saved serialised model.
         if state_file_path is not None:

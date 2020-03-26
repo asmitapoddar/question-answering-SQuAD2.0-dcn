@@ -23,8 +23,8 @@ class Encoder(nn.Module):
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
-    return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device),
-            th.zeros(1, self.batch_size, self.hidden_dim, device=self.device))
+    return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+            th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
 
   def forward(self, x, hidden):
     return self.lstm(x, hidden)
@@ -328,10 +328,7 @@ class DCNModel(nn.Module):
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
-    print(loss.shape)
     for it in range(self.decoder.max_iter):
-      print(alphas[:,it,:].shape, true_s.shape)
-      print(criterion(alphas[:,it,:], true_s).shape)
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
  
