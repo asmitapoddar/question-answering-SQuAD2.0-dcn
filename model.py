@@ -264,7 +264,7 @@ class DynamicPointerDecoder(nn.Module):
         
       _, s = th.max(alpha, dim=1)
       
-      # TODO: we want to get the effect below, using th.gather:
+      # we want to get the effect below, using th.gather:
       # https://pytorch.org/docs/stable/torch.html#torch.gather
       # u_si = [U[batch_ind,:,s[batch_ind]] for batch_ind in range(self.batch_size)].unsqueeze(dim=2)
       # u_si = th.gather(U, ??, ??)
@@ -299,6 +299,16 @@ class DCNModel(nn.Module):
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
+  def parameters(self):
+    print("It worked. OMG it worked")
+    #TODO combine params from
+    # coattention, decoder, encoder, encoder_sentinel, WQ
+    params = list(super(DCNModel, self).parameters())
+    for i, arch in enumerate([self.coattention_module, self.decoder, self.encoder, self.WQ]):
+        #print(i, arch)
+        params += list(arch.parameters())
+    params += [self.encoder_sentinel]
+    return params
 
   def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
     # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
@@ -328,8 +338,20 @@ class DCNModel(nn.Module):
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
+   
+    true_s_repeat = true_s.repeat(self.decoder.max_iter)
+    true_e_repeat = true_e.repeat(self.decoder.max_iter)
+    alphas_flat   = alphas.view(-1, 600)
+    betas_flat    = betas.view(-1, 600)
+    print("cross entr: ", alphas_flat.shape, true_s_repeat.shape, alphas[:,0,:].shape, true_s.shape)
+    loss += criterion(alphas_flat, true_s_repeat)
+    loss += criterion(betas_flat, true_e_repeat)
+    
+    """
     for it in range(self.decoder.max_iter):
+      print("cross entr: ", alphas[:,it,:].shape, true_s.shape)
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
- 
+    """
+    print("loss", loss) 
     return loss, start, end

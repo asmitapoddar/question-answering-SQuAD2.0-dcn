@@ -33,7 +33,7 @@ from model import *
 from preprocessing.batching import *
 from preprocessing.embedding_matrix import get_glove
 
-from torch.nn.utils import clip_grad_norm
+from torch.nn.utils import clip_grad_norm_
 
 SERIALISATION_KEY_EPOCH = 'epoch'
 SERIALISATION_KEY_MODEL = 'model'
@@ -150,22 +150,25 @@ class Training:
         print("b", q_emb.shape, d_emb.shape)
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
-        print("params they're missing!", params)
+        """
+        print("params they not missing!", len(params))
         l2_reg = 0.0 
         for W in params:
             l2_reg = l2_reg + W.norm(2)
         loss = loss + REG_LAMBDA * l2_reg
-
-        loss.backward(retain_graph=True)
+        """
 
         #TODO fix L2 Regularisation
         param_norm = get_param_norm(params)
         grad_norm = get_grad_norm(params)
-        param_norm = 0
-        grad_norm = 0
 
-        clip_grad_norm(params, MAX_GRAD_NORM)
+        clip_grad_norm_(params, MAX_GRAD_NORM)
+       
+        print("loss (incl. reg)", loss)
+
+        loss.backward()
         optimizer.step()
+        
         print(loss.item())
         return loss.item(), param_norm, grad_norm
 
@@ -186,10 +189,10 @@ class Training:
         self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True)
         start_epoch = 0
 
-        print("Parameters", list(self.params))
+        """
         for i, p in enumerate(self.params):
             print(i, p)
-
+        """
         # Continue training from a saved serialised model.
         if state_file_path is not None:
             if not os.path.isfile(state_file_path):
@@ -209,11 +212,16 @@ class Training:
         os.mkdir(serial_path)
         
         for epoch in range(start_epoch, NUM_EPOCHS):
+            print("-" * 50)
+            print("Training Epoch %i" % epoch)
             iter_tic = time.time()
-             
+                         
             for batch in get_batch_generator(self.word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
                     question_len=MAX_QUESTION_LEN, discard_long=True):
-                # global_step += 1
+                
+                print("Training global step %i" % self.global_step)
+                self.global_step += 1
+                
 
                 # TODO build doc and que matrix
                 loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
