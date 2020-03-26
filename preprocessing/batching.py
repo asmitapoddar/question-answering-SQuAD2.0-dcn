@@ -54,6 +54,7 @@ def split_by_whitespace(sentence):
 
 def intstr_to_intlist(string):
     """Given a string e.g. '311 9 1334 635 6192 56 639', returns as a list of integers"""
+    print(string)
     return [int(s) for s in string.split()]
 
 
@@ -103,6 +104,12 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
     context_line, qn_line, ans_line = context_file.readline(), qn_file.readline(), ans_file.readline() # read the next line from each
 
     while context_line and qn_line and ans_line: # while you haven't reached the end
+
+        # TODO: find less hacky way of dealing with None in answer spans file
+        if "None" in ans_line:
+            print("Skipped None in answer spans file")
+            context_line, qn_line, ans_line = context_file.readline(), qn_file.readline(), ans_file.readline()
+            continue
 
         # Convert tokens to word ids
         context_tokens, context_ids = sentence_to_token_ids(context_line, word2id)
