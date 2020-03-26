@@ -81,6 +81,7 @@ class BiLSTMEncoder(nn.Module):
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
+        self.hidden = self.init_hidden()
         lstm_out, self.hidden = self.lstm(
             input_BiLSTM, 
             self.hidden)

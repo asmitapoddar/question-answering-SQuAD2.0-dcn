@@ -54,7 +54,6 @@ def split_by_whitespace(sentence):
 
 def intstr_to_intlist(string):
     """Given a string e.g. '311 9 1334 635 6192 56 639', returns as a list of integers"""
-    print(string)
     return [int(s) for s in string.split()]
 
 
