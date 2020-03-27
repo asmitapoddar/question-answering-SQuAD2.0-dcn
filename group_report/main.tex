@@ -36,6 +36,16 @@
 \newcommand\com[1]{{\color{red}\textit{[#1]}}}
 \newcommand{\todo}{\com{TODO}}
 
+\newcommand{\LSTMenc}{\text{LSTMenc}}
+\newcommand{\LSTMdec}{\text{LSTMdec}}
+\newcommand{\BiLSTM}{\text{BiLSTM}}
+\newcommand{\HMN}{\text{HMN}}
+\newcommand{\HMNstart}{\text{HMNstart}}
+\newcommand{\HMNend}{\text{HMNend}}
+\newcommand{\softmax}{\text{softmax}}
+
+\renewcommand{\Re}{\mathbb{R}}
+
 \title{\LARGE \bf
 Dynamic Coattention Networks For \\Question Answering -- paper reproduction
 }
@@ -81,13 +91,13 @@ Our Dynamic Coattention Network is divided into 5 units: the Encoder, the Coatte
 The questions $Q=(x_1^Q,x_2^Q,...,x_n^Q)\in\Re^{B \times n}$  as well as their associated context documents $D=(x_1^D,x_2^D,...,x_m^D)\in\Re^{B\times m}$ are taken as inputs, B corresponding to the batch size.  
 Questions and documents are then encoded using the same LSTM : 
 \begin{equation}
-d_t= LSTMenc(d_{t-1},x_t^D)\in\Re^{l} 
+d_t= \LSTMenc(d_{t-1},x_t^D)\in\Re^{l} 
 \end{equation}
 \begin{equation}
-q_t= LSTMenc(q_{t-1},x_t^Q)\in\Re^{l}
+q_t= \LSTMenc(q_{t-1},x_t^Q)\in\Re^{l}
 \end{equation}
 The encoded documents $D=[d_1,d_2,...,d_m,d_{\emptyset}]\in\Re^{B \times l \times (m+1)}$ and  $Q'=[q_1,q_2,...,q_m,q_{\emptyset}]\in\Re^{B \times l \times (n+1)} $ are added $d_{\emptyset}$ and $q_{\emptyset}$ sentinels. The sentinels will allow to better predict rare and unseen words.
-The questions are then passed through non-linearities:$Q=tanh(W^{(Q)}Q'+b^{(Q)})$. This operation will permit some variation between the encoding space of the documents and the questions.\\
+The questions are then passed through non-linearities: $Q=tanh(W^{(Q)}Q'+b^{(Q)})$. This operation will permit some variation between the encoding space of the documents and the questions.\\
  
 \subsubsection{The Coattention Module}
 
@@ -100,10 +110,10 @@ L=D^{T}Q \in\Re^{B \times (m+1)\times(n+1)}
 \end{equation}
 L represents the affinity score between each question and its associated document. L is then normalized row-wise to produce $A^Q$, the affinity weights for each word of the document with the words in the associated question. Likewise, $A^D$ is obtained in normalizing L column-wise and represents for each word of the question, the affinity weights with the words of the associated document.
 \begin{equation}
-A^Q= softmax (L)\in \Re^{B \times(m+1)\times(n+1)}
+A^Q= \softmax (L)\in \Re^{B \times(m+1)\times(n+1)}
 \end{equation}
 \begin{equation}
-A^D= softmax(L^T)\in \Re^{B \times(n+1)\times(m+1)}
+A^D= \softmax(L^T)\in \Re^{B \times(n+1)\times(m+1)}
 \end{equation}
 These affinity coefficients represent the attention weights. Multiplied respectively with D and Q, the attention contexts for the documents and the questions are obtained.  
 \begin{equation}
@@ -115,24 +125,24 @@ Finally, the co-attention context $C^D \in \Re^{B \times 3l \times(m+1)}$ is com
 
 This module will concatenate the documents and the co-attention context and encode them using a BiLSTM. 
 \begin{equation}
-u_t= BiLSTM(u_{t-1},u_{t+1},[d_t;c_t^D])\in \Re^{B\times 2l}
+u_t= \BiLSTM(u_{t-1},u_{t+1},[d_t;c_t^D])\in \Re^{B\times 2l}
 \end{equation}
  
 
 \subsubsection{The Highway Maxout Network}
 This module takes the previous encoded start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$, the co-attention encoding corresponding to the $t^{th}$ word in the document $u_{t}$ and the current hidden state of the Dynamic Pointer Decoder $h_i$ and returns the start score $\alpha_t$ and end score $\beta_t$ of the $t^{th}$ word in the document.
 \begin{equation}
-\alpha_t= HMNstart(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
+\alpha_t= \HMNstart(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
 \end{equation}
 \begin{equation}
-\beta_t= HMNend(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
+\beta_t= \HMNend(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
 \end{equation}
 The HMN is designed as follows:
 \begin{equation}
-HMN(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})=  \max(W^{(3)}[m^{(1)}_t;m^{(2)}_t]+b^{(3))}
+\HMN(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})=  \max(W^{(3)}[m^{(1)}_t;m^{(2)}_t]+b^{(3))}
 \end{equation}
 \begin{equation}
-r=  tanh(W^{(D)}[h_i;u_{s_{i-1}};u_{e_{i-1}}])
+r=  \tanh(W^{(D)}[h_i;u_{s_{i-1}};u_{e_{i-1}}])
 \end{equation}
 \begin{equation}
 m^{(1)}_t=  \max(W^{(1)}[u_t;r] +b^{(1)})
@@ -146,7 +156,7 @@ Add some more information about why this architecture is relevant here.\\
 
 The decoder takes as input the co-attention encoding U. At each iteration, the hidden state $h_i$ is computed with the previous hidden state $h_{i-1}$, and the representation of the estimates of the start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$.
 \begin{equation}
-h_i= LSTMdec(h_{i-1},[u_{s_{i-1}};u_{e_{i-1}}])
+h_i= \LSTMdec(h_{i-1},[u_{s_{i-1}};u_{e_{i-1}}])
 \end{equation}
 Furthermore, the current start position and end position are computed using $h_i$, $u_{s_{i-1}}$, $u_{e_{i-1}}$ with the following equations: 
 \begin{equation}
