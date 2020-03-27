@@ -71,7 +71,6 @@ class BiLSTMEncoder(nn.Module):
         self.batch_size = batch_size
         self.device = device
         self.dropout = dropout
-        self.hidden = self.init_hidden()
         self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
     def init_hidden(self):
@@ -81,11 +80,9 @@ class BiLSTMEncoder(nn.Module):
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
-        self.hidden = self.init_hidden()
-        lstm_out, self.hidden = self.lstm(
-            input_BiLSTM, 
-            self.hidden)
-        U=th.transpose(lstm_out, 1, 2)[:,:,1:]
+        hidden = self.init_hidden()
+        lstm_out, hidden = self.lstm(input_BiLSTM, hidden)
+        U = th.transpose(lstm_out, 1, 2)[:,:,1:]
         return U
 
 
@@ -315,7 +312,7 @@ class DCNModel(nn.Module):
     # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
     # que_word_vecs the same as above.
 
-    print("doc_word_vec", doc_word_vecs.shape)
+    #print("doc_word_vec", doc_word_vecs.shape)
     # TODO: how should we initialise the hidden state of the LSTM? For now:
     initial_hidden = self.encoder.generate_initial_hidden_state()
     outp, _ = self.encoder(doc_word_vecs.float(), initial_hidden)
@@ -325,6 +322,7 @@ class DCNModel(nn.Module):
     # D: B x (m+1) x l
 
     # TODO: Make sure we should indeed reinit hidden state before encoding the q.
+    initial_hidden = self.encoder.generate_initial_hidden_state()
     outp, _ = self.encoder(que_word_vecs, initial_hidden)
     Qprime = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
@@ -341,9 +339,7 @@ class DCNModel(nn.Module):
     loss = th.FloatTensor([0.0]).to(self.device)
     
     for it in range(self.decoder.max_iter):
-      print("cross entr: ", alphas[:,it,:].shape, true_s.shape)
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
     
-    print("loss", loss) 
     return loss, start, end

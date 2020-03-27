@@ -102,11 +102,13 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
     examples = [] # list of (qn_ids, context_ids, ans_span, ans_tokens) triples
     context_line, qn_line, ans_line = context_file.readline(), qn_file.readline(), ans_file.readline() # read the next line from each
 
+    debug_skipped_none_counter = 0
+
     while context_line and qn_line and ans_line: # while you haven't reached the end
 
         # TODO: find less hacky way of dealing with None in answer spans file
         if "None" in ans_line:
-            print("Skipped None in answer spans file")
+            debug_skipped_none_counter += 1
             context_line, qn_line, ans_line = context_file.readline(), qn_file.readline(), ans_file.readline()
             continue
 
@@ -147,6 +149,8 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
             break
 
     # Once you've either got 160 batches or you've reached end of file:
+    print("Skipped None in answer spans file %d times!" % debug_skipped_none_counter)
+    
 
     # Sort by question length
     # Note: if you sort by context length, then you'll have batches which contain the same context many times (because each context appears several times, with different questions)

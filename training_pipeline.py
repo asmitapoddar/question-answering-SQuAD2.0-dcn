@@ -146,8 +146,8 @@ class Training:
         q_emb = self.seq_to_emb(q_seq)
         d_emb = self.seq_to_emb(d_seq)
 
-        print("a", q_seq.shape, d_seq.shape)
-        print("b", q_emb.shape, d_emb.shape)
+        #print("a", q_seq.shape, d_seq.shape)
+        #print("b", q_emb.shape, d_emb.shape)
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
         """
@@ -222,7 +222,6 @@ class Training:
                 print("Training global step %i" % self.global_step)
                 self.global_step += 1
                 
-
                 # TODO build doc and que matrix
                 loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
 
@@ -232,7 +231,7 @@ class Training:
 
             # save model after each epoch:
             print("Saving training state ... ", end='')
-            state = {SERIALISATION_KEY_EPOCH: epoch, SERIALISATION_KEY_MODEL: model.state_dict(), SERIALISATION_KEY_OPTIM: optimizer.state_dict() }
+            state = {SERIALISATION_KEY_EPOCH: epoch, SERIALISATION_KEY_MODEL: self.model.state_dict(), SERIALISATION_KEY_OPTIM: self.optimizer.state_dict() }
             th.save(state, serial_path + "epoch_%i.par" % epoch) 
             print("done.")
 
