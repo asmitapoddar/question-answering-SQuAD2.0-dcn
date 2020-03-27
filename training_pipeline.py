@@ -214,7 +214,7 @@ class Training:
         for epoch in range(start_epoch, NUM_EPOCHS):
             print("-" * 50)
             print("Training Epoch %i" % epoch)
-            iter_tic = time.time()
+            epoch_tic = time.time()
                          
             for batch in get_batch_generator(self.word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
                     question_len=MAX_QUESTION_LEN, discard_long=True):
@@ -225,9 +225,9 @@ class Training:
                 # TODO build doc and que matrix
                 loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
 
-            iter_toc = time.time()
-            iter_time = iter_toc - iter_tic
-            print("Epoch %i completed in %i seconds" % (epoch, iter_time))
+            epoch_toc = time.time()
+            epoch_time = epoch_toc - epoch_tic
+            print("Epoch %i completed in %i seconds" % (epoch, epoch_time))
 
             # save model after each epoch:
             print("Saving training state ... ", end='')
