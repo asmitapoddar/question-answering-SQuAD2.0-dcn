@@ -115,8 +115,6 @@ class Training:
 
         if is_train:
             span_s, span_e = self.get_spans(batch.ans_span)
-        
-        if is_train:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_s, span_e 
         else:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
@@ -186,7 +184,6 @@ class Training:
         loss.backward()
         optimizer.step()
         
-        print(loss.item())
         return loss.item(), param_norm, grad_norm
 
 
