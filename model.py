@@ -27,6 +27,21 @@ class Encoder(nn.Module):
             th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
 
   def forward(self, x, hidden):
+    trivialEncoder = False
+    if trivialEncoder:
+        constant = th.mean(x) + th.mean(hidden[0]) + th.mean(hidden[1])
+        return (constant * th.ones(self.batch_size, x.size()[1], hidden[0].size()[2]),
+                (constant * th.ones(1, self.batch_size, hidden[0].size()[2]), 
+                constant * th.ones(1, self.batch_size, hidden[0].size()[2])))
+
+    # xshape torch.Size([64, 30, 300])
+    # hidden0shape torch.Size([1, 64, 200])
+    # hidden1shape torch.Size([1, 64, 200])
+
+    # retval0shape torch.Size([64, 30, 200])
+    # retval10shape torch.Size([1, 64, 200])
+    # retval11shape torch.Size([1, 64, 200])
+
     return self.lstm(x, hidden)
 
 
@@ -43,6 +58,10 @@ class CoattentionModule(nn.Module):
     def forward(self, D_T, Q_T):
         #Q: B x n + 1 x l
         #D: B x m + 1 x l
+        trivialCoattentionModule = False
+        if trivialCoattentionModule:
+            constant = th.mean(D_T) + th.mean(Q_T)
+            return constant * th.ones(self.batch_size, 2 * self.hidden_dim, D_T.size()[1])
         
         Q = th.transpose(Q_T, 1, 2) #B x  n + 1 x l
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
@@ -80,6 +99,11 @@ class BiLSTMEncoder(nn.Module):
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
+        trivialBiLSTM = False
+        if trivialBiLSTM:
+            const = th.mean(input_BiLSTM)
+            return const * th.ones(self.batch_size, 2 * self.hidden_dim, input_BiLSTM.size()[1])
+
         hidden = self.init_hidden()
         lstm_out, hidden = self.lstm(input_BiLSTM, hidden)
         U = th.transpose(lstm_out, 1, 2)[:,:,1:]
@@ -125,7 +149,7 @@ class HighwayMaxoutNetwork(nn.Module):
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
-    trivial_hmn = True 
+    trivial_hmn = False 
     if trivial_hmn:
         m1 = th.mean(u_t)
         m2 = th.mean(h_i)
@@ -230,8 +254,8 @@ class DynamicPointerDecoder(nn.Module):
         s = th.zeros(self.batch_size, device=self.device, dtype=th.long)
         e = th.ones(self.batch_size, device=self.device, dtype=th.long)
         doc_length = U.size()[2]
-        alphas = scalar * th.ones(self.batch_size, doc_length, device=self.device)
-        betas = scalar * th.ones(self.batch_size, doc_length, device=self.device)
+        alphas = scalar * th.ones(self.batch_size, self.max_iter, doc_length, device=self.device)
+        betas = scalar * th.ones(self.batch_size, self.max_iter, doc_length, device=self.device)
         return (alphas, betas, s, e)
 
     assert(U.size()[0] == self.batch_size)

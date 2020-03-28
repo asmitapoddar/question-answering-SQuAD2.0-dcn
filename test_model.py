@@ -94,7 +94,7 @@ def test_optimiser():
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
-    N_STEPS = 3
+    N_STEPS = 7
 
     loss_values_over_steps = []
 
@@ -126,7 +126,7 @@ def test_optimiser():
 
         nodes_current = new_node_ids
 
-        loss.backward(retain_graph=True)  # TODO: Should this be here?
+        loss.backward(retain_graph=False)  # TODO: Should this be here?
 
         optimizer.step()
         loss_values_over_steps.append(loss[0])
