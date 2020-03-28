@@ -147,6 +147,14 @@ class HighwayMaxoutNetwork(nn.Module):
     self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
+
+  def detach_params(self):
+    self.W_D.detach_()
+    self.W_1.detach_()
+    self.W_2.detach_()
+    self.W_3.detach_()
+
+
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
     trivial_hmn = False 
@@ -177,24 +185,26 @@ class HighwayMaxoutNetwork(nn.Module):
     h_us_ue = th.cat((h_i, u_si_m_1, u_ei_m_1), dim=1)
 
     # TODO: remove once finished debugging -- FAILS
-    input_number = th.mean(h_us_ue)
-    output_tensor = th.ones(self.batch_size, 1)
-    return input_number * output_tensor
+    stopHere=False
+    if stopHere:
+        input_number = th.mean(h_us_ue)
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
 
 
     assert(h_us_ue.size()[0] == self.batch_size)
     assert(h_us_ue.size()[1+0] == 5 * self.hidden_dim)
     assert(h_us_ue.size()[1+1] == 1)
 
-
-
     # r := output of MLP
     r = th.tanh(self.W_D.matmul(h_us_ue))
-
+    
     # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(r)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
+    stopHere=False
+    if stopHere:
+        input_number = th.mean(r)
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
 
     # r has dimension BATCH_SIZE * HIDDEN_DIM * 1
     assert(r.size()[0] == self.batch_size)
@@ -204,20 +214,11 @@ class HighwayMaxoutNetwork(nn.Module):
     # m_t_1 := output of 1st maxout layer (Eq. 11 in the paper)
     w1_reshaped = self.W_1.view(self.maxout_pool_size * self.hidden_dim, 3 * self.hidden_dim)
 
-    # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(w1_reshaped)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
-
     u_r = th.cat((u_t, r), dim=1).squeeze(dim=2).transpose(0, 1)
     # Note that the batch dimension here isn't the first one.
     assert(u_r.size()[0] == 3 * self.hidden_dim)
     assert(u_r.size()[1] == self.batch_size)
 
-    # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(u_r)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
 
     # Transpose the result of matmul(w1_reshaped, u_r) so that BATCH_SIZE is again the first dimension
     m_t_1_beforemaxpool = th.mm(
@@ -226,15 +227,19 @@ class HighwayMaxoutNetwork(nn.Module):
     assert(m_t_1_beforemaxpool.size()[0] == self.batch_size)
     assert(m_t_1_beforemaxpool.size()[1+0] == self.maxout_pool_size)
     assert(m_t_1_beforemaxpool.size()[1+1] == self.hidden_dim)
+    
+
 
     m_t_1 = th.Tensor.max(m_t_1_beforemaxpool, dim=1).values
     assert(m_t_1.size()[0] == self.batch_size)
     assert(m_t_1.size()[1+0] == self.hidden_dim)
 
     # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(m_t_1)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
+    stopHere=False
+    if stopHere:
+        input_number = th.mean(m_t_1)
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
 
     # Eq. 12 in the paper
     m_t_2_beforemaxpool = th.mm(
@@ -248,11 +253,14 @@ class HighwayMaxoutNetwork(nn.Module):
     m_t_2 = th.Tensor.max(m_t_2_beforemaxpool, dim=1).values
     assert(m_t_2.size()[0] == self.batch_size)
     assert(m_t_2.size()[1+0] == self.hidden_dim)
+    
 
     # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(m_t_2)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
+    stopHere=False
+    if stopHere:
+        input_number = th.mean(m_t_2)
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
 
     # HMN output (Eq. 9 in the paper)
     output_beforemaxpool = th.mm(
@@ -263,17 +271,23 @@ class HighwayMaxoutNetwork(nn.Module):
         # highway connection
         th.cat((m_t_1, m_t_2), 1).transpose(0, 1)
     ).transpose(0, 1).view(self.batch_size, self.maxout_pool_size, 1) + self.b_3.expand(self.batch_size, -1, -1)
+    
 
     # # TODO: remove once finished debugging -- FAILS
-    # input_number = th.mean(output_beforemaxpool)
-    # output_tensor = th.ones(self.batch_size, 1)
-    # return input_number * output_tensor
+    stopHere=False
+    if stopHere:
+        input_number = th.mean(output_beforemaxpool)
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
     
     output = th.Tensor.max(output_beforemaxpool, dim=1).values
     assert(output.size()[0] == self.batch_size)
     assert(output.size()[1] == 1)
 
+    self.detach_params()
+
     return output
+
 
 class DynamicPointerDecoder(nn.Module):
   def __init__(self, batch_size, max_iter, dropout_hmn, dropout_lstm, hidden_dim, maxout_pool_size, device):
