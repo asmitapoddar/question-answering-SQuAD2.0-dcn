@@ -150,9 +150,9 @@ class Training:
             self.optimizer.load_state_dict(state[SERIALISATION_KEY_OPTIM])
 
             print("Loaded saved state successfully, see below:")
-            print("Upcoming epoch: %d." % start_epoch)
-            print("Upcoming batch index: %d." % start_batch)
-            print("Upcoming global step: %d." % global_step)
+            print("- Upcoming epoch: %d." % start_epoch)
+            print("- Upcoming batch index: %d." % start_batch)
+            print("- Upcoming global step: %d." % global_step)
             print("Resuming training...")
 
         return global_step, start_batch, start_epoch

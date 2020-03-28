@@ -299,12 +299,10 @@ class DCNModel(nn.Module):
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
   def parameters(self):
-    print("It worked. OMG it worked")
     #TODO combine params from
     # coattention, decoder, encoder, encoder_sentinel, WQ
     params = list(super(DCNModel, self).parameters())
     for i, arch in enumerate([self.coattention_module, self.decoder, self.encoder, self.WQ]):
-        #print(i, arch)
         params += list(arch.parameters())
     params += [self.encoder_sentinel]
     return params

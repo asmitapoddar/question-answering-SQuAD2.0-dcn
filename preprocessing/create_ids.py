@@ -28,7 +28,7 @@ def get_glove(glove_path, glove_dim):
     # put start tokens in the dictionaries
     idx = 0
     for word in START_VOCAB:
-        print('word', idx)
+        #print('word', idx)
         word2id[word] = idx
         id2word[idx] = word
         idx += 1
@@ -40,7 +40,7 @@ def get_glove(glove_path, glove_dim):
             pass
         print('Length',i+1)
     """
-    print('index', idx)
+    #print('index', idx)
     
     # go through glove vecs
     with open(glove_path, 'r') as fh:
