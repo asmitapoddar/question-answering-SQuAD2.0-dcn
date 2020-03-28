@@ -140,7 +140,7 @@ class Training:
                 print("Failed to read path %s, aborting." % state_file_path)
                 return
             state = th.load(state_file_path)
-            if len(state) != 3:
+            if len(state) != 5:
                 print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
                 return
             global_step = state[SERIALISATION_KEY_GLOBAL_STEP]
@@ -148,6 +148,12 @@ class Training:
             start_epoch = state[SERIALISATION_KEY_EPOCH] + 1
             self.model.load_state_dict(state[SERIALISATION_KEY_MODEL])
             self.optimizer.load_state_dict(state[SERIALISATION_KEY_OPTIM])
+
+            print("Loaded saved state successfully, see below:")
+            print("Upcoming epoch: %d." % start_epoch)
+            print("Upcoming batch index: %d." % start_batch)
+            print("Upcoming global step: %d." % global_step)
+            print("Resuming training...")
 
         return global_step, start_batch, start_epoch
 
@@ -236,5 +242,6 @@ class Training:
             save_state(serial_path, 0, epoch+1, global_step, self.model, self.optimizer)
 
 
-# TODO: Remove.
-Training().training()
+# TODO: Move.
+saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
+Training().training(saved_state_path)
