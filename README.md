@@ -6,7 +6,8 @@ This repository contain a reimplementation of this paper https://arxiv.org/abs/1
 
 The repo name speaks for itself.
 
-No snitching either.
+### Resuming training from saved state
+* `python3 training_pipeline.py "/home/no_eating_no_drinking/model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
 ### Existing impl
 * Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
@@ -27,7 +28,8 @@ No snitching either.
 - [x] Debug why predicted end indices are all 0 (Richie)
 - [x] Complete batching (Asmita)
 - [x] Create word2id, id2word, embedding matrix (Asmita)
-- [ ] Training pipeline (Asmita + Kuba's minor cleanup)
-- [x] Model serialisation (~~Kuba~~ / Richie :p)
+- [x] Training pipeline (Asmita + Kuba's minor cleanup)
+- [x] Model serialisation (Kuba + Richie)
+- [x] Debug `retain_graph` error (Dip)
 - [ ] Run Training on real data ( ? )
 - [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
