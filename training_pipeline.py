@@ -36,7 +36,9 @@ from preprocessing.embedding_matrix import get_glove
 
 from torch.nn.utils import clip_grad_norm_
 
+SERIALISATION_KEY_BATCH = 'batch'
 SERIALISATION_KEY_EPOCH = 'epoch'
+SERIALISATION_KEY_GLOBAL_STEP = 'gstep'
 SERIALISATION_KEY_MODEL = 'model'
 SERIALISATION_KEY_OPTIM = 'optim'
 
@@ -68,6 +70,19 @@ def get_param_norm(parameters, norm_type=2):
     return total_norm
 
 
+def save_state(serial_path, next_batch, next_epoch, next_global_step, model, optim):
+    target_filename = serial_path + "epoch%d_batch%d.par" % (next_epoch,next_batch)
+    print("Saving training state to '%s'... " % target_filename, end='')
+    state = {
+        SERIALISATION_KEY_BATCH: next_batch, 
+        SERIALISATION_KEY_EPOCH: next_epoch, 
+        SERIALISATION_KEY_GLOBAL_STEP: next_global_step,
+        SERIALISATION_KEY_MODEL: model.state_dict(), 
+        SERIALISATION_KEY_OPTIM: optim.state_dict() }
+    th.save(state, target_filename) 
+    print("done.")
+
+
 class Training:
 
     def __init__(self):
@@ -76,7 +91,6 @@ class Training:
         self.model = None
         self.optimizer = None
         self.params = " "  # Model parameters (50 layers, infeatures:200, outfeatures:200)
-        self.global_step = 0
 
         #TO BE UPDATED
         self.word2id_path = "word_vectors/word2id.csv"
@@ -172,8 +186,11 @@ class Training:
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
         self.params = self.model.parameters()
         self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True)
-        start_epoch = 0
 
+        global_step = 0
+        start_batch = 0
+        start_epoch = 0
+        
         """
         for i, p in enumerate(self.params):
             print(i, p)
@@ -188,38 +205,45 @@ class Training:
             if len(state) != 3:
                 print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
                 return
+            global_step = state[SERIALISATION_KEY_GLOBAL_STEP]
+            start_batch = state[SERIALISATION_KEY_BATCH]
             start_epoch = state[SERIALISATION_KEY_EPOCH] + 1
             self.model.load_state_dict(state[SERIALISATION_KEY_MODEL])
-            self.optim.load_state_dict(state[SERIALISATION_KEY_OPTIM])
+            self.optimizer.load_state_dict(state[SERIALISATION_KEY_OPTIM])
 
         self.emb_mat, self.word2id, self.id2word = get_glove(self.glove_path, EMBEDDING_DIM) 
 
         curr_dir_path = str(pathlib.Path().absolute())
-        serial_path = "/model/" + datetime.now().strftime("%Y%m%d_%H%M%S")
-        os.makedirs(curr_dir_path+serial_path)
+        serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "/"
+        os.makedirs(serial_path)
         
         for epoch in range(start_epoch, NUM_EPOCHS):
             print("-" * 50)
             print("Training Epoch %i" % epoch)
             epoch_tic = time.time()
-                         
-            for batch in get_batch_generator(self.word2id, self.context_path, self.question_path, self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
-                    question_len=MAX_QUESTION_LEN, discard_long=True):
+                        
+            for batch_ind, batch in enumerate(get_batch_generator(
+                    self.word2id, self.context_path, self.question_path, 
+                    self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
+                    question_len=MAX_QUESTION_LEN, discard_long=True)):
                 
-                print("Training global step %i" % self.global_step)
-                self.global_step += 1
-                
-                # TODO build doc and que matrix
-                loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
+                # Skip first start_batch batches (if resuming training from saved state).
+                if start_batch != 0:
+                    start_batch -= 1
+                else:
+                    print("About to train global step %i..." % global_step)
+                    global_step += 1
+                    loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
+
+                    # Save state at a configurable frequency.
+                    if global_step % TRAINING_SAVE_FREQUENCY == 1:  # 1 so that the first save is as early as possible.
+                        save_state(serial_path, batch_ind+1, epoch, global_step, self.model, self.optimizer)
 
             epoch_toc = time.time()
             epoch_time = epoch_toc - epoch_tic
             print("Epoch %i completed in %i seconds" % (epoch, epoch_time))
 
-            # save model after each epoch:
-            print("Saving training state ... ", end='')
-            state = {SERIALISATION_KEY_EPOCH: epoch, SERIALISATION_KEY_MODEL: self.model.state_dict(), SERIALISATION_KEY_OPTIM: self.optimizer.state_dict() }
-            th.save(state, serial_path + "epoch_%i.par" % epoch) 
-            print("done.")
+            # Save state at the end of epoch.
+            save_state(serial_path, 0, epoch+1, global_step, self.model, self.optimizer)
 
 Training().training()
