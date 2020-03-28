@@ -92,7 +92,7 @@ class Training:
         self.optimizer = None
         self.params = " "  # Model parameters (50 layers, infeatures:200, outfeatures:200)
 
-        #TO BE UPDATED
+        #TO BE UPDATED  #TODO: What does this comment mean?
         self.word2id_path = "word_vectors/word2id.csv"
         self.id2word_path = "word_vectors/id2word.csv"
         self.glove_path = "word_vectors/glove.6B.300d.txt"
@@ -100,6 +100,7 @@ class Training:
         self.question_path = "preprocessing/data/preprocessed_train_question.txt"
         self.context_path = "preprocessing/data/preprocessed_train_context.txt"
         self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
+
 
     # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
     def get_data(self, batch, is_train=True):
@@ -113,13 +114,13 @@ class Training:
         context_seq_var = th.from_numpy(batch.context_ids).long().to(self.device)
 
         if is_train:
-            #span_var = th.from_numpy(batch.ans_span).long().to(self.device)
             span_s, span_e = self.get_spans(batch.ans_span)
         
         if is_train:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var, span_s, span_e 
         else:
             return qn_seq_var, qn_mask_var, context_seq_var, context_mask_var
+
 
     def get_spans(self, span):
         def to_th(x):
@@ -129,68 +130,11 @@ class Training:
         span_e = to_th(map(lambda p: p[1], span))
         return span_s, span_e
 
-    def seq_to_emb(self, seq):
-        seq_list = seq.tolist()
-        emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
-        return th.tensor(emb_list, dtype=th.float32, device=self.device)
 
-    def train_one_batch(self, batch, model, optimizer, params):
-        model.train()
-        optimizer.zero_grad()
-        q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
-        
-        # convert sequence into embedding
-        q_emb = self.seq_to_emb(q_seq)  #Batched questions embedding Shape: batch_size X max_question_length, embedding_dimension
-        d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape: batch_size X max_context_length, embedding_dimension
-
-        #print("a", q_seq.shape, d_seq.shape)    #Shape: batch_size X max_question_length, batch_size X max_context_length
-        #print("b", q_emb.shape, d_emb.shape)   
-        loss, _, _ = model(d_emb, q_emb, span_s, span_e)
-
-        l2_reg = 0.0 
-        for W in params:
-            l2_reg = l2_reg + W.norm(2)
-        loss = loss + REG_LAMBDA * l2_reg
-        
-        param_norm = get_param_norm(params)
-        grad_norm = get_grad_norm(params)
-
-        clip_grad_norm_(params, MAX_GRAD_NORM)
-       
-        print("loss (incl. reg)", loss)
-
-        loss.backward()
-        optimizer.step()
-        
-        print(loss.item())
-        return loss.item(), param_norm, grad_norm
-
-
-    # Pass state_file_path to resume training from an existing checkpoint.
-    def training(self, state_file_path=None):
-        """
-        print("Reading word2id and id2word...", end='')
-        word2id = pd.read_csv(self.word2id_path).to_dict()
-        id2word = pd.read_csv(self.id2word_path).to_dict()
-        print("done.")
-
-        print("Reading embedding matrix (this takes a while)...", end='')
-        emb_mat = np.loadtxt(self.emb_mat_path)
-        print("done.")
-        """
-
-        self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
-        self.params = self.model.parameters()
-        self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True)
-
+    def load_saved_state(self, state_file_path):
         global_step = 0
         start_batch = 0
         start_epoch = 0
-        
-        """
-        for i, p in enumerate(self.params):
-            print(i, p)
-        """
         
         # Continue training from a saved serialised model.
         if state_file_path is not None:
@@ -207,12 +151,64 @@ class Training:
             self.model.load_state_dict(state[SERIALISATION_KEY_MODEL])
             self.optimizer.load_state_dict(state[SERIALISATION_KEY_OPTIM])
 
+        return global_step, start_batch, start_epoch
+
+
+    def seq_to_emb(self, seq):
+        seq_list = seq.tolist()
+        emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
+        return th.tensor(emb_list, dtype=th.float32, device=self.device)
+
+
+    def train_one_batch(self, batch, model, optimizer, params):
+        model.train()
+        optimizer.zero_grad()
+        q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
+        
+        # convert sequence into embedding
+        q_emb = self.seq_to_emb(q_seq)  #Batched questions embedding Shape: batch_size X max_question_length, embedding_dimension
+        d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape:  batch_size X max_context_length, embedding_dimension
+
+        loss, _, _ = model(d_emb, q_emb, span_s, span_e)
+
+        l2_reg = 0.0 
+        for W in params:
+            l2_reg = l2_reg + W.norm(2)
+        loss = loss + REG_LAMBDA * l2_reg
+        
+        param_norm = get_param_norm(params)
+        grad_norm = get_grad_norm(params)
+
+        clip_grad_norm_(params, MAX_GRAD_NORM)
+       
+        print("loss (incl. reg):", loss)
+
+        loss.backward()
+        optimizer.step()
+        
+        print(loss.item())
+        return loss.item(), param_norm, grad_norm
+
+
+    # Pass state_file_path to resume training from an existing checkpoint.
+    def training(self, state_file_path=None):
+        self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
+        self.params = self.model.parameters()
+        self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True) # TODO: choose right hyperparameters
+
+        # Load saved state from the path. If path is None, still do call this method!
+        global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
+
+        # Load glove embeddings. Takes a bit of time.
         self.emb_mat, self.word2id, self.id2word = get_glove(self.glove_path, EMBEDDING_DIM) 
 
+        # Create directory for this training session.
         curr_dir_path = str(pathlib.Path().absolute())
         serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "/"
         os.makedirs(serial_path)
+        print("This training session will be saved at:\n%s" % serial_path)
         
+        # Train / resume training.
         for epoch in range(start_epoch, NUM_EPOCHS):
             print("-" * 50)
             print("Training Epoch %i" % epoch)
@@ -242,4 +238,6 @@ class Training:
             # Save state at the end of epoch.
             save_state(serial_path, 0, epoch+1, global_step, self.model, self.optimizer)
 
+
+# TODO: Remove.
 Training().training()

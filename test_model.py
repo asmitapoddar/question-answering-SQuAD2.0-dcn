@@ -94,10 +94,8 @@ def test_optimiser():
       true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
     model = DCNModel(BATCH_SIZE, device).to(device)
-
-    # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
-    N_STEPS = 4
+    N_STEPS = 3
 
     loss_values_over_steps = []
 
