@@ -147,15 +147,11 @@ class Training:
         #print("b", q_emb.shape, d_emb.shape)   
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
-        """
-        print("params they not missing!", len(params))
         l2_reg = 0.0 
         for W in params:
             l2_reg = l2_reg + W.norm(2)
         loss = loss + REG_LAMBDA * l2_reg
-        """
-
-        #TODO fix L2 Regularisation
+        
         param_norm = get_param_norm(params)
         grad_norm = get_grad_norm(params)
 
