@@ -125,6 +125,18 @@ class HighwayMaxoutNetwork(nn.Module):
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
+    trivial_hmn = True 
+    if trivial_hmn:
+        m1 = th.mean(u_t)
+        m2 = th.mean(h_i)
+        m3 = th.mean(u_si_m_1)
+        m4 = th.mean(u_ei_m_1)
+        input_number = m1 + m2 + m3 + m4
+
+        output_tensor = th.ones(self.batch_size, 1)
+        return input_number * output_tensor
+
+
     assert(u_t.size()[0+1] == 2 * self.hidden_dim)
     assert(u_t.size()[1+1] == 1)
     assert(h_i.size()[0+1] == self.hidden_dim)
