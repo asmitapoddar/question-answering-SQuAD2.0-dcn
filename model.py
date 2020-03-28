@@ -97,7 +97,8 @@ class HighwayMaxoutNetwork(nn.Module):
     self.maxout_pool_size = maxout_pool_size
 
     # Don't apply dropout to biases.
-    self.dropout_modifier = nn.Dropout(p=dropout)
+    # Disable dropout if requested, by replacing it with a builtin identity 'placeholder' module.
+    self.dropout_modifier = nn.Identity() if DISABLE_HMN_DROPOUT else nn.Dropout(p=dropout)
 
     # W_D := Weights of MLP applied to the coattention encodings of
     # the start/end positions, and the current LSTM hidden state (h_i)
