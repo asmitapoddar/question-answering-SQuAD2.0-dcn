@@ -16,6 +16,12 @@ def test_example():
     pass
 
 
+# It's often useful to change HIDDEN_DIM to 1 for testing the code.
+# This test ensures that you haven't forgotten to undo that.
+def test_hidden_dim():
+    assert(HIDDEN_DIM == 200)
+
+
 def test_dcn_model():
     # https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
     # Is GPU available:

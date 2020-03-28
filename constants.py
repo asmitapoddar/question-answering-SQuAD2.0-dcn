@@ -7,7 +7,7 @@ DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if po
                            # github.com/atulkum/co-attention/blob/master/code/model.py#L177
 DROPOUT = 0.3
 EMBEDDING_DIM = 300
-HIDDEN_DIM = 1  # Denoted by 'l' in the paper.
+HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
 MAX_ITER = 4
 MAXOUT_POOL_SIZE = 16
 MAX_CONTEXT_LEN = 600
