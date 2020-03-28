@@ -149,7 +149,7 @@ class HighwayMaxoutNetwork(nn.Module):
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
-    trivial_hmn = False 
+    trivial_hmn = True 
     if trivial_hmn:
         m1 = th.mean(u_t)
         m2 = th.mean(h_i)
