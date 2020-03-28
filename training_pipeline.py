@@ -68,23 +68,6 @@ def get_param_norm(parameters, norm_type=2):
     return total_norm
 
 
-def sentence_to_token_ids(sentence, word2id):
-    """Turns an already-tokenized sentence string into word indices
-    e.g. "i do n't know" -> [9, 32, 16, 96]
-    Note any token that isn't in the word2id mapping gets mapped to the id for UNK
-    """
-    tokens = split_by_whitespace(sentence) # list of strings
-    ids = [word2id.get(w, UNK_ID) for w in tokens]
-    return tokens, ids
-
-
-def split_by_whitespace(sentence):
-    words = []
-    for space_separated_fragment in sentence.strip().split():
-        words.extend(re.split(" ", space_separated_fragment))
-    return [w for w in words if w]
-
-
 class Training:
 
     def __init__(self):
@@ -92,6 +75,8 @@ class Training:
         
         self.model = None
         self.optimizer = None
+        self.params = " "  # Model parameters (50 layers, infeatures:200, outfeatures:200)
+        self.global_step = 0
 
         #TO BE UPDATED
         self.word2id_path = "word_vectors/word2id.csv"
@@ -101,11 +86,8 @@ class Training:
         self.question_path = "preprocessing/data/preprocessed_train_question.txt"
         self.context_path = "preprocessing/data/preprocessed_train_context.txt"
         self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
-                
-        self.params = " " # What's this?
-        self.global_step = 0
 
-
+    # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
     def get_data(self, batch, is_train=True):
         qn_mask = get_mask_from_seq_len(batch.qn_mask)
         qn_mask_var = th.from_numpy(qn_mask).long().to(self.device)
@@ -144,11 +126,11 @@ class Training:
         q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
         
         # convert sequence into embedding
-        q_emb = self.seq_to_emb(q_seq)
-        d_emb = self.seq_to_emb(d_seq)
+        q_emb = self.seq_to_emb(q_seq)  #Batched questions embedding Shape: batch_size X max_question_length, embedding_dimension
+        d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape: batch_size X max_context_length, embedding_dimension
 
-        #print("a", q_seq.shape, d_seq.shape)
-        #print("b", q_emb.shape, d_emb.shape)
+        #print("a", q_seq.shape, d_seq.shape)    #Shape: batch_size X max_question_length, batch_size X max_context_length
+        #print("b", q_emb.shape, d_emb.shape)   
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
         """
