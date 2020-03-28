@@ -169,7 +169,10 @@ class Training:
 
         loss.backward()
         optimizer.step()
-        
+
+        model.decoder.hmn_alpha.detach_params()
+        model.decoder.hmn_beta.detach_params()
+
         print(loss.item())
         return loss.item(), param_norm, grad_norm
 

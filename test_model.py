@@ -81,8 +81,8 @@ def test_optimiser():
     device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
     # Fake one batch of data
-    doc = th.randn(BATCH_SIZE, 30, EMBEDDING_DIM, device=device) # Fake word vec dimension set to EMBEDDING_DIM.
-    que = th.randn(BATCH_SIZE, 5, EMBEDDING_DIM, device=device)  # Fake word vec dimension set to EMBEDDING_DIM.
+    doc = th.randn(BATCH_SIZE, 2, EMBEDDING_DIM, device=device) # Fake word vec dimension set to EMBEDDING_DIM.
+    que = th.randn(BATCH_SIZE, 2, EMBEDDING_DIM, device=device)  # Fake word vec dimension set to EMBEDDING_DIM.
 
     # Fake one batch of ground truth
     true_s = th.randint(0, doc.size()[1], (BATCH_SIZE,), device=device)
@@ -94,11 +94,13 @@ def test_optimiser():
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
-    N_STEPS = 70
+    N_STEPS = 100
 
     loss_values_over_steps = []
 
     nodes_current = None
+
+    model.train()
 
     for step_it in range(N_STEPS):
         optimizer.zero_grad()
@@ -106,6 +108,7 @@ def test_optimiser():
         
         debugNodes = False
         if debugNodes:
+            dot = make_dot(loss)
             dotOutPath = "dot_output" + str(step_it) + ".dot"
             with open(dotOutPath, "w") as f:
                 f.write(str(dot))
@@ -123,9 +126,42 @@ def test_optimiser():
                     f.write("\n".join(persisting_nodes))
             nodes_current = new_node_ids
 
+        (aW_D, aW_1, aW_2, aW_3) = model.decoder.hmn_alpha.get_ws()
+        (bW_D, bW_1, bW_2, bW_3) = model.decoder.hmn_beta.get_ws()
+
         loss.backward(retain_graph=False)  # TODO: Should this be here?
 
+        #for p in model.parameters(): 
+        #    print(p.grad)
+
         optimizer.step()
+        
+        (aW_Dprime, aW_1prime, aW_2prime, aW_3prime) = model.decoder.hmn_alpha.get_ws()
+        (bW_Dprime, bW_1prime, bW_2prime, bW_3prime) = model.decoder.hmn_beta.get_ws()
+
+        kD = th.mean(aW_D - aW_Dprime)
+        k1 = th.mean(aW_1 - aW_1prime)
+        k2 = th.mean(aW_2 - aW_2prime)
+        k3 = th.mean(aW_3 - aW_3prime)
+        
+        assert(aW_D.requires_grad and aW_1.requires_grad and aW_2.requires_grad and aW_3.requires_grad)
+        assert(bW_D.requires_grad and bW_1.requires_grad and bW_2.requires_grad and bW_3.requires_grad)
+        assert(aW_Dprime.requires_grad and aW_1prime.requires_grad and aW_2prime.requires_grad and aW_3prime.requires_grad)
+        assert(bW_Dprime.requires_grad and bW_1prime.requires_grad and bW_2prime.requires_grad and bW_3prime.requires_grad)        
+
+        print(kD, k1, k2, k3)
+
+        hmn = model.decoder.hmn_alpha
+        print("Alpha: %d/%d parameters have non-None gradients." % (len([param for param in hmn.parameters() if param.grad is not None]), len(list(hmn.parameters()))))
+        hmn = model.decoder.hmn_beta
+        print("Beta: %d/%d parameters have non-None gradients." % (len([param for param in hmn.parameters() if param.grad is not None]), len(list(hmn.parameters()))))
+
+        model.decoder.hmn_alpha.detach_params()
+        model.decoder.hmn_beta.detach_params()
+
+
+
+
         loss_values_over_steps.append(loss[0])
         print("Loss after %d steps: %f" %(step_it+1, loss[0]))
 

@@ -133,26 +133,32 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
+
+    # TODO: Put dropout back in!
+    self.W_D = (nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
 
     # 1st Maxout layer
-    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device)))
+    self.W_1 = (nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device)))
     self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 2nd maxout layer
-    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device)))
+    self.W_2 = (nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device)))
     self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 3rd maxout layer
-    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
+    self.W_3 = (nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
 
+  def get_ws(self):
+    return (self.W_D.clone(), self.W_1.clone(), self.W_2.clone(), self.W_3.clone())
+
   def detach_params(self):
-    self.W_D.detach_()
-    self.W_1.detach_()
-    self.W_2.detach_()
-    self.W_3.detach_()
+    print("Called detach_params in HMN")
+    self.W_D.detach_().requires_grad_()
+    self.W_1.detach_().requires_grad_()
+    self.W_2.detach_().requires_grad_()
+    self.W_3.detach_().requires_grad_()
 
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
@@ -283,8 +289,6 @@ class HighwayMaxoutNetwork(nn.Module):
     output = th.Tensor.max(output_beforemaxpool, dim=1).values
     assert(output.size()[0] == self.batch_size)
     assert(output.size()[1] == 1)
-
-    self.detach_params()
 
     return output
 
