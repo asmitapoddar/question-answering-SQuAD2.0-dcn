@@ -119,6 +119,11 @@ def test_optimiser():
             persisting_nodes = analyze_graph.persisting_nodes(nodes_current, new_node_ids)
             print("num_persisting_nodes", len(persisting_nodes))
 
+
+            with open("persisting_nodes.txt", "w") as f:
+                print("Writing persisting nodes to file...")
+                f.write("\n".join(persisting_nodes))
+
         nodes_current = new_node_ids
 
         loss.backward(retain_graph=True)  # TODO: Should this be here?
