@@ -26,6 +26,7 @@ import re
 import sys
 import time
 import torch as th
+import pathlib
 
 from constants import *
 from datetime import datetime
@@ -175,14 +176,16 @@ class Training:
 
     # Pass state_file_path to resume training from an existing checkpoint.
     def training(self, state_file_path=None):
-        #print("Reading word2id and id2word...", end='')
-        #word2id = pd.read_csv(self.word2id_path).to_dict()
-        #id2word = pd.read_csv(self.id2word_path).to_dict()
-        #print("done.")
+        """
+        print("Reading word2id and id2word...", end='')
+        word2id = pd.read_csv(self.word2id_path).to_dict()
+        id2word = pd.read_csv(self.id2word_path).to_dict()
+        print("done.")
 
-        #print("Reading embedding matrix (this takes a while)...", end='')
-        #emb_mat = np.loadtxt(self.emb_mat_path)
-        #print("done.")
+        print("Reading embedding matrix (this takes a while)...", end='')
+        emb_mat = np.loadtxt(self.emb_mat_path)
+        print("done.")
+        """
 
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
         self.params = self.model.parameters()
@@ -193,6 +196,7 @@ class Training:
         for i, p in enumerate(self.params):
             print(i, p)
         """
+        
         # Continue training from a saved serialised model.
         if state_file_path is not None:
             if not os.path.isfile(state_file_path):
@@ -208,8 +212,9 @@ class Training:
 
         self.emb_mat, self.word2id, self.id2word = get_glove(self.glove_path, EMBEDDING_DIM) 
 
-        serial_path = "model/" + datetime.now().strftime("%Y%m%d_%H%M%S") + "/"
-        os.mkdir(serial_path)
+        curr_dir_path = str(pathlib.Path().absolute())
+        serial_path = "/model/" + datetime.now().strftime("%Y%m%d_%H%M%S")
+        os.makedirs(curr_dir_path+serial_path)
         
         for epoch in range(start_epoch, NUM_EPOCHS):
             print("-" * 50)
