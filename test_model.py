@@ -8,6 +8,9 @@ from constants import *
 from model import *
 from torch.autograd import Variable
 
+from torchviz import make_dot, make_dot_from_trace
+import analyze_graph 
+
 th.manual_seed(1)
 
 
@@ -95,10 +98,31 @@ def test_optimiser():
 
     loss_values_over_steps = []
 
+    nodes_current = None
+
     for step_it in range(N_STEPS):
         optimizer.zero_grad()
         loss, _, _ = model(doc, que, true_s, true_e)
+        
+        dot = make_dot(loss)
+
+        dotOutPath = "dot_output" + str(step_it) + ".dot"
+        with open(dotOutPath, "w") as f:
+            f.write(str(dot))
+
+        num_distinct_nodes, new_node_ids = analyze_graph.num_distinct_node_ids(dotOutPath, debug_print=True)
+        if nodes_current is not None:
+            new_nodes = analyze_graph.new_nodes(nodes_current, new_node_ids)
+            print("num_new_nodes", len(new_nodes))
+            freed_nodes = analyze_graph.freed_nodes(nodes_current, new_node_ids)
+            print("num_freed_nodes", len(freed_nodes))
+            persisting_nodes = analyze_graph.persisting_nodes(nodes_current, new_node_ids)
+            print("num_persisting_nodes", len(persisting_nodes))
+
+        nodes_current = new_node_ids
+
         loss.backward(retain_graph=True)  # TODO: Should this be here?
+
         optimizer.step()
         loss_values_over_steps.append(loss[0])
         print("Loss after %d steps: %f" %(step_it+1, loss[0]))

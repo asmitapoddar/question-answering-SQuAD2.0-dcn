@@ -17,6 +17,14 @@ def num_distinct_node_ids(dot_path, debug_print=False):
 def list_diff(list1, list2): 
 	return sorted((list(set(list1) - set(list2))))
 
-	
+def new_nodes(old_nodes, new_nodes):
+	new_stuff = [k for k in new_nodes if k not in old_nodes]
+	return sorted(list(set(new_stuff)))
 
+def freed_nodes(old_nodes, new_nodes):
+	freed_stuff = [k for k in old_nodes if k not in new_nodes]
+	return sorted(list(set(freed_stuff)))	
 
+def persisting_nodes(old_nodes, new_nodes):
+	persisting_stuff = [k for k in old_nodes if k in new_nodes]
+	return sorted(list(set(persisting_stuff)))
