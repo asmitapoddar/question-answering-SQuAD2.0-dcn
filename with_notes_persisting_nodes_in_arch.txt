@@ -1,3 +1,5 @@
+# With trivial HMN
+
 	4900412288 [label="
  (804)" fillcolor=lightblue]
 	4900412624 [label="

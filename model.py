@@ -224,6 +224,15 @@ class DynamicPointerDecoder(nn.Module):
     self.max_iter = max_iter
 
   def forward(self, U):
+    trivialDPD = False
+    if trivialDPD:
+        scalar = th.mean(U)
+        s = th.zeros(self.batch_size, device=self.device, dtype=th.long)
+        e = th.ones(self.batch_size, device=self.device, dtype=th.long)
+        doc_length = U.size()[2]
+        alphas = scalar * th.ones(self.batch_size, doc_length, device=self.device)
+        betas = scalar * th.ones(self.batch_size, doc_length, device=self.device)
+        return (alphas, betas, s, e)
 
     assert(U.size()[0] == self.batch_size)
 
