@@ -98,7 +98,7 @@ def test_optimiser():
     for step_it in range(N_STEPS):
         optimizer.zero_grad()
         loss, _, _ = model(doc, que, true_s, true_e)
-        loss.backward())
+        loss.backward()
         optimizer.step()
         loss_values_over_steps.append(loss[0])
         print("Loss after %d steps: %f" %(step_it+1, loss[0]))
