@@ -91,14 +91,14 @@ def test_optimiser():
 
     # TODO: hyperparameters
     optimizer = optim.Adam(model.parameters())
-    N_STEPS = 3
+    N_STEPS = 4
 
     loss_values_over_steps = []
 
     for step_it in range(N_STEPS):
         optimizer.zero_grad()
         loss, _, _ = model(doc, que, true_s, true_e)
-        loss.backward(retain_graph=True)  # TODO: Should this be here?
+        loss.backward(retain_graph=False)  # TODO: Should this be here?
         optimizer.step()
         loss_values_over_steps.append(loss[0])
         print("Loss after %d steps: %f" %(step_it+1, loss[0]))
