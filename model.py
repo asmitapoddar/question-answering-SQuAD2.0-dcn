@@ -123,13 +123,6 @@ class HighwayMaxoutNetwork(nn.Module):
     self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
-
-  def detach_params(self):
-    self.W_D.detach_()
-    self.W_1.detach_()
-    self.W_2.detach_()
-    self.W_3.detach_()
-
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
 
     assert(u_t.size()[0+1] == 2 * self.hidden_dim)
@@ -204,9 +197,6 @@ class HighwayMaxoutNetwork(nn.Module):
     output = th.Tensor.max(output_beforemaxpool, dim=1).values
     assert(output.size()[0] == self.batch_size)
     assert(output.size()[1] == 1)
-
-    # TODO: Is this right?
-    self.detach_params()
 
     return output
 
