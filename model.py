@@ -294,7 +294,7 @@ class DCNModel(nn.Module):
     self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, maxout_pool_size, device) 
     self.device = device
     self.encoder = Encoder(embedding_dim, hidden_dim, batch_size, dropout_encoder, device)
-    self.encoder_sentinel = nn.Parameter(th.randn(batch_size, 1, hidden_dim)) # the sentinel is a trainable parameter of the network
+    self.encoder_sentinel = nn.Parameter(th.randn(1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
@@ -317,13 +317,13 @@ class DCNModel(nn.Module):
     outp, _ = self.encoder(doc_word_vecs.float(), initial_hidden)
     
     # outp: B x m x l
-    D_T = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector # l X n+1
+    D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X n+1
     # D: B x (m+1) x l
 
     # TODO: Make sure we should indeed reinit hidden state before encoding the q.
     initial_hidden = self.encoder.generate_initial_hidden_state()
     outp, _ = self.encoder(que_word_vecs, initial_hidden)
-    Qprime = th.cat([outp, self.encoder_sentinel], dim=1)  # append sentinel word vector
+    Qprime = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
     # Q: B x (n+1) x l
