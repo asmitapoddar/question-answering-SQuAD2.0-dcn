@@ -64,7 +64,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	batch = ([], [], [], [], [])
 
 	for item in tqdm(data):
-		for para in item["paragraphs"]
+		for para in item["paragraphs"]:
 
 			context = para["context"]
 
