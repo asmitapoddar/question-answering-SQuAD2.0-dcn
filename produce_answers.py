@@ -62,12 +62,9 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	# batch[3] document strings
 	# batch[4] document (token, start pos, end pos) list
 	batch = ([], [], [], [], [])
-	num_paragraphs = 0
-	num_questions = 0
 
 	for item in tqdm(data):
-		for para in item["paragraphs"]:
-			num_paragraphs += 1
+		for para in item["paragraphs"]
 
 			context = para["context"]
 
@@ -79,7 +76,6 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 			context_embeddings = encode_token_list(embeddings, just_context_tokens)
 
 			for qas in para["qas"]:
-				num_questions += 1
 
 				question = qas["question"]
 				
