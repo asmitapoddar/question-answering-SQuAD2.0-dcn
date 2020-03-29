@@ -2,10 +2,11 @@ from model import *
 from tqdm import tqdm
 import json
 import sys
-
 import torch as th
+import os
+from constants import *
 
-
+th.manual_seed(1)
 
 # Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
 DIMENSIONALITY = 300
@@ -61,8 +62,12 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	# batch[3] document strings
 	# batch[4] document (token, start pos, end pos) list
 	batch = ([], [], [], [], [])
-	for item in tqdm(data): 
+	num_paragraphs = 0
+	num_questions = 0
+
+	for item in tqdm(data):
 		for para in item["paragraphs"]:
+			num_paragraphs += 1
 
 			context = para["context"]
 
@@ -74,6 +79,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 			context_embeddings = encode_token_list(embeddings, just_context_tokens)
 
 			for qas in para["qas"]:
+				num_questions += 1
+
 				question = qas["question"]
 				
 				question_enriched = qas["question_tokens"]
@@ -92,14 +99,32 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				if len(batch[2]) == evaluation_batch_size:
 					yield batch
 					batch = ([], [], [], [], [])
-
 	if len(batch[2]) > 0:
 		yield batch
+
+def load_model_for_evaluation(state_file_path, device):
+    if state_file_path is not None:
+        if not os.path.isfile(state_file_path):
+            print("Failed to read path %s, aborting." % state_file_path)
+            sys.exit()
+        state = th.load(state_file_path)
+        if len(state) != 5:
+            print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
+            sys.exit()
+        model = DCNModel(1, device).to(device)
+        model.load_state_dict(state[SERIALISATION_KEY_MODEL])
+        return model
+    else:
+    	print("No model state path provided, aborting.")
+    	sys.exit()
+
+
 
 def run_evaluation(model_path, output_path = "predictions.json"):
 
 	# Load glove word vectors into a dictionary 
-	glove = load_embeddings_index(small=False)
+	# TODO: Change to 840B word embeddings
+	glove = load_embeddings_index(small=True)
 
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
@@ -114,7 +139,8 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 	# The file that will be provided to evaluate-v2.0.py
 	answer_mapping = {}
 
-	model = None
+	model = load_model_for_evaluation(model_path, device)
+	model.eval()
 
 	for batch in tqdm(batch_iterator):
 
@@ -131,12 +157,6 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 		for i in range(evaluation_batch_size):
 		  true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
-		if model is None:
-			model = DCNModel(context_vectors, question_vectors, evaluation_batch_size, device).to(device)
-			# TODO
-			model.load_state_dict(th.load(model_path))
-			model.eval()
-
 		# Run model
 		_, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
 
@@ -145,17 +165,15 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 		ansEndTok = context_enriched[0][e]
 		ansEndIdx = ansEndTok[2]
-
-		answer_mapping[context_ids[0]] = context_paras[0][ansStartIdx:ansEndIdx]
-		print(answer_mapping)
+		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
+		print("start=%d, end=%d, substring=%s" % (ansStartIdx, ansEndIdx, answerSubstring))
+		
+		answer_mapping[context_ids[0]] = answerSubstring
 
 	with open(output_path, "w") as f:
 		json.dump(answer_mapping, f)
 
-	# Call evaluation script
-	os.system("evaluate-v2.0.py " + output_path + " preprocessing/data/dev-v2.0.json")
-
 # TODO: provide path to serialised model
-run_evaluation("")
-
+saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
+run_evaluation(saved_state_path)
 

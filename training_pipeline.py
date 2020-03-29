@@ -36,11 +36,6 @@ from preprocessing.embedding_matrix import get_glove
 
 from torch.nn.utils import clip_grad_norm_
 
-SERIALISATION_KEY_BATCH = 'batch'
-SERIALISATION_KEY_EPOCH = 'epoch'
-SERIALISATION_KEY_GLOBAL_STEP = 'gstep'
-SERIALISATION_KEY_MODEL = 'model'
-SERIALISATION_KEY_OPTIM = 'optim'
 
 
 def get_grad_norm(parameters, norm_type=2):
