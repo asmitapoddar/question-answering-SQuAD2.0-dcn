@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
 from google.colab import drive
 drive.mount('/content/gdrive', force_remount=True)
@@ -19,6 +20,7 @@ ans_path = sys.path[16]
 import io
 import json
 import logging
+import math
 import numpy as np
 import os
 import pandas as pd
@@ -37,6 +39,9 @@ from preprocessing.embedding_matrix import get_glove
 from torch.nn.utils import clip_grad_norm_
 
 
+# the idea is that this will stand out on the loss graph
+def filter_nan(x):
+    return -1000 if math.isnan(x) else x
 
 def get_grad_norm(parameters, norm_type=2):
     parameters = list(filter(lambda p: p.grad is not None, parameters))
@@ -90,7 +95,7 @@ class Training:
         #TO BE UPDATED  #TODO: What does this comment mean?
         self.word2id_path = "word_vectors/word2id.csv"
         self.id2word_path = "word_vectors/id2word.csv"
-        self.glove_path = "word_vectors/glove.6B.300d.txt"
+        self.glove_path = "word_vectors/glove.840B.300d.txt"
         self.emb_mat_path = "word_vectors/embedding_matrix.txt"
         self.question_path = "preprocessing/data/preprocessed_train_question.txt"
         self.context_path = "preprocessing/data/preprocessed_train_context.txt"
@@ -181,6 +186,8 @@ class Training:
         clip_grad_norm_(params, MAX_GRAD_NORM)
        
         print("loss (incl. reg):", loss)
+        with open("./loss.log", "a") as f:
+            f.write("%i: %i\n" % (self.global_step, filter_nan(loss)))
 
         loss.backward()
         optimizer.step()
@@ -195,7 +202,7 @@ class Training:
         self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True) # TODO: choose right hyperparameters
 
         # Load saved state from the path. If path is None, still do call this method!
-        global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
+        self.global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
 
         # Load glove embeddings. Takes a bit of time.
         self.emb_mat, self.word2id, self.id2word = get_glove(self.glove_path, EMBEDDING_DIM) 
@@ -221,18 +228,20 @@ class Training:
                 if start_batch != 0:
                     start_batch -= 1
                 else:
-                    print("About to train global step %i..." % global_step)
-                    global_step += 1
+                    print("About to train global step %i..." % self.global_step)
+                    self.global_step += 1
                     loss, param_norm, grad_norm = self.train_one_batch(batch, self.model, self.optimizer, self.params)
 
                     # Save state at a configurable frequency.
-                    if global_step % TRAINING_SAVE_FREQUENCY == 1:  # 1 so that the first save is as early as possible.
-                        save_state(serial_path, batch_ind+1, epoch, global_step, self.model, self.optimizer)
+                    if self.global_step % TRAINING_SAVE_FREQUENCY == 1:  # 1 so that the first save is as early as possible.
+                        save_state(serial_path, batch_ind+1, epoch, self.global_step, self.model, self.optimizer)
 
             epoch_toc = time.time()
             epoch_time = epoch_toc - epoch_tic
+            print("!*" * 50)
             print("Epoch %i completed in %i seconds" % (epoch, epoch_time))
-
+            print("!*" * 50)
+            
             # Save state at the end of epoch.
             save_state(serial_path, 0, epoch+1, global_step, self.model, self.optimizer)
 
