@@ -88,6 +88,7 @@ class Training:
     def __init__(self):
         self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
         
+        self.global_step = None
         self.model = None
         self.optimizer = None
         self.params = " "  # Model parameters (50 layers, infeatures:200, outfeatures:200)
