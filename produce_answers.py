@@ -120,8 +120,8 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 	# Load glove word vectors into a dictionary 
 	# TODO: Change to 840B word embeddings
-	glove = load_embeddings_index(small=True)
-
+	glove = load_embeddings_index()
+	
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
 	batch_iterator = build_forward_input(glove, dev_set_tokenized, evaluation_batch_size)
@@ -130,7 +130,7 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 	# Is GPU available:
 	print ("cuda device count = %d" % th.cuda.device_count())
 	print ("cuda is available = %d" % th.cuda.is_available())
-	device = th.device("cuda:0" if th.cuda.is_available() and (not TEST_DCN_MODEL_WITH_CPU) else "cpu")
+	device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
 	# The file that will be provided to evaluate-v2.0.py
 	answer_mapping = {}
@@ -141,8 +141,8 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 	for batch in tqdm(batch_iterator):
 
 		context_vectors, question_vectors, context_ids, context_paras, context_enriched = batch
-		context_vectors = context_vectors[0].unsqueeze(dim=0)
-		question_vectors = question_vectors[0].unsqueeze(dim=0)
+		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
+		question_vectors = question_vectors[0].unsqueeze(dim=0).to(device)
 		
 		assert(context_vectors.size()[1+1] == DIMENSIONALITY)
 		assert(question_vectors.size()[1+1] == DIMENSIONALITY) 
@@ -161,7 +161,7 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 		ansEndTok = context_enriched[0][e]
 		ansEndIdx = ansEndTok[2]
-		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
+		answerSubstring = context_paras[0][ansEndIdx:ansStartIdx]
 		print("start=%d, end=%d, substring=%s" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
 		answer_mapping[context_ids[0]] = answerSubstring
