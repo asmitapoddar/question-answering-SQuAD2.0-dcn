@@ -260,7 +260,8 @@ class DynamicPointerDecoder(nn.Module):
         u_t = U[:,:,t].unsqueeze(dim=2)
         t_hmn_alpha = self.hmn_alpha(u_t, h_i, u_si_m_1, u_ei_m_1)
         alpha = th.cat((alpha, t_hmn_alpha), dim=1)
-        
+
+      alpha = th.softmax(alpha, dim=1)
       _, s = th.max(alpha, dim=1)
       
       # we want to get the effect below, using th.gather:
@@ -275,6 +276,7 @@ class DynamicPointerDecoder(nn.Module):
         t_hmn_beta = self.hmn_beta(u_t, h_i, u_si, u_ei_m_1)
         beta = th.cat((beta, t_hmn_beta), dim=1)
 
+      beta = th.softmax(beta, dim=1)
       _, e = th.max(beta, dim=1)
       alphas = th.cat((alphas, alpha.view(self.batch_size,1,doc_length)), dim=1)
       betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
@@ -336,9 +338,9 @@ class DCNModel(nn.Module):
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
-    
+
     for it in range(self.decoder.max_iter):
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
-    
+
     return loss, start, end

@@ -172,4 +172,3 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 # TODO: provide path to serialised model
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 run_evaluation(saved_state_path)
-
