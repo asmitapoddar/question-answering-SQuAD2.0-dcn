@@ -166,7 +166,6 @@ class Training:
 
 
     def train_one_batch(self, batch, model, optimizer, params):
-        model.train()
         optimizer.zero_grad()
         q_seq, q_lens, d_seq, d_lens, span_s, span_e = self.get_data(batch)
         
@@ -198,7 +197,7 @@ class Training:
 
     # Pass state_file_path to resume training from an existing checkpoint.
     def training(self, state_file_path=None):
-        self.model = DCNModel(BATCH_SIZE, self.device).to(self.device) 
+        self.model = DCNModel(BATCH_SIZE, self.device).to(self.device).train()
         self.params = self.model.parameters()
         self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True) # TODO: choose right hyperparameters
 
