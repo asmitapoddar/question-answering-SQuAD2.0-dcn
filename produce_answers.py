@@ -161,7 +161,7 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 		ansEndTok = context_enriched[0][e]
 		ansEndIdx = ansEndTok[2]
-		answerSubstring = context_paras[0][ansEndIdx:ansStartIdx]
+		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
 		print("start=%d, end=%d, substring=%s" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
 		answer_mapping[context_ids[0]] = answerSubstring
