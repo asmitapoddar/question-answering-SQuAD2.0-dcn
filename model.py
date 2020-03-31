@@ -336,9 +336,29 @@ class DCNModel(nn.Module):
     # Accumulator for the losses incurred across 
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
-    
+   
+    old_loss = th.FloatTensor([0.0]).to(self.device)
+
     for it in range(self.decoder.max_iter):
-      loss += criterion(alphas[:,it,:], true_s)
-      loss += criterion(betas[:,it,:], true_e)
+      old_loss += criterion(alphas[:,it,:], true_s)
+      old_loss += criterion(betas[:,it,:], true_e)
+
+    print(true_s.shape)
+    batch_size = self.batch_size
+    max_iter = self.decoder.max_iter
+    true_s_repeat = (true_s.view(batch_size, -1, 1) 
+                          .repeat(1, 1, max_iter)
+                          .view(batch_size * max_iter))
+    true_e_repeat = (true_e.view(batch_size, -1, 1) 
+                          .repeat(1, 1, max_iter)
+                          .view(batch_size * max_iter))
+
+    print("dim", alphas.shape, betas.shape)
+    alphas_flat   = alphas.view(-1, alphas.shape[2])
+    betas_flat    = betas.view(-1, betas.shape[2])
+    print("cross entr: ", alphas_flat.shape, true_s_repeat.shape, alphas[:,0,:].shape, true_s.shape)
+    loss += criterion(alphas_flat, true_s_repeat)
+    loss += criterion(betas_flat, true_e_repeat)
     
+    print("old_loss", old_loss, "new_loss", loss)
     return loss, start, end
