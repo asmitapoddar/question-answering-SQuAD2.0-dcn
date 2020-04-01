@@ -95,7 +95,10 @@ def load_model_for_evaluation(state_file_path, device):
         if not os.path.isfile(state_file_path):
             print("Failed to read path %s, aborting." % state_file_path)
             sys.exit()
-        state = th.load(state_file_path)
+        if DISABLE_CUDA:
+        	state = th.load(state_file_path, map_location=th.device('cpu'))
+        else:
+        	state = th.load(state_file_path)
         if len(state) != 5:
             print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
             sys.exit()
