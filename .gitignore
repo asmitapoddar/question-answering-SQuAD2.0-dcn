@@ -2,6 +2,9 @@
 preprocessing/glove/
 word_vectors/
 
+# File produced by produce_answer.py
+predictions.json
+
 .DS_Store
 *.pyc
 

@@ -31,14 +31,6 @@ def load_embeddings_index(small = False):
 			embeddings_index[word] = coefs
 	return embeddings_index
 
-# load the dev set after tokenization
-def load_dev_set(): 
-	with open("preprocessing/data/dev-v2.0-tokenized.json", "r") as f:
-		dev_set = json.load(f)
-	return dev_set
-
-dev_set_tokenized = load_dev_set()
-
 def encode_word(word, embeddings):
 	# Set embeddings for out of vocabulary words to zero
 	if word in embeddings: 
@@ -114,17 +106,17 @@ def load_model_for_evaluation(state_file_path, device):
     	print("No model state path provided, aborting.")
     	sys.exit()
 
+# load the dev set after tokenization
+def load_dev_set(eval_set_path):
+	with open(eval_set_path, "r") as f:
+		dev_set = json.load(f)
+	return dev_set
 
+def run_evaluation(model_path, eval_set_path, output_path = "predictions.json"):
+	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\n" % (model_path, eval_set_path, output_path))
 
-def run_evaluation(model_path, output_path = "predictions.json"):
-
-	# Load glove word vectors into a dictionary 
-	# TODO: Change to 840B word embeddings
-	glove = load_embeddings_index()
-	
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
-	batch_iterator = build_forward_input(glove, dev_set_tokenized, evaluation_batch_size)
 
 	# https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
 	# Is GPU available:
@@ -132,11 +124,17 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 	print ("cuda is available = %d" % th.cuda.is_available())
 	device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
-	# The file that will be provided to evaluate-v2.0.py
-	answer_mapping = {}
-
 	model = load_model_for_evaluation(model_path, device)
 	model.eval()
+
+	dev_set_tokenized = load_dev_set(eval_set_path)
+
+	# Load glove word vectors into a dictionary
+	glove = load_embeddings_index()
+	batch_iterator = build_forward_input(glove, dev_set_tokenized, evaluation_batch_size)
+
+	# The file that will be provided to evaluate-v2.0.py
+	answer_mapping = {}
 
 	for batch in tqdm(batch_iterator):
 
@@ -147,11 +145,12 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 		assert(context_vectors.size()[1+1] == DIMENSIONALITY)
 		assert(question_vectors.size()[1+1] == DIMENSIONALITY) 
 		
+
 		# Fake ground truth data (one batch of starts and ends):
 		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
 		true_e = th.randint(0, question_vectors.size()[1], (evaluation_batch_size,), device=device)
 		for i in range(evaluation_batch_size):
-		  true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
+			true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
 		# Run model
 		_, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
@@ -162,7 +161,7 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 		ansEndTok = context_enriched[0][e]
 		ansEndIdx = ansEndTok[2]
 		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
-		print("start=%d, end=%d, substring=%s" % (ansStartIdx, ansEndIdx, answerSubstring))
+		print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
 		answer_mapping[context_ids[0]] = answerSubstring
 
@@ -171,4 +170,5 @@ def run_evaluation(model_path, output_path = "predictions.json"):
 
 # TODO: provide path to serialised model
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
-run_evaluation(saved_state_path)
+evaluation_set_path = "preprocessing/data/dev-v2.0-tokenized.json" if len(sys.argv) <= 2 else sys.argv[2]
+run_evaluation(saved_state_path, evaluation_set_path)
