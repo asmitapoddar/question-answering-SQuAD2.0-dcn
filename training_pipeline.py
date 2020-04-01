@@ -85,6 +85,25 @@ def save_state(serial_path, next_batch, next_epoch, next_global_step, model, opt
 
 class Training:
 
+
+    def useEntireTrainingSet(self):
+        self.question_path = "preprocessing/data/preprocessed_train_question.txt"
+        self.context_path = "preprocessing/data/preprocessed_train_context.txt"
+        self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
+
+    def useTrainingSubset1(self):
+        # Train on just the first document within the training set
+        self.question_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_question.txt"
+        self.context_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_context.txt"
+        self.ans_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_ans_span.txt"
+
+    def checkTrainingPaths(self):
+        if self.question_path is None or self.context_path is None or self.ans_path is None:
+            print("The question/context/context paths have not been set...aborting.")
+            sys.exit(0)
+        else:
+            print("Training with:\nQuestion path:%s\nContext path:%s\nAnswer path:%s\n" % (self.question_path, self.context_path, self.context_path))
+
     def __init__(self):
         self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
         
@@ -98,10 +117,10 @@ class Training:
         self.id2word_path = "word_vectors/id2word.csv"
         self.glove_path = "word_vectors/glove.840B.300d.txt"
         self.emb_mat_path = "word_vectors/embedding_matrix.txt"
-        self.question_path = "preprocessing/data/preprocessed_train_question.txt"
-        self.context_path = "preprocessing/data/preprocessed_train_context.txt"
-        self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
-
+        # These get set dynamically by a call to one of the methods above
+        self.question_path = None
+        self.context_path = None
+        self.ans_path = None
 
     # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
     def get_data(self, batch, is_train=True):
@@ -197,6 +216,8 @@ class Training:
 
     # Pass state_file_path to resume training from an existing checkpoint.
     def training(self, state_file_path=None):
+        self.checkTrainingPaths()
+
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device).train()
         self.params = self.model.parameters()
         self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True) # TODO: choose right hyperparameters
@@ -248,4 +269,11 @@ class Training:
 
 # TODO: Move.
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
-Training().training(saved_state_path)
+
+training_pipeline = Training()
+
+# Specify the training set you want use here:
+training_pipeline.useTrainingSubset1()
+
+training_pipeline.training(saved_state_path)
+
