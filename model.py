@@ -1,4 +1,6 @@
 from constants import *
+from debug import *
+
 import numpy as np
 import torch as th
 import torch.nn as nn
@@ -235,6 +237,8 @@ class DynamicPointerDecoder(nn.Module):
     alphas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
     betas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
 
+    debug_index_convergence = None
+
     # TODO: make it run only until convergence?
     for _ in range(self.max_iter):
       # call LSTM to update h_i
@@ -281,6 +285,9 @@ class DynamicPointerDecoder(nn.Module):
       alphas = th.cat((alphas, alpha.view(self.batch_size,1,doc_length)), dim=1)
       betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
+      debug_index_convergence = debug_index_convergence_update(debug_index_convergence, s, e)
+
+    debug_index_convergence_print(debug_index_convergence, self.batch_size)
     return (alphas, betas, s, e)
 
 
