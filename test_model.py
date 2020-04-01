@@ -8,7 +8,7 @@ from constants import *
 from model import *
 from torch.autograd import Variable
 
-th.manual_seed(1)
+th.manual_seed(RANDOM_SEED)
 
 
 # start test functions with test_

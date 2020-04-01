@@ -7,7 +7,7 @@ from torch.autograd import Variable
 import torch.optim as optim
 import time
 
-th.manual_seed(1)
+th.manual_seed(RANDOM_SEED)
 
 # The encoder LSTM.
 class Encoder(nn.Module):

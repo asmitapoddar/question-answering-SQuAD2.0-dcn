@@ -1,12 +1,12 @@
+from constants import *
 from model import *
 from tqdm import tqdm
 import json
+import os
 import sys
 import torch as th
-import os
-from constants import *
 
-th.manual_seed(1)
+th.manual_seed(RANDOM_SEED)
 
 # Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
 DIMENSIONALITY = 300
