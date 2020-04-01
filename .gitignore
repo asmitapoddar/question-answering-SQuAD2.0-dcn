@@ -4,3 +4,6 @@ word_vectors/
 
 .DS_Store
 *.pyc
+
+# This is a logs folder created by pytest.
+.cache/
