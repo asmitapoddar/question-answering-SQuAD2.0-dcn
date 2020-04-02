@@ -227,7 +227,7 @@ class Training:
 
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device).train()
         self.params = self.model.parameters()
-        self.optimizer = optim.Adam(self.params, lr=0.1, amsgrad=True) # TODO: choose right hyperparameters
+        self.optimizer = optim.Adam(self.params, lr=0.01, amsgrad=True) # TODO: choose right hyperparameters
 
         # Load saved state from the path. If path is None, still do call this method!
         self.global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
