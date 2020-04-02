@@ -58,7 +58,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	# batch[2] question identifiers
 	# batch[3] document strings
 	# batch[4] document (token, start pos, end pos) list
-	batch = ([], [], [], [], [])
+	# batch[5] question string
+	batch = ([], [], [], [], [], [])
 
 	for item in tqdm(data):
 		for para in item["paragraphs"]:
@@ -88,10 +89,11 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				batch[2].append(qas_id)
 				batch[3].append(context)
 				batch[4].append(context_enriched)
+				batch[5].append(question)
 
 				if len(batch[2]) == evaluation_batch_size:
 					yield batch
-					batch = ([], [], [], [], [])
+					batch = ([], [], [], [], [], [])
 	if len(batch[2]) > 0:
 		yield batch
 
@@ -156,7 +158,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 	for batch in tqdm(batch_iterator):
 		print("\n")
 
-		context_vectors, question_vectors, context_ids, context_paras, context_enriched = batch
+		context_vectors, question_vectors, context_ids, context_paras, context_enriched, questions = batch
 		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
 		question_vectors = question_vectors[0].unsqueeze(dim=0).to(device)
 		
@@ -184,6 +186,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 		ansEndIdx = ansEndTok[2]		
 
 		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
+		print("id=%s\nquestion=%s\n" % (context_ids[0], questions[0]))
 		print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
 		answer_mapping[context_ids[0]] = answerSubstring
