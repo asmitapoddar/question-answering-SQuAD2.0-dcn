@@ -115,8 +115,17 @@ def load_dev_set(eval_set_path):
 		dev_set = json.load(f)
 	return dev_set
 
-def run_evaluation(model_path, eval_set_path, output_path = "predictions.json"):
-	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\n" % (model_path, eval_set_path, output_path))
+def debugSurroudingWords(s, e, context_tokens, num=1):
+	snew = s - num
+	enew = e + num
+	snew = max(0, snew)
+	enew = min(len(context_tokens) - 1, enew)
+	print("s:%d -> %d\ne:%d -> %d\n" % (s, snew, e, enew))
+	return snew,enew
+
+def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", shouldDebugSurroudingWords = True):
+
+	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\nDebug surrounding words:%s\n" % (model_path, eval_set_path, output_path, shouldDebugSurroudingWords))
 
 	# TODO: use non-trivial batching for evaluation?
 	evaluation_batch_size = 1
@@ -140,6 +149,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json"):
 	answer_mapping = {}
 
 	for batch in tqdm(batch_iterator):
+		print("\n")
 
 		context_vectors, question_vectors, context_ids, context_paras, context_enriched = batch
 		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
@@ -148,7 +158,6 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json"):
 		assert(context_vectors.size()[1+1] == DIMENSIONALITY)
 		assert(question_vectors.size()[1+1] == DIMENSIONALITY) 
 		
-
 		# Fake ground truth data (one batch of starts and ends):
 		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
 		true_e = th.randint(0, question_vectors.size()[1], (evaluation_batch_size,), device=device)
@@ -158,11 +167,17 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json"):
 		# Run model
 		_, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
 
+		context_token_list = context_paras[0]
+
+		if shouldDebugSurroudingWords:
+			s, e = debugSurroudingWords(s, e, context_enriched[0], num=3)
+		
 		ansStartTok = context_enriched[0][s]
 		ansStartIdx = ansStartTok[1]
 
 		ansEndTok = context_enriched[0][e]
-		ansEndIdx = ansEndTok[2]
+		ansEndIdx = ansEndTok[2]		
+
 		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
 		print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
