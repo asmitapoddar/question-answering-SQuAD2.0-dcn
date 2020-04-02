@@ -96,6 +96,13 @@ class Training:
         self.question_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_question.txt"
         self.context_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_context.txt"
         self.ans_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_ans_span.txt"
+        
+    def useTrainingSubset2(self):
+    	# Train on just the first paragraph of the first document in training set
+    	# (15 questions)
+    	self.question_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_question.txt"
+        self.context_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_context.txt"
+        self.ans_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_ans_span.txt"
 
     def checkTrainingPaths(self):
         if self.question_path is None or self.context_path is None or self.ans_path is None:
@@ -273,7 +280,7 @@ saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 training_pipeline = Training()
 
 # Specify the training set you want use here:
-training_pipeline.useTrainingSubset1()
+training_pipeline.useTrainingSubset2()
 
 training_pipeline.training(saved_state_path)
 
