@@ -44,8 +44,9 @@ def encode_token_list(embeddings, token_list, pad_length):
 		vec = encode_word(token, embeddings).unsqueeze(1).transpose(0, 1)
 		word_vectors = th.cat((word_vectors, vec), dim=0)
 
-	while word_vectors.size()[0] <= pad_length:
-		word_vectors = th.cat((word_vectors, th.zeros(1, DIMENSIONALITY)), dim=0)
+	length_diff = pad_length - word_vectors.size()[0] > 0
+	if length_diff > 0:
+		word_vectors = th.cat((word_vectors, th.zeros((length_diff, DIMENSIONALITY))), dim=0)
 
 	return word_vectors
 
@@ -127,7 +128,7 @@ def debugSurroudingWords(s, e, context_tokens, num=1):
 	print("s:%d -> %d\ne:%d -> %d\n" % (s, snew, e, enew))
 	return snew,enew
 
-def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", shouldDebugSurroudingWords = True):
+def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", shouldDebugSurroudingWords = False):
 
 	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\nDebug surrounding words:%s\n" % (model_path, eval_set_path, output_path, shouldDebugSurroudingWords))
 
@@ -174,7 +175,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 		context_token_list = context_paras[0]
 
 		if shouldDebugSurroudingWords:
-			s, e = debugSurroudingWords(s, e, context_enriched[0], num=3)
+			s, e = debugSurroudingWords(s, e, context_enriched[0], num=1)
 		
 		ansStartTok = context_enriched[0][s]
 		ansStartIdx = ansStartTok[1]
