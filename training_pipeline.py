@@ -98,9 +98,9 @@ class Training:
         self.ans_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_ans_span.txt"
         
     def useTrainingSubset2(self):
-    	# Train on just the first paragraph of the first document in training set
-    	# (15 questions)
-    	self.question_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_question.txt"
+        # Train on just the first paragraph of the first document in training set 
+        # (15 questions)
+        self.question_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_question.txt"
         self.context_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_context.txt"
         self.ans_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_ans_span.txt"
 
