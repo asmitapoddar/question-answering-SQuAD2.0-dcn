@@ -264,7 +264,7 @@ class Training:
             print("!*" * 50)
             
             # Save state at the end of epoch.
-            save_state(serial_path, 0, epoch+1, global_step, self.model, self.optimizer)
+            save_state(serial_path, 0, epoch+1, self.global_step, self.model, self.optimizer)
 
 
 # TODO: Move.
