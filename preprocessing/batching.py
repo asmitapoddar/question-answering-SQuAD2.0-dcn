@@ -156,6 +156,13 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
     # Note: if you sort by context length, then you'll have batches which contain the same context many times (because each context appears several times, with different questions)
     examples = sorted(examples, key=lambda e: len(e[2]))
 
+    # Make len(examples) divisible by batch_size, so that each batch has the same size (batch_size).
+    # Achieve that by repeating some examples in the final (possibly shorter) batch.
+    assert(len(examples) > 0)
+    while len(examples) % batch_size != 0:
+        index = (len(examples) % batch_size) % len(examples) # Try to repeat each example at most once, if possible.
+        examples.append(examples[index])
+
     # Make into batches and append to the list batches
     for batch_start in xrange(0, len(examples), batch_size):
 
