@@ -24,7 +24,7 @@ def get_glove(glove_path, glove_dim):
     random_init = True
     # randomly initialize the special tokens
     if random_init:
-        emb_matrix[:len(START_VOCAB), :] = np.random.zeros(len(START_VOCAB), glove_dim)
+        emb_matrix[:len(START_VOCAB), :] = np.zeros(len(START_VOCAB), glove_dim)
 
     # put start tokens in the dictionaries
     idx = 0
