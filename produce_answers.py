@@ -38,11 +38,15 @@ def encode_word(word, embeddings):
 	else:
 		return th.zeros(DIMENSIONALITY)
 
-def encode_token_list(embeddings, token_list):
+def encode_token_list(embeddings, token_list, pad_length):
 	word_vectors = th.zeros(0, DIMENSIONALITY)
 	for token in token_list:
 		vec = encode_word(token, embeddings).unsqueeze(1).transpose(0, 1)
 		word_vectors = th.cat((word_vectors, vec), dim=0)
+
+	while word_vectors.size()[0] <= pad_length:
+		word_vectors = th.cat((word_vectors, th.zeros(1, DIMENSIONALITY)), dim=0)
+
 	return word_vectors
 
 
@@ -65,7 +69,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 
 			just_context_tokens = list(map(lambda x : x[0], context_enriched)) 
 
-			context_embeddings = encode_token_list(embeddings, just_context_tokens)
+			context_embeddings = encode_token_list(embeddings, just_context_tokens, MAX_CONTENT_LENGTH)
 
 			for qas in para["qas"]:
 
@@ -73,7 +77,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				
 				question_enriched = qas["question_tokens"]
 				just_question_tokens = list(map(lambda x : x[0], question_enriched))
-				question_embeddings = encode_token_list(embeddings, just_question_tokens)
+				question_embeddings = encode_token_list(embeddings, just_question_tokens, MAX_QUESTION_LENGTH)
 
 				# Unique identifier for (question, corresponding answers)
 				qas_id = qas["id"]
