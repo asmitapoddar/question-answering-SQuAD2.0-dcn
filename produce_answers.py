@@ -8,8 +8,7 @@ import torch as th
 
 th.manual_seed(RANDOM_SEED)
 
-# Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
-DIMENSIONALITY = 300
+# Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d) = 300 (EMBEDDING_DIM)
 
 def load_embeddings_index(small = False):
 	embeddings_index = {}
@@ -25,8 +24,8 @@ def load_embeddings_index(small = False):
 	with open(filePath, 'r', encoding="utf8") as f:
 		for line in tqdm(f):
 			values = line.split()
-			word = line[:-(len(' '.join(values[-DIMENSIONALITY:]))+2)]
-			tmp = list(map(float, values[-DIMENSIONALITY:]))
+			word = line[:-(len(' '.join(values[-EMBEDDING_DIM:]))+2)]
+			tmp = list(map(float, values[-EMBEDDING_DIM:]))
 			coefs = th.tensor(tmp)
 			embeddings_index[word] = coefs
 	return embeddings_index
@@ -36,17 +35,17 @@ def encode_word(word, embeddings):
 	if word in embeddings: 
 		return embeddings[word]
 	else:
-		return th.zeros(DIMENSIONALITY)
+		return th.zeros(EMBEDDING_DIM)
 
 def encode_token_list(embeddings, token_list, pad_length):
-	word_vectors = th.zeros(0, DIMENSIONALITY)
+	word_vectors = th.zeros(0, EMBEDDING_DIM)
 	for token in token_list:
 		vec = encode_word(token, embeddings).unsqueeze(1).transpose(0, 1)
 		word_vectors = th.cat((word_vectors, vec), dim=0)
 
 	length_diff = pad_length - word_vectors.size()[0] > 0
 	if length_diff > 0:
-		word_vectors = th.cat((word_vectors, th.zeros((length_diff, DIMENSIONALITY))), dim=0)
+		word_vectors = th.cat((word_vectors, th.zeros((length_diff, EMBEDDING_DIM))), dim=0)
 
 	return word_vectors
 
@@ -162,8 +161,8 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
 		question_vectors = question_vectors[0].unsqueeze(dim=0).to(device)
 		
-		assert(context_vectors.size()[1+1] == DIMENSIONALITY)
-		assert(question_vectors.size()[1+1] == DIMENSIONALITY) 
+		assert(context_vectors.size()[1+1] == EMBEDDING_DIM)
+		assert(question_vectors.size()[1+1] == EMBEDDING_DIM) 
 		
 		# Fake ground truth data (one batch of starts and ends):
 		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
