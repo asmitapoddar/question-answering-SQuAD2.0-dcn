@@ -1,5 +1,6 @@
 # Defaults/constants.
 
+ADAM_LR = 0.001
 BATCH_SIZE = 64
 DISABLE_CUDA = False # If this is set to True, make sure it should be!
 DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if possible.
