@@ -108,9 +108,9 @@ class Training:
         # Train on just the first paragraph of the first document in training set 
         # (15 questions)
         # Same as train-subset-2, except with its first question moved to the end
-        self.question_path = "preprocessing/data/subset-2/preprocessed_train-subset-3_question.txt"
-        self.context_path = "preprocessing/data/subset-2/preprocessed_train-subset-3_context.txt"
-        self.ans_path = "preprocessing/data/subset-2/preprocessed_train-subset-3_ans_span.txt"
+        self.question_path = "preprocessing/data/subset-3/preprocessed_train-subset-3_question.txt"
+        self.context_path = "preprocessing/data/subset-3/preprocessed_train-subset-3_context.txt"
+        self.ans_path = "preprocessing/data/subset-3/preprocessed_train-subset-3_ans_span.txt"
 
     def checkTrainingPaths(self):
         if self.question_path is None or self.context_path is None or self.ans_path is None:
