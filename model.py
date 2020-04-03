@@ -240,7 +240,7 @@ class DynamicPointerDecoder(nn.Module):
     debug_index_convergence = None
 
     # TODO: make it run only until convergence?
-    for _ in range(self.max_iter):
+    for decoder_iter in range(self.max_iter):
       # call LSTM to update h_i
 
       # Step through the sequence one element at a time.
@@ -284,6 +284,11 @@ class DynamicPointerDecoder(nn.Module):
       betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
       debug_index_convergence = debug_index_convergence_update(debug_index_convergence, s, e)
+
+      if PRINT_SPANS_DURING_TRAINING:
+        print("--- (DynamicPointerDecoder.forward) --- ")
+        print("decoder_iter = %d\ns = %d\ne = %d\n" % (decoder_iter, s, e))
+        print("---------------------------------------")
 
     debug_index_convergence_print(debug_index_convergence, self.batch_size)
     return (alphas, betas, s, e)

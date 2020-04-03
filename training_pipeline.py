@@ -216,10 +216,11 @@ class Training:
         loss, s, e = model(d_emb, q_emb, span_s, span_e)
 
         if PRINT_SPANS_DURING_TRAINING:
-            print("--- s ---")
+            print("--- s (train_one_batch) --- ")
             print(s)
-            print("--- e ---")
+            print("--- e (train_one_batch) ---")
             print(e)
+            print("---------------------------")
 
         if not DISABLE_L2_REG:
             l2_reg = 0.0
