@@ -5,6 +5,8 @@ DISABLE_CUDA = False # If this is set to True, make sure it should be!
 DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if possible.
                            # Note that existing impl. has HMN dropout commented out!
                            # github.com/atulkum/co-attention/blob/master/code/model.py#L177
+DISABLE_L2_REG = True
+DISABLE_GRAD_CLIPPING = True
 DROPOUT = 0.3
 EMBEDDING_DIM = 300
 HIDDEN_DIM = 200  # Denoted by 'l' in the paper.

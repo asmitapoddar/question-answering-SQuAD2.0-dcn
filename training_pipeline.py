@@ -217,15 +217,20 @@ class Training:
 
         loss, _, _ = model(d_emb, q_emb, span_s, span_e)
 
-        l2_reg = 0.0 
-        for W in params:
-            l2_reg = l2_reg + W.norm(2)
-        loss = loss + REG_LAMBDA * l2_reg
+        if not DISABLE_L2_REG:
+            l2_reg = 0.0
+            for W in params:
+                l2_reg = l2_reg + W.norm(2)
+            loss = loss + REG_LAMBDA * l2_reg
         
-        param_norm = get_param_norm(params)
-        grad_norm = get_grad_norm(params)
+        if not DISABLE_GRAD_CLIPPING:
+            param_norm = get_param_norm(params)
+            grad_norm = get_grad_norm(params)
 
-        clip_grad_norm_(params, MAX_GRAD_NORM)
+            clip_grad_norm_(params, MAX_GRAD_NORM)
+        else:
+            param_norm = None
+            grad_norm = None
        
         print("loss (incl. reg):", loss)
         with open("./loss.log", "a") as f:
