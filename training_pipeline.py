@@ -213,7 +213,13 @@ class Training:
         q_emb = self.seq_to_emb(q_seq)  #Batched questions embedding Shape: batch_size X max_question_length, embedding_dimension
         d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape:  batch_size X max_context_length, embedding_dimension
 
-        loss, _, _ = model(d_emb, q_emb, span_s, span_e)
+        loss, s, e = model(d_emb, q_emb, span_s, span_e)
+
+        if PRINT_SPANS_DURING_TRAINING:
+            print("--- s ---")
+            print(s)
+            print("--- e ---")
+            print(e)
 
         if not DISABLE_L2_REG:
             l2_reg = 0.0
