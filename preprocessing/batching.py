@@ -158,8 +158,9 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
 
     # Make len(examples) divisible by batch_size, so that each batch has the same size (batch_size).
     # Achieve that by repeating some examples in the final (possibly shorter) batch.
+    initial_len_examples = len(examples)
     while len(examples) % batch_size != 0:
-        index = (len(examples) % batch_size) % len(examples) # Try to repeat each example at most once, if possible.
+        index = (len(examples) % batch_size) % initial_len_examples # Try to repeat each example at most once, if possible.
         examples.append(examples[index])
 
     # Make into batches and append to the list batches
