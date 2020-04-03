@@ -357,4 +357,8 @@ class DCNModel(nn.Module):
       loss += criterion(alphas[:,it,:], true_s)
       loss += criterion(betas[:,it,:], true_e)
 
+    print("--- true_s (DCNModel.forward) ---")
+    print(true_s)
+    print("--- true_e (DCNModel.forward) --- ")
+    print(true_e)
     return loss, start, end
