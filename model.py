@@ -287,8 +287,12 @@ class DynamicPointerDecoder(nn.Module):
 
       if PRINT_SPANS_DURING_TRAINING:
         print("--- (DynamicPointerDecoder.forward) --- ")
-        print("decoder_iter = %d\ns = %d\ne = %d\n" % (decoder_iter, s, e))
+        print("----- s (DynamicPointerDecoder.forward) iter %d ---" % decoder_iter)
+        print(s)
+        print("----- e (DynamicPointerDecoder.forward) iter %d ---" % decoder_iter)
+        print(e)
         print("---------------------------------------")
+
 
     debug_index_convergence_print(debug_index_convergence, self.batch_size)
     return (alphas, betas, s, e)
