@@ -281,7 +281,7 @@ class Training:
                         
             for batch_ind, batch in enumerate(get_batch_generator(
                     self.word2id, self.context_path, self.question_path, 
-                    self.ans_path, 64, context_len=MAX_CONTEXT_LEN,
+                    self.ans_path, BATCH_SIZE, context_len=MAX_CONTEXT_LEN,
                     question_len=MAX_QUESTION_LEN, discard_long=True)):
                 
                 # Skip first start_batch batches (if resuming training from saved state).
