@@ -21,12 +21,14 @@ class Encoder(nn.Module):
     self.device = device
 
     # Dimension of the hidden state and cell state (they're equal) of the LSTM
-    self.lstm = nn.LSTM(self.embedding_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
+    self.lstm = nn.LSTM(self.embedding_dim, self.hidden_dim, 1, batch_first=True, bidirectional=False)
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
     return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
             th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
+    #return nn.init.xavier_initialisation(th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+    #      th.zeros(1, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
   def forward(self, x, hidden):
     return self.lstm(x, hidden)
@@ -80,6 +82,8 @@ class BiLSTMEncoder(nn.Module):
         # First is the hidden h, second is the cell c.
         return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
+        # return nn.init.xavier_initialisation(th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+        #      th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
         hidden = self.init_hidden()
