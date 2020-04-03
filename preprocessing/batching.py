@@ -172,7 +172,8 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
         batches.append((context_ids_batch, context_tokens_batch, qn_ids_batch, qn_tokens_batch, ans_span_batch, ans_tokens_batch))
 
     # shuffle the batches
-    random.shuffle(batches)
+    if not DISABLE_SHUFFLING:
+        random.shuffle(batches)
 
     toc = time.time()
     print ("Refilling batches took %.2f seconds" % (toc-tic))
