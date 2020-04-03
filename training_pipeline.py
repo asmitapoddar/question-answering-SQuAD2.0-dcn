@@ -85,24 +85,26 @@ def save_state(serial_path, next_batch, next_epoch, next_global_step, model, opt
 
 class Training:
 
-
     def useEntireTrainingSet(self):
         self.question_path = "preprocessing/data/preprocessed_train_question.txt"
         self.context_path = "preprocessing/data/preprocessed_train_context.txt"
         self.ans_path = "preprocessing/data/preprocessed_train_ans_span.txt"
+
 
     def useTrainingSubset1(self):
         # Train on just the first document within the training set
         self.question_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_question.txt"
         self.context_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_context.txt"
         self.ans_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_ans_span.txt"
-        
+
+
     def useTrainingSubset2(self):
         # Train on just the first paragraph of the first document in training set 
         # (15 questions)
         self.question_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_question.txt"
         self.context_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_context.txt"
         self.ans_path = "preprocessing/data/subset-2/preprocessed_train-subset-2_ans_span.txt"
+
 
     def useTrainingSubset3(self):
         # Train on just the first paragraph of the first document in training set 
@@ -112,11 +114,13 @@ class Training:
         self.context_path = "preprocessing/data/subset-3/preprocessed_train-subset-3_context.txt"
         self.ans_path = "preprocessing/data/subset-3/preprocessed_train-subset-3_ans_span.txt"
 
+
     def useTrainingSubset4(self):
         # The second and third question from train-subset-2
         self.question_path = "preprocessing/data/subset-4/preprocessed_train-subset-4_question.txt"
         self.context_path = "preprocessing/data/subset-4/preprocessed_train-subset-4_context.txt"
         self.ans_path = "preprocessing/data/subset-4/preprocessed_train-subset-4_ans_span.txt"
+
 
     def checkTrainingPaths(self):
         if self.question_path is None or self.context_path is None or self.ans_path is None:
@@ -124,6 +128,7 @@ class Training:
             sys.exit(0)
         else:
             print("Training with:\nQuestion path:%s\nContext path:%s\nAnswer path:%s\n" % (self.question_path, self.context_path, self.ans_path))
+
 
     def __init__(self):
         self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
@@ -144,17 +149,19 @@ class Training:
         self.context_path = None
         self.ans_path = None
 
+
     def compute_dataset_size(self):
         # Compute dataset size by iterating through lines of question file.
         print("Begin compute_dataset_size().")
-        tic =  time.time()
+        tic = time.time()
         total_num_examples_in_dataset = 0
         with open(self.question_path) as f:
             for l in f:
                 total_num_examples_in_dataset += 1
         self.dataset_size = total_num_examples_in_dataset
-        toc =  time.time()
-        print("Finished compute_dataset_size() in %d seconds." % int(toc-tic))
+        toc = time.time()
+        print("Finished compute_dataset_size() in %.5f seconds." % (toc-tic))
+
 
     # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
     def get_data(self, batch, is_train=True):
@@ -255,11 +262,8 @@ class Training:
         else:
             param_norm = None
             grad_norm = None
-       
-        print("loss (incl. reg):", loss)
-        loss_path = serial_path+("loss[LR{0:.8f}_Q%d_B%d].log"%(BATCH_SIZE, ADAM_LR, self.dataset_size)).replace(".","-")
-        with open(loss_path, "a" if os.path.exists(loss_path) else "w") as f:
-            f.write("%i: %i\n" % (self.global_step, filter_nan(loss)))
+
+        self.write_to_loss_log(serial_path,loss)
 
         loss.backward()
         optimizer.step()
@@ -320,6 +324,14 @@ class Training:
             # Save state at the end of epoch.
             save_state(serial_path, 0, epoch+1, self.global_step, self.model, self.optimizer)
 
+    def write_to_loss_log(self,serial_path,loss):
+        print("loss (incl. reg):", loss)
+        loss_path = serial_path+("loss[LR%.8f_Q%d_B%d_H%d]"%(ADAM_LR, self.dataset_size, BATCH_SIZE, HIDDEN_DIM)).replace(".","-")+".log"
+        log_file_exists = os.path.exists(loss_path)
+        with open(loss_path, "a" if log_file_exists else "w") as f:
+            f.write("%i: %i\n" % (self.global_step, filter_nan(loss)))
+        if not log_file_exists:
+            print("Created loss.log file at path:", loss_path)
 
 # TODO: Move.
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
