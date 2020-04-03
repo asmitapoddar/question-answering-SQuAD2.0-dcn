@@ -4,6 +4,7 @@ truncate, pad and process it into batches ready for training"""
 from __future__ import absolute_import
 from __future__ import division
 
+from constants import *
 import random
 import re
 import time
