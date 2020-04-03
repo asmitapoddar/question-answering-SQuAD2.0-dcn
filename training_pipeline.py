@@ -117,7 +117,7 @@ class Training:
             print("The question/context/context paths have not been set...aborting.")
             sys.exit(0)
         else:
-            print("Training with:\nQuestion path:%s\nContext path:%s\nAnswer path:%s\n" % (self.question_path, self.context_path, self.context_path))
+            print("Training with:\nQuestion path:%s\nContext path:%s\nAnswer path:%s\n" % (self.question_path, self.context_path, self.ans_path))
 
     def __init__(self):
         self.device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
