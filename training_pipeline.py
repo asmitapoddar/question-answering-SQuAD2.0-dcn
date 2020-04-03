@@ -216,6 +216,12 @@ class Training:
         loss, s, e = model(d_emb, q_emb, span_s, span_e)
 
         if PRINT_SPANS_DURING_TRAINING:
+            print("--- q_lens (train_one_batch) ---")
+            print(q_lens)
+            print("--- span_s (train_one_batch) ---")
+            print(span_s)
+            print("--- span_e (train_one_batch) ---")
+            print(span_e)
             print("--- s (train_one_batch) --- ")
             print(s)
             print("--- e (train_one_batch) ---")
