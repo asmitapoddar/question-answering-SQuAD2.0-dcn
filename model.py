@@ -32,7 +32,7 @@ class Encoder(nn.Module):
     #      th.zeros(1, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
   def forward(self, x):
-    hidden = generate_initial_hidden_state()
+    hidden = self.generate_initial_hidden_state()
     lstm_out, hidden = self.lstm(x, hidden)
     return lstm_out
 
