@@ -27,11 +27,14 @@ class Encoder(nn.Module):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
     return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
             th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
+    
     #return nn.init.xavier_initialisation(th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
     #      th.zeros(1, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
-  def forward(self, x, hidden):
-    return self.lstm(x, hidden)
+  def forward(self, x):
+    hidden = generate_initial_hidden_state()
+    lstm_out, hidden = self.lstm(x)
+    return lstm_out
 
 
 # Takes in D, Q. Produces U.
@@ -332,17 +335,13 @@ class DCNModel(nn.Module):
     # que_word_vecs the same as above.
 
     #print("doc_word_vec", doc_word_vecs.shape)
-    # TODO: how should we initialise the hidden state of the LSTM? For now:
-    initial_hidden = self.encoder.generate_initial_hidden_state()
-    outp, _ = self.encoder(doc_word_vecs.float(), initial_hidden)
+    outp, _ = self.encoder(doc_word_vecs.float())
     
     # outp: B x m x l
     D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X n+1
     # D: B x (m+1) x l
-
-    # TODO: Make sure we should indeed reinit hidden state before encoding the q.
-    initial_hidden = self.encoder.generate_initial_hidden_state()
-    outp, _ = self.encoder(que_word_vecs, initial_hidden)
+    
+    outp, _ = self.encoder(que_word_vecs)
     Qprime = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
