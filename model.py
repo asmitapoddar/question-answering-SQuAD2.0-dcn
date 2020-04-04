@@ -80,8 +80,7 @@ class BiLSTMEncoder(nn.Module):
         self.dropout = dropout
         self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
-    def init_hidden(self):
-        # TODO: Is initialisation zeros or randn? 
+    def init_hidden(self): 
         # First is the hidden h, second is the cell c.
         return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
