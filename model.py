@@ -331,23 +331,29 @@ class DCNModel(nn.Module):
     return params
 
   def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
-    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
-    # que_word_vecs the same as above.
-
-    #print("doc_word_vec", doc_word_vecs.shape)
-    outp, _ = self.encoder(doc_word_vecs.float())
+    """
+    doc_word_vecs: should have 3 dimensions: [batch_size, max_doc_length, word_vec_dim].
+    que_word_vecs: the same as above.
+    true_s: true start index of size: batch_size
+    true_e: true end index of size: batch_size
+    B: batch size
+    m: max_doc_length
+    n: max_question_length
+    l: hidden_dim
+    """
     
-    # outp: B x m x l
-    D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X n+1
+    outp = self.encoder(doc_word_vecs.float())  # outp: B x m x l
+    
+    D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X (n+1)
     # D: B x (m+1) x l
     
-    outp, _ = self.encoder(que_word_vecs)
+    outp = self.encoder(que_word_vecs)
     Qprime = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
     # Q: B x (n+1) x l
 
-    U = self.coattention_module(D_T,Q_T)
+    U = self.coattention_module(D_T,Q_T)  # B X 2l X (m+1)
     alphas, betas, start, end = self.decoder(U)
     
     criterion = nn.CrossEntropyLoss()    
