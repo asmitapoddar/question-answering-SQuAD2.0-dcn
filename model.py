@@ -33,7 +33,7 @@ class Encoder(nn.Module):
 
   def forward(self, x):
     hidden = generate_initial_hidden_state()
-    lstm_out, hidden = self.lstm(x)
+    lstm_out, hidden = self.lstm(x, hidden)
     return lstm_out
 
 
