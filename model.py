@@ -21,15 +21,20 @@ class Encoder(nn.Module):
     self.device = device
 
     # Dimension of the hidden state and cell state (they're equal) of the LSTM
-    self.lstm = nn.LSTM(self.embedding_dim, hidden_dim, 1, batch_first=True, bidirectional=False)
+    self.lstm = nn.LSTM(self.embedding_dim, self.hidden_dim, 1, batch_first=True, bidirectional=False)
 
   def generate_initial_hidden_state(self):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
     return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
             th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
+    
+    #return nn.init.xavier_initialisation(th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+    #      th.zeros(1, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
-  def forward(self, x, hidden):
-    return self.lstm(x, hidden)
+  def forward(self, x):
+    hidden = self.generate_initial_hidden_state()
+    lstm_out, hidden = self.lstm(x, hidden)
+    return lstm_out
 
 
 # Takes in D, Q. Produces U.
@@ -75,11 +80,12 @@ class BiLSTMEncoder(nn.Module):
         self.dropout = dropout
         self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
-    def init_hidden(self):
-        # TODO: Is initialisation zeros or randn? 
+    def init_hidden(self): 
         # First is the hidden h, second is the cell c.
         return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
+        # return nn.init.xavier_initialisation(th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
+        #      th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
         hidden = self.init_hidden()
@@ -324,27 +330,29 @@ class DCNModel(nn.Module):
     return params
 
   def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
-    # doc_word_vecs should have 3 dimensions: [batch_size, num_docs_in_batch, word_vec_dim].
-    # que_word_vecs the same as above.
-
-    #print("doc_word_vec", doc_word_vecs.shape)
-    # TODO: how should we initialise the hidden state of the LSTM? For now:
-    initial_hidden = self.encoder.generate_initial_hidden_state()
-    outp, _ = self.encoder(doc_word_vecs.float(), initial_hidden)
+    """
+    doc_word_vecs: should have 3 dimensions: [batch_size, max_doc_length, word_vec_dim].
+    que_word_vecs: the same as above.
+    true_s: true start index of size: batch_size
+    true_e: true end index of size: batch_size
+    B: batch size
+    m: max_doc_length
+    n: max_question_length
+    l: hidden_dim
+    """
     
-    # outp: B x m x l
-    D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X n+1
+    outp = self.encoder(doc_word_vecs.float())  # outp: B x m x l
+    
+    D_T = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector # l X (n+1)
     # D: B x (m+1) x l
-
-    # TODO: Make sure we should indeed reinit hidden state before encoding the q.
-    initial_hidden = self.encoder.generate_initial_hidden_state()
-    outp, _ = self.encoder(que_word_vecs, initial_hidden)
+    
+    outp = self.encoder(que_word_vecs)
     Qprime = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
     # Q: B x (n+1) x l
 
-    U = self.coattention_module(D_T,Q_T)
+    U = self.coattention_module(D_T,Q_T)  # B X 2l X (m+1)
     alphas, betas, start, end = self.decoder(U)
     
     criterion = nn.CrossEntropyLoss()    
