@@ -2,18 +2,18 @@ def dbg_print(x):
     print("[debug] ",end='')
     print(x)
 
-def debug_index_convergence_update(debug_index_convergence, s, e):
-    if debug_index_convergence is None:
-        debug_index_convergence = []
+def index_convergence_update(index_convergence, s, e):
+    if index_convergence is None:
+        index_convergence = []
     list_s = list(map(lambda x: x.item(), list(s)))
     list_e = list(map(lambda x: x.item(), list(e)))
     list_zip = list(zip(list_s, list_e))
-    debug_index_convergence.append(list_zip)
-    return debug_index_convergence
+    index_convergence.append(list_zip)
+    return index_convergence
 
-def debug_index_convergence_print(debug_index_convergence, batch_size):
-    dic = debug_index_convergence
-    max_iter = len(debug_index_convergence)
+def compute_index_convergence(index_convergence, batch_size):
+    dic = index_convergence
+    max_iter = len(index_convergence)
     convergence = [None]*batch_size
     convergence_divergence_counter = 0
     for it in range(0,max_iter-1):
@@ -33,4 +33,4 @@ def debug_index_convergence_print(debug_index_convergence, batch_size):
             dbg_print("%d/%d spans never converged" %(num, batch_size))
         else:
             dbg_print("%d/%d spans converged after %d steps" % (num, batch_size, val))
-    
+    return convergence
