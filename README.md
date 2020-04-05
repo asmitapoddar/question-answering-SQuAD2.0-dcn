@@ -10,7 +10,7 @@ The repo name speaks for itself.
 * `python3 training_pipeline.py "/home/no_eating_no_drinking/model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
 ### Produce answer file for evaluation
-* Generate predictions on SQuAD dev set: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par`
+* Generate predictions on SQuAD dev set: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par [optional_prediction_file_path]`
 * Generate predictions on a different dataset: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par preprocessing/data/subset-1/train-subset-1-tokenized.json`
 * Run evaluation: `python3 evaluate-v2.0.py  preprocessing/data/subset-1/train-subset-1.json predictions.json`
 
