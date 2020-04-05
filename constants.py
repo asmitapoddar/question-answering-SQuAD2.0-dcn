@@ -1,11 +1,15 @@
 # Defaults/constants.
 
+ADAM_LR = 0.001
 BATCH_SIZE = 64
 DISABLE_CUDA = False # If this is set to True, make sure it should be!
 DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if possible.
                            # Note that existing impl. has HMN dropout commented out!
                            # github.com/atulkum/co-attention/blob/master/code/model.py#L177
-DROPOUT = 0.3
+DISABLE_L2_REG = True
+DISABLE_GRAD_CLIPPING = True
+DISABLE_DROPOUT = True
+DROPOUT = 0.3 if not DISABLE_DROPOUT else 0.0
 EMBEDDING_DIM = 300
 HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
 MAX_ITER = 4
@@ -29,3 +33,6 @@ SERIALISATION_KEY_EPOCH = 'epoch'
 SERIALISATION_KEY_GLOBAL_STEP = 'gstep'
 SERIALISATION_KEY_MODEL = 'model'
 SERIALISATION_KEY_OPTIM = 'optim'
+
+PRINT_SPANS_DURING_TRAINING = True
+DISABLE_SHUFFLING = True

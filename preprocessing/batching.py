@@ -4,6 +4,7 @@ truncate, pad and process it into batches ready for training"""
 from __future__ import absolute_import
 from __future__ import division
 
+from constants import *
 import random
 import re
 import time
@@ -158,9 +159,9 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
 
     # Make len(examples) divisible by batch_size, so that each batch has the same size (batch_size).
     # Achieve that by repeating some examples in the final (possibly shorter) batch.
-    assert(len(examples) > 0)
+    initial_len_examples = len(examples)
     while len(examples) % batch_size != 0:
-        index = (len(examples) % batch_size) % len(examples) # Try to repeat each example at most once, if possible.
+        index = (len(examples) % batch_size) % initial_len_examples # Try to repeat each example at most once, if possible.
         examples.append(examples[index])
 
     # Make into batches and append to the list batches
@@ -172,7 +173,8 @@ def refill_batches(batches, word2id, context_file, qn_file, ans_file, batch_size
         batches.append((context_ids_batch, context_tokens_batch, qn_ids_batch, qn_tokens_batch, ans_span_batch, ans_tokens_batch))
 
     # shuffle the batches
-    random.shuffle(batches)
+    if not DISABLE_SHUFFLING:
+        random.shuffle(batches)
 
     toc = time.time()
     print ("Refilling batches took %.2f seconds" % (toc-tic))

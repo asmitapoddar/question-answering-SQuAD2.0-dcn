@@ -8,8 +8,7 @@ import torch as th
 
 th.manual_seed(RANDOM_SEED)
 
-# Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d)
-DIMENSIONALITY = 300
+# Dimensionality of word vectors in glove.840B.300d (also in glove.6B.300d) = 300 (EMBEDDING_DIM)
 
 def load_embeddings_index(small = False):
 	embeddings_index = {}
@@ -25,8 +24,8 @@ def load_embeddings_index(small = False):
 	with open(filePath, 'r', encoding="utf8") as f:
 		for line in tqdm(f):
 			values = line.split()
-			word = line[:-(len(' '.join(values[-DIMENSIONALITY:]))+2)]
-			tmp = list(map(float, values[-DIMENSIONALITY:]))
+			word = line[:-(len(' '.join(values[-EMBEDDING_DIM:]))+2)]
+			tmp = list(map(float, values[-EMBEDDING_DIM:]))
 			coefs = th.tensor(tmp)
 			embeddings_index[word] = coefs
 	return embeddings_index
@@ -36,16 +35,17 @@ def encode_word(word, embeddings):
 	if word in embeddings: 
 		return embeddings[word]
 	else:
-		return th.zeros(DIMENSIONALITY)
+		return th.zeros(EMBEDDING_DIM)
 
 def encode_token_list(embeddings, token_list, pad_length):
-	word_vectors = th.zeros(0, DIMENSIONALITY)
+	word_vectors = th.zeros(0, EMBEDDING_DIM)
 	for token in token_list:
 		vec = encode_word(token, embeddings).unsqueeze(1).transpose(0, 1)
 		word_vectors = th.cat((word_vectors, vec), dim=0)
 
-	while word_vectors.size()[0] <= pad_length:
-		word_vectors = th.cat((word_vectors, th.zeros(1, DIMENSIONALITY)), dim=0)
+	length_diff = pad_length - word_vectors.size()[0]
+	if length_diff > 0:
+		word_vectors = th.cat((word_vectors, th.zeros((length_diff, EMBEDDING_DIM))), dim=0)
 
 	return word_vectors
 
@@ -57,7 +57,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	# batch[2] question identifiers
 	# batch[3] document strings
 	# batch[4] document (token, start pos, end pos) list
-	batch = ([], [], [], [], [])
+	# batch[5] question string
+	batch = ([], [], [], [], [], [])
 
 	for item in tqdm(data):
 		for para in item["paragraphs"]:
@@ -69,7 +70,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 
 			just_context_tokens = list(map(lambda x : x[0], context_enriched)) 
 
-			context_embeddings = encode_token_list(embeddings, just_context_tokens, MAX_CONTENT_LENGTH)
+			context_embeddings = encode_token_list(embeddings, just_context_tokens, MAX_CONTEXT_LEN)
 
 			for qas in para["qas"]:
 
@@ -77,7 +78,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				
 				question_enriched = qas["question_tokens"]
 				just_question_tokens = list(map(lambda x : x[0], question_enriched))
-				question_embeddings = encode_token_list(embeddings, just_question_tokens, MAX_QUESTION_LENGTH)
+				question_embeddings = encode_token_list(embeddings, just_question_tokens, MAX_QUESTION_LEN)
 
 				# Unique identifier for (question, corresponding answers)
 				qas_id = qas["id"]
@@ -87,10 +88,11 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				batch[2].append(qas_id)
 				batch[3].append(context)
 				batch[4].append(context_enriched)
+				batch[5].append(question)
 
 				if len(batch[2]) == evaluation_batch_size:
 					yield batch
-					batch = ([], [], [], [], [])
+					batch = ([], [], [], [], [], [])
 	if len(batch[2]) > 0:
 		yield batch
 
@@ -127,7 +129,7 @@ def debugSurroudingWords(s, e, context_tokens, num=1):
 	print("s:%d -> %d\ne:%d -> %d\n" % (s, snew, e, enew))
 	return snew,enew
 
-def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", shouldDebugSurroudingWords = True):
+def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurroudingWords = False):
 
 	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\nDebug surrounding words:%s\n" % (model_path, eval_set_path, output_path, shouldDebugSurroudingWords))
 
@@ -155,12 +157,12 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 	for batch in tqdm(batch_iterator):
 		print("\n")
 
-		context_vectors, question_vectors, context_ids, context_paras, context_enriched = batch
+		context_vectors, question_vectors, context_ids, context_paras, context_enriched, questions = batch
 		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
 		question_vectors = question_vectors[0].unsqueeze(dim=0).to(device)
 		
-		assert(context_vectors.size()[1+1] == DIMENSIONALITY)
-		assert(question_vectors.size()[1+1] == DIMENSIONALITY) 
+		assert(context_vectors.size()[1+1] == EMBEDDING_DIM)
+		assert(question_vectors.size()[1+1] == EMBEDDING_DIM) 
 		
 		# Fake ground truth data (one batch of starts and ends):
 		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
@@ -174,7 +176,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 		context_token_list = context_paras[0]
 
 		if shouldDebugSurroudingWords:
-			s, e = debugSurroudingWords(s, e, context_enriched[0], num=3)
+			s, e = debugSurroudingWords(s, e, context_enriched[0], num=1)
 		
 		ansStartTok = context_enriched[0][s]
 		ansStartIdx = ansStartTok[1]
@@ -183,6 +185,7 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 		ansEndIdx = ansEndTok[2]		
 
 		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
+		print("id=%s\nquestion=%s\n" % (context_ids[0], questions[0]))
 		print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
 		
 		answer_mapping[context_ids[0]] = answerSubstring
@@ -193,4 +196,5 @@ def run_evaluation(model_path, eval_set_path, output_path = "predictions.json", 
 # TODO: provide path to serialised model
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 evaluation_set_path = "preprocessing/data/dev-v2.0-tokenized.json" if len(sys.argv) <= 2 else sys.argv[2]
-run_evaluation(saved_state_path, evaluation_set_path)
+predictions_output_path = "predictions.json" if len(sys.argv) <= 3 else sys.argv[3]
+run_evaluation(saved_state_path, evaluation_set_path, predictions_output_path)
