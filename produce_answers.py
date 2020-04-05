@@ -177,7 +177,13 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 
 		if shouldDebugSurroudingWords:
 			s, e = debugSurroudingWords(s, e, context_enriched[0], num=1)
-		
+
+		# We need this because the model could output spans that aren't within
+		# the document (we zero pad and add a sentinel)
+		num_tokens_excl_padding_and_sentinel = len(context_enriched[0]) - 1
+		s = min(s, num_tokens_excl_padding_and_sentinel)
+		e = min(e, num_tokens_excl_padding_and_sentinel)
+
 		ansStartTok = context_enriched[0][s]
 		ansStartIdx = ansStartTok[1]
 
