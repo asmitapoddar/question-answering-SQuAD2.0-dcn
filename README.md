@@ -36,5 +36,10 @@ The repo name speaks for itself.
 - [x] Training pipeline (Asmita + Kuba's minor cleanup)
 - [x] Model serialisation (Kuba + Richie)
 - [x] Debug `retain_graph` error (Dip)
-- [ ] Run Training on real data ( ? )
+- [x] Debug training issues (Dip with help from Kuba and Richie)
+- [ ] Ablation tests:
+  - [ ] single iteration for s/e indices instead of 4. On a related note, log the iteration convergence behaviour.
+  - [ ] smaller HIDDEN_DIM
+  - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
+  - [ ] *Think of more ablation tests.*
 - [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
