@@ -73,6 +73,6 @@ def preprocess(nlp_client, dataset, outFile):
 # set up the client
 corenlpProps = {}
 corenlpProps["tokenize.options"] = "ptb3Escaping=false,invertible=true"
-with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G') as client:
+with CoreNLPClient(annotators=['tokenize', 'ssplit'], timeout=60000, memory='16G', properties=corenlpProps) as client:
     preprocess(client, load_train_set(), "data/train-v2.0-tokenized.json")
     preprocess(client, load_dev_set(), "data/dev-v2.0-tokenized.json")
