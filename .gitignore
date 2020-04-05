@@ -1,5 +1,6 @@
 # Don't push the word embedding files 
 preprocessing/glove/
+preprocessing/data/
 word_vectors/
 
 # File produced by produce_answer.py
