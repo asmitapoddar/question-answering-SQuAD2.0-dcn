@@ -160,7 +160,7 @@ class Training:
                 total_num_examples_in_dataset += 1
         self.dataset_size = total_num_examples_in_dataset
         toc = time.time()
-        print("Finished compute_dataset_size() in %.5f seconds." % (toc-tic))
+        print("Finished compute_dataset_size() with result %d in %.5f seconds." % (self.data_size, toc-tic))
 
 
     # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
