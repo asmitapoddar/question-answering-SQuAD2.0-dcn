@@ -127,7 +127,7 @@ class Training:
             print("The question/context/context paths have not been set...aborting.")
             sys.exit(0)
         else:
-            print("Training with:\nQuestion path:%s\nContext path:%s\nAnswer path:%s\n" % (self.question_path, self.context_path, self.ans_path))
+            print("Training with:\n- Question path: %s\n- Context path:  %s\n- Answer path:   %s\n" % (self.question_path, self.context_path, self.ans_path))
 
 
     def __init__(self):
@@ -152,7 +152,7 @@ class Training:
 
     def compute_dataset_size(self):
         # Compute dataset size by iterating through lines of question file.
-        print("Begin compute_dataset_size().")
+        print("Begin compute_dataset_size()...",end=' ')
         tic = time.time()
         total_num_examples_in_dataset = 0
         with open(self.question_path) as f:
@@ -160,8 +160,8 @@ class Training:
                 total_num_examples_in_dataset += 1
         self.dataset_size = total_num_examples_in_dataset
         toc = time.time()
+        
         print("Finished compute_dataset_size() with result %d in %.5f seconds." % (self.dataset_size, toc-tic))
-
 
     # Convert question mask, ids; context mask, ids; answer start spans, answer end spans to tensors
     def get_data(self, batch, is_train=True):

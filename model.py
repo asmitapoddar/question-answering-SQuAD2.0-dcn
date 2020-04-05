@@ -1,5 +1,5 @@
 from constants import *
-from debug import *
+from index_convergence import *
 
 import numpy as np
 import torch as th
@@ -213,6 +213,7 @@ class DynamicPointerDecoder(nn.Module):
   def __init__(self, batch_size, max_iter, dropout_hmn, dropout_lstm, hidden_dim, maxout_pool_size, device):
     super(DynamicPointerDecoder, self).__init__()
     self.batch_size = batch_size
+    self.convergence = None
     self.device = device
     self.hidden_dim = hidden_dim
     self.hmn_alpha = HighwayMaxoutNetwork(batch_size, dropout_hmn, hidden_dim, maxout_pool_size, device)
@@ -243,7 +244,7 @@ class DynamicPointerDecoder(nn.Module):
     alphas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
     betas = th.tensor([], device=self.device).view(self.batch_size, 0, doc_length)
 
-    debug_index_convergence = None
+    index_convergence = None
 
     # TODO: make it run only until convergence?
     for decoder_iter in range(self.max_iter):
@@ -289,7 +290,7 @@ class DynamicPointerDecoder(nn.Module):
       alphas = th.cat((alphas, alpha.view(self.batch_size,1,doc_length)), dim=1)
       betas = th.cat((betas, beta.view(self.batch_size,1,doc_length)), dim=1)
 
-      debug_index_convergence = debug_index_convergence_update(debug_index_convergence, s, e)
+      index_convergence = index_convergence_update(index_convergence, s, e)
 
       if PRINT_SPANS_DURING_TRAINING:
         print("--- (DynamicPointerDecoder.forward) --- ")
@@ -300,7 +301,7 @@ class DynamicPointerDecoder(nn.Module):
         print("---------------------------------------")
 
 
-    debug_index_convergence_print(debug_index_convergence, self.batch_size)
+    self.convergence = compute_index_convergence(index_convergence, self.batch_size)
     return (alphas, betas, s, e)
 
 
@@ -361,9 +362,11 @@ class DCNModel(nn.Module):
     # iterations of the dynamic pointing decoder
     loss = th.FloatTensor([0.0]).to(self.device)
 
-    for it in range(self.decoder.max_iter):
-      loss += criterion(alphas[:,it,:], true_s)
-      loss += criterion(betas[:,it,:], true_e)
+    for b in range(self.batch_size):
+      for it in range(self.decoder.convergence[b] if self.decoder.convergence[b] is not None else self.decoder.max_iter):
+        loss += criterion(alphas[b,it,:].view(1,-1), true_s[b].view(1))
+        loss += criterion(betas[b,it,:].view(1,-1), true_e[b].view(1))
+    self.decoder.convergence = None
 
     print("--- true_s (DCNModel.forward) ---")
     print(true_s)
