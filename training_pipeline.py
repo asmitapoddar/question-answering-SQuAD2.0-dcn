@@ -219,6 +219,26 @@ class Training:
         return global_step, start_batch, start_epoch
 
 
+    def metadata_string(self):
+        s = "["
+        s += "LR%.2e" % ADAM_LR
+        s += "_Q%d" % self.dataset_size
+        s += "_B%d" % BATCH_SIZE
+        s += "_H%d" % HIDDEN_DIM
+        s += "_RS%d" % RANDOM_SEED
+        if not DISABLE_L2_REG:
+            s += "_L%.2e" % REG_LAMBDA
+        if not DISABLE_DROPOUT:
+            s += "_D%.2e" % DROPOUT
+        if not DISABLE_GRAD_CLIPPING:
+            s += "_MGN:%.2e" % MAX_GRAD_NORM
+        if not DISABLE_SHUFFLING:
+            s += "_SHUF"
+        s += "]"
+        s = s.replace(".","-")
+        return s
+
+        
     def seq_to_emb(self, seq):
         seq_list = seq.tolist()
         emb_list = [[self.emb_mat[y] for y in x] for x in seq_list]
@@ -288,7 +308,7 @@ class Training:
 
         # Create directory for this training session.
         curr_dir_path = str(pathlib.Path().absolute())
-        serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + "/"
+        serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + self.metadata_string() + "/"
         os.makedirs(serial_path)
         print("This training session will be saved at:\n%s" % serial_path)
         
@@ -326,7 +346,7 @@ class Training:
 
     def write_to_loss_log(self,serial_path,loss):
         print("loss (incl. reg):", loss)
-        loss_path = serial_path+("loss[LR%.8f_Q%d_B%d_H%d]"%(ADAM_LR, self.dataset_size, BATCH_SIZE, HIDDEN_DIM)).replace(".","-")+".log"
+        loss_path = serial_path+"loss.log"
         log_file_exists = os.path.exists(loss_path)
         with open(loss_path, "a" if log_file_exists else "w") as f:
             f.write("%i: %i\n" % (self.global_step, filter_nan(loss)))
