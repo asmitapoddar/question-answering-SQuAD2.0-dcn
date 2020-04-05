@@ -92,7 +92,7 @@ class Training:
 
 
     def useTrainingSubset1(self):
-        # Train on just the first document within the training set
+        # Train on just the first document within the training set 
         self.question_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_question.txt"
         self.context_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_context.txt"
         self.ans_path = "preprocessing/data/subset-1/preprocessed_train-subset-1_ans_span.txt"
@@ -257,7 +257,7 @@ class Training:
 
         if PRINT_SPANS_DURING_TRAINING:
             print("--- q_lens (train_one_batch) ---")
-            print(q_lens)
+            print(th.sum(q_lens, dim=1))
             print("--- span_s (train_one_batch) ---")
             print(span_s)
             print("--- span_e (train_one_batch) ---")
@@ -266,7 +266,18 @@ class Training:
             print(s)
             print("--- e (train_one_batch) ---")
             print(e)
+            print("--- (in current batch ...) th.sum(span_s==s) (train_one_batch) ---")
+            num_correct_starts = th.sum(span_s == s)
+            print("#start positions agreeing w/ ground truth = %d out of %d\n" % (num_correct_starts, BATCH_SIZE))
+            print("--- (in current batch ...) th.sum(span_e==e) (train_one_batch) ---")
+            num_correct_ends = th.sum(span_e == e)
+            print("#end positions agreeing w/ ground truth = %d out of %d\n" % (num_correct_ends, BATCH_SIZE))
+            print("--- (in current batch ...) th.sum((span_e==e) * (span_s=s)) (train_one_batch) ---")
+            num_span_exactly_correct = th.sum((span_s == s) * (span_e == e))
+            print("#spans exactly correct = %d out of %d\n" % (num_span_exactly_correct, BATCH_SIZE))
             print("---------------------------")
+
+
 
         if not DISABLE_L2_REG:
             l2_reg = 0.0
@@ -359,7 +370,7 @@ saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 training_pipeline = Training()
 
 # Specify the training set you want use here:
-training_pipeline.useTrainingSubset4()
+training_pipeline.useEntireTrainingSet()
 
 training_pipeline.training(saved_state_path)
 
