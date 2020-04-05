@@ -43,7 +43,7 @@ def encode_token_list(embeddings, token_list, pad_length):
 		vec = encode_word(token, embeddings).unsqueeze(1).transpose(0, 1)
 		word_vectors = th.cat((word_vectors, vec), dim=0)
 
-	length_diff = pad_length - word_vectors.size()[0] > 0
+	length_diff = pad_length - word_vectors.size()[0]
 	if length_diff > 0:
 		word_vectors = th.cat((word_vectors, th.zeros((length_diff, EMBEDDING_DIM))), dim=0)
 
