@@ -1,2 +1,0 @@
-train-v2.0-tokenized.json filter=lfs diff=lfs merge=lfs -text
-dev-v2.0-tokenized.json filter=lfs diff=lfs merge=lfs -text
