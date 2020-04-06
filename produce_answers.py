@@ -129,7 +129,7 @@ def debugSurroudingWords(s, e, context_tokens, num=1):
 	print("s:%d -> %d\ne:%d -> %d\n" % (s, snew, e, enew))
 	return snew,enew
 
-def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurroudingWords = False):
+def run_evaluation(model_path, eval_set_path, output_path, glove, shouldDebugSurroudingWords = False):
 
 	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\nDebug surrounding words:%s\n" % (model_path, eval_set_path, output_path, shouldDebugSurroudingWords))
 
@@ -145,9 +145,6 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 	model.eval()
 
 	dev_set_tokenized = load_dev_set(eval_set_path)
-
-	# Load glove word vectors into a dictionary
-	glove = load_embeddings_index()
 
 	batch_iterator = build_forward_input(glove, dev_set_tokenized, evaluation_batch_size)
 
@@ -238,7 +235,9 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 		json.dump(answer_mapping, f)
 
 # TODO: provide path to serialised model
-saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
-evaluation_set_path = "preprocessing/data/dev-v2.0-tokenized.json" if len(sys.argv) <= 2 else sys.argv[2]
-predictions_output_path = "predictions.json" if len(sys.argv) <= 3 else sys.argv[3]
-run_evaluation(saved_state_path, evaluation_set_path, predictions_output_path)
+if __name__ == "__main__":
+	saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
+	evaluation_set_path = "preprocessing/data/dev-v2.0-tokenized.json" if len(sys.argv) <= 2 else sys.argv[2]
+	predictions_output_path = "predictions.json" if len(sys.argv) <= 3 else sys.argv[3]
+	glove = load_embeddings_index()
+	run_evaluation(saved_state_path, evaluation_set_path, predictions_output_path, glove)
