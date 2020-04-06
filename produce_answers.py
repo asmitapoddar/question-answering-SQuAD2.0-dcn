@@ -69,6 +69,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 			context_enriched = para["context_tokens"]
 
 			just_context_tokens = list(map(lambda x : x[0], context_enriched)) 
+			just_context_tokens = just_context_tokens[:MAX_CONTEXT_LEN]
 
 			context_embeddings = encode_token_list(embeddings, just_context_tokens, MAX_CONTEXT_LEN)
 
@@ -78,6 +79,8 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 				
 				question_enriched = qas["question_tokens"]
 				just_question_tokens = list(map(lambda x : x[0], question_enriched))
+				just_question_tokens = just_question_tokens[:MAX_QUESTION_LEN]
+
 				question_embeddings = encode_token_list(embeddings, just_question_tokens, MAX_QUESTION_LEN)
 
 				# Unique identifier for (question, corresponding answers)
