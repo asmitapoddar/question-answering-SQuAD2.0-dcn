@@ -164,9 +164,9 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 		que = th.cat([qu.unsqueeze(dim=0) for qu in question_vectors], dim=0)
 
 		assert(doc.size()[1+1] == EMBEDDING_DIM)
-		assert(que.size()[1+0] == MAX_CONTEXT_LEN)
+		assert(doc.size()[1+0] == MAX_CONTEXT_LEN)
 
-		assert(doc.size()[1+1] == EMBEDDING_DIM)
+		assert(que.size()[1+1] == EMBEDDING_DIM)
 		assert(que.size()[1+0] == MAX_QUESTION_LEN)
 
 		assert(doc.size()[0] == que.size()[0])
