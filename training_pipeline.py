@@ -206,7 +206,7 @@ class Training:
                 return
             global_step = state[SERIALISATION_KEY_GLOBAL_STEP]
             start_batch = state[SERIALISATION_KEY_BATCH]
-            start_epoch = state[SERIALISATION_KEY_EPOCH] + 1
+            start_epoch = state[SERIALISATION_KEY_EPOCH]
             self.model.load_state_dict(state[SERIALISATION_KEY_MODEL])
             self.optimizer.load_state_dict(state[SERIALISATION_KEY_OPTIM])
 
