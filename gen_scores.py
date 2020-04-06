@@ -5,7 +5,7 @@ import subprocess
 import sys
 import torch as th
     
-FREQ = 200  # Evals every 200 global steps.
+DEFAULT_FREQ = 200  # Evals every 200 global steps.
 TEMP_JSON_FILENAME = "kuba_temp.json"
 
 def gen_predictions(model_path, dataset_path):
@@ -25,13 +25,15 @@ def run_eval(dataset_path):
     return em_score, f1_score, total
 
 if __name__ == "__main__":
-    if len(sys.argv) != 3:
-        print()
+    if len(sys.argv) not in [3,4]:
+        print("Usage example: \npython3 gen_scores.py ./model/2020-04-07_00-10-37\[LR1-00e-03_Q86821_B64_H200_RS1\]/ preprocessing/data/subset-4/train-subset-4.json")
+        print("Can add optional FREQ parameter at the end (integer regulating frequency of evaluation measured in global steps).")
     else:
         model_dir = sys.argv[1]
         if model_dir[-1] != '/':
             model_dir += '/'
         dataset_path = sys.argv[2]
+        freq = DEFAULT_FREQ if len(sys.argv)==3 else sys.argv[3]
 
         next_global_step_to_eval = 0
 
@@ -42,7 +44,7 @@ if __name__ == "__main__":
                 assert(".par" in str(model_path))
                 global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
                 if global_step >= next_global_step_to_eval:
-                    next_global_step_to_eval += FREQ
+                    next_global_step_to_eval += freq
                     print("Evaluating model: '%s' ..." % model_path, flush=True)
                     gen_predictions(model_path, dataset_path)
                     em_score, f1_score, total = run_eval(dataset_path)
