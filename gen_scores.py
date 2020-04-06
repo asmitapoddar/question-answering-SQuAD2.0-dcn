@@ -41,16 +41,16 @@ if __name__ == "__main__":
         if os.path.exists(model_dir+"scores.log"):
             print("scores.log already exists. Do you want to overwrite it?[y/n]")
             user_ans = str(input())
-        if "y" in user_ans:
-            with open(model_dir+"scores.log", "w") as scores_file:
-                model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
-                model_paths = [p for p in model_paths if ".par" in str(p)]
-                for i, model_path in enumerate(model_paths):
-                    assert(".par" in str(model_path))
-                    global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
-                    if global_step >= next_global_step_to_eval:
-                        next_global_step_to_eval += freq
-                        print("Evaluating model: '%s' ..." % model_path, flush=True)
-                        gen_predictions(model_path, dataset_path, glove)
-                        em_score, f1_score, total = run_eval(dataset_path)
-                        scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total) + "\n")
+            if "y" in user_ans:
+                with open(model_dir+"scores.log", "w") as scores_file:
+                    model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
+                    model_paths = [p for p in model_paths if ".par" in str(p)]
+                    for i, model_path in enumerate(model_paths):
+                        assert(".par" in str(model_path))
+                        global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
+                        if global_step >= next_global_step_to_eval:
+                            next_global_step_to_eval += freq
+                            print("Evaluating model: '%s' ..." % model_path, flush=True)
+                            gen_predictions(model_path, dataset_path, glove)
+                            em_score, f1_score, total = run_eval(dataset_path)
+                            scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total) + "\n")
