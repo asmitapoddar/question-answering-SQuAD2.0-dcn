@@ -12,7 +12,7 @@ def gen_predictions(model_path, dataset_path):
     tokenized_dataset_path = dataset_path.split(".")[0]+"-tokenized.json"
     cmd = ["python3", "produce_answers.py", model_path, tokenized_dataset_path, TEMP_JSON_FILENAME]
     print("Calling subprocess '%s'..." % " ".join(list(map(str,cmd))))
-    subprocess.run(cmd)
+    subprocess.run(cmd, check=True)
 
 def run_eval(dataset_path):
     cmd = ["python3", "evaluate-v2.0.py", dataset_path, TEMP_JSON_FILENAME]
