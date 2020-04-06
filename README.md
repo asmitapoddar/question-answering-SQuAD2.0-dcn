@@ -1,13 +1,11 @@
-**Make sure your pushes to master doesn't break any tests.**
-
-# Dynamic Coattention Networks For Question Answering
-
-This repository contain a reimplementation of this paper https://arxiv.org/abs/1611.01604.
-
-The repo name speaks for itself.
-
 ### Resuming training from saved state
 * `python3 training_pipeline.py "/home/no_eating_no_drinking/model/2020-03-28_22-39-28/epoch0_batch11.par"`
+
+### Generate scores for a model at different stages throughout its training:
+* `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq. measured in global steps]`
+* Concrete example: `python3 gen_scores.py ./model/2020-04-07_00-10-37\[LR1-00e-03_Q86821_B64_H200_RS1\]/ preprocessing/data/subset-4/train-subset-4.json`
+* The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!
+* Will generate a file `scores.log` in the model folder.
 
 ### Produce answer file for evaluation
 * Generate predictions on **SQuAD dev set**: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par`
@@ -42,4 +40,12 @@ The repo name speaks for itself.
   - [ ] smaller HIDDEN_DIM
   - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
   - [ ] *Think of more ablation tests.*
+- [ ] Plots:
+  - [ ] Plotting F1/EM scores (Kuba)
+  - [ ] Plotting scores depending on ans length (Dip)
 - [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
+
+# Dynamic Coattention Networks For Question Answering
+
+This repository contain a reimplementation of this paper https://arxiv.org/abs/1611.01604.
+
