@@ -40,8 +40,6 @@ def main():
     dataset_path = sys.argv[2]
     freq = DEFAULT_FREQ if len(sys.argv)==3 else sys.argv[3]
 
-    glove = load_embeddings_index() # Do this once.
-
     next_global_step_to_eval = 0
     if os.path.exists(model_dir+"scores.log"):
         custom_print("scores.log already exists. Do you want to overwrite it?[y/n]")
@@ -51,6 +49,9 @@ def main():
     with open(model_dir+"scores.log", "w") as scores_file:
         model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
         model_paths = [p for p in model_paths if ".par" in str(p)]
+
+        glove = load_embeddings_index() # Do this once. Takes a few minutes!
+    
         for i, model_path in enumerate(model_paths):
             assert(".par" in str(model_path))
             global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
