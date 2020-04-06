@@ -191,8 +191,8 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 		que = que.to(device)
 
 		# Fake ground truth data (one batch of starts and ends):
-		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
-		true_e = th.randint(0, question_vectors.size()[1], (evaluation_batch_size,), device=device)
+		true_s = th.randint(0, doc.size()[1], (evaluation_batch_size,), device=device)
+		true_e = th.randint(0, que.size()[1], (evaluation_batch_size,), device=device)
 		for i in range(evaluation_batch_size):
 			true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
