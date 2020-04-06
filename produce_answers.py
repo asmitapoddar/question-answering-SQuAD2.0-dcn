@@ -133,8 +133,7 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 
 	print("Producing answers for:\nModel: %s\nFile: %s\nOutput path:%s\nDebug surrounding words:%s\n" % (model_path, eval_set_path, output_path, shouldDebugSurroudingWords))
 
-	# TODO: use non-trivial batching for evaluation?
-	evaluation_batch_size = 1
+	evaluation_batch_size = 64
 
 	# https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
 	# Is GPU available:
@@ -149,6 +148,7 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 
 	# Load glove word vectors into a dictionary
 	glove = load_embeddings_index()
+
 	batch_iterator = build_forward_input(glove, dev_set_tokenized, evaluation_batch_size)
 
 	# The file that will be provided to evaluate-v2.0.py
@@ -158,43 +158,81 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 		print("\n")
 
 		context_vectors, question_vectors, context_ids, context_paras, context_enriched, questions = batch
-		context_vectors = context_vectors[0].unsqueeze(dim=0).to(device)
-		question_vectors = question_vectors[0].unsqueeze(dim=0).to(device)
-		
-		assert(context_vectors.size()[1+1] == EMBEDDING_DIM)
-		assert(question_vectors.size()[1+1] == EMBEDDING_DIM) 
-		
+
+		# Concatenate along batch dimension
+		doc = th.cat([cv.unsqueeze(dim=0) for cv in context_vectors], dim=0)
+		que = th.cat([qu.unsqueeze(dim=0) for qu in question_vectors], dim=0)
+
+		assert(doc.size()[1+1] == EMBEDDING_DIM)
+		assert(que.size()[1+0] == MAX_CONTEXT_LEN)
+
+		assert(doc.size()[1+1] == EMBEDDING_DIM)
+		assert(que.size()[1+0] == MAX_QUESTION_LEN)
+
+		assert(doc.size()[0] == que.size()[0])
+
+		# Number of actual batches (before zero padding to evaluation batch size)
+		num_actual_batches = doc.size()[0]
+
+		# Number of batches we need to add by zero padding
+		length_diff = evaluation_batch_size - num_actual_batches
+
+		# We now zero pad if the batch returned by the iterator had size less than "evaluation_batch_size"
+		if length_diff > 0:
+			# Concatenate zero padding along the batch dimension
+			doc_padding = th.zeros((length_diff, MAX_CONTEXT_LEN, EMBEDDING_DIM))
+			doc = th.cat([doc, doc_padding], dim=0)
+
+			que_padding = th.zeros((length_diff, MAX_QUESTION_LEN, EMBEDDING_DIM))
+			que = th.cat([que, que_padding], dim=0)
+
+		# CUDA
+		doc = doc.to(device)
+		que = que.to(device)
+
 		# Fake ground truth data (one batch of starts and ends):
 		true_s = th.randint(0, context_vectors.size()[1], (evaluation_batch_size,), device=device)
 		true_e = th.randint(0, question_vectors.size()[1], (evaluation_batch_size,), device=device)
 		for i in range(evaluation_batch_size):
 			true_s[i], true_e[i] = min(true_s[i], true_e[i]), max(true_s[i], true_e[i])
 
+
 		# Run model
-		_, s, e = model.forward(context_vectors, question_vectors, true_s, true_e)
+		_, s, e = model.forward(doc, que, true_s, true_e)
 
-		context_token_list = context_paras[0]
+		# Now look at the first "num_actual_batches" results
+		for batchIdx in range(num_actual_batches):
 
-		if shouldDebugSurroudingWords:
-			s, e = debugSurroudingWords(s, e, context_enriched[0], num=1)
+			# Start/end prediction
+			curr_s, curr_e = s[batchIdx], e[batchIdx]
 
-		# We need this because the model could output spans that aren't within
-		# the document (we zero pad and add a sentinel)
-		num_tokens_excl_padding_and_sentinel = len(context_enriched[0]) - 1
-		s = min(s, num_tokens_excl_padding_and_sentinel)
-		e = min(e, num_tokens_excl_padding_and_sentinel)
+			# for debugging
+			if shouldDebugSurroudingWords:
+				curr_s, curr_e = debugSurroudingWords(curr_s, curr_e, context_enriched[batchIdx], num=1)
 
-		ansStartTok = context_enriched[0][s]
-		ansStartIdx = ansStartTok[1]
+			# UUID for current question
+			curr_qas_id = context_ids[batchIdx]
 
-		ansEndTok = context_enriched[0][e]
-		ansEndIdx = ansEndTok[2]		
+			# List of token objects for current document
+			curr_context_token_list = context_enriched[batchIdx]
 
-		answerSubstring = context_paras[0][ansStartIdx:ansEndIdx]
-		print("id=%s\nquestion=%s\n" % (context_ids[0], questions[0]))
-		print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
-		
-		answer_mapping[context_ids[0]] = answerSubstring
+			# We need this because the model could output spans that aren't within
+			# the document (we zero pad and add a sentinel)
+			num_tokens_excl_padding_and_sentinel = len(context_enriched[batchIdx]) - 1
+			curr_s = min(curr_s, num_tokens_excl_padding_and_sentinel)
+			curr_e = min(curr_e, num_tokens_excl_padding_and_sentinel)
+
+			ansStartTok, ansEndTok = curr_context_token_list[curr_s], curr_context_token_list[curr_e]
+			# Get start character position of the chosen start token, and last character position of chosen end token
+			ansStartIdx, ansEndIdx = ansStartTok[1], ansEndTok[2]
+
+			curr_context_string = context_paras[batchIdx]
+			curr_answer_substring = curr_context_string[ansStartIdx:ansEndIdx]
+
+			print("id=%s\nquestion=%s\n" % (context_ids[batchIdx], questions[batchIdx]))
+			print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
+
+			answer_mapping[curr_qas_id] = curr_answer_substring
 
 	with open(output_path, "w") as f:
 		json.dump(answer_mapping, f)
