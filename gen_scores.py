@@ -1,6 +1,5 @@
 from constants import *
 import os
-import path
 from pathlib import Path
 from produce_answers import load_embeddings_index, run_evaluation
 import subprocess
@@ -39,9 +38,10 @@ if __name__ == "__main__":
         freq = DEFAULT_FREQ if len(sys.argv)==3 else sys.argv[3]
 
         next_global_step_to_eval = 0
-        if path.exists(model_dir+"scores.log"):
-            print("scores.log already exists. Please delete it manually first.")
-        else:
+        if os.path.exists(model_dir+"scores.log"):
+            print("scores.log already exists. Do you want to overwrite it?[y/n]")
+            user_ans = str(input())
+        if "y" in user_ans:
             with open(model_dir+"scores.log", "w") as scores_file:
                 model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
                 model_paths = [p for p in model_paths if ".par" in str(p)]
