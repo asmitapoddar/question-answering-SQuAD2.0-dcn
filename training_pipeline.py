@@ -225,6 +225,7 @@ class Training:
         s += "_Q%d" % self.dataset_size
         s += "_B%d" % BATCH_SIZE
         s += "_H%d" % HIDDEN_DIM
+        s += "_MI%d" % MAX_ITER
         s += "_RS%d" % RANDOM_SEED
         if not DISABLE_L2_REG:
             s += "_L%.2e" % REG_LAMBDA
