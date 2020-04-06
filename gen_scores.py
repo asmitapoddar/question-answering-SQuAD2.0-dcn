@@ -48,4 +48,4 @@ if __name__ == "__main__":
                     print("Evaluating model: '%s' ..." % model_path, flush=True)
                     gen_predictions(model_path, dataset_path)
                     em_score, f1_score, total = run_eval(dataset_path)
-                    scores_file.write(global_step + "," + em_score + "," + f1_score + "," + total + "\n")
+                    scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total) + "\n")
