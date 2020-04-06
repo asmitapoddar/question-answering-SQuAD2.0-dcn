@@ -8,11 +8,15 @@ import torch as th
 FREQ = 10  # Evals every 10th model. With save frequency = 10 batches, it evals every 10*10=100 batches.
 TEMP_JSON_FILENAME = "kuba_temp.json"
 
-def gen_predictions(model_path, dataset_path)
+def gen_predictions(model_path, dataset_path):
     tokenized_dataset_path = dataset_path.split(".")[0]+"-tokenized.json"
-    subprocess.run(["python3", "produce_answers.py", model_path, tokenized_dataset_path, TEMP_JSON_FILENAME])
+    cmd = ["python3", "produce_answers.py", model_path, tokenized_dataset_path, TEMP_JSON_FILENAME]
+    print("Calling subprocess '%s'..." % " ".join(cmd))
+    subprocess.run(cmd)
 
-def run_eval(dataset_path)
+def run_eval(dataset_path):
+    cmd = ["python3", "evaluate-v2.0.py", dataset_path, TEMP_JSON_FILENAME]
+    print("Calling subprocess '%s'..." % " ".join(cmd))
     p = subprocess.run(["python3", "evaluate-v2.0.py", dataset_path, TEMP_JSON_FILENAME], check=True, stdout=subprocess.PIPE, universal_newlines=True)
     outp = p.stdout
     em_score = outp.split('"exact": ')[1].split(",")[0]
@@ -30,15 +34,14 @@ if __name__ == "__main__":
         dataset_path = sys.argv[2]
 
         with open(model_dir+"scores.log", "w") as scores_file:
-            paths = sorted(Path(dirpath).iterdir(), key=os.path.getmtime)
-            for i, model_path in enumerate(paths):
+            model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
+            model_paths = [p for p in model_paths if ".par" in str(p)]
+            for i, model_path in enumerate(model_paths):
                 if i % FREQ != 0:
                     continue
-                if ".par" not in model_path:
-                    continue
-                print("Evaluating model: '%s' ..." % model_path, end='')
+                assert(".par" in str(model_path))
+                print("Evaluating model: '%s' ..." % model_path, flush=True)
                 global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
                 gen_predictions(model_path, dataset_path)
                 em_score, f1_score, total = run_eval(dataset_path)
                 scores_file.write(global_step + "," + em_score + "," + f1_score + "," + total + "\n")
-                print(" done.")
