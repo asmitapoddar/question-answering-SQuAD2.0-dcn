@@ -36,14 +36,16 @@
 - [x] Debug `retain_graph` error (Dip)
 - [x] Debug training issues (Dip with help from Kuba and Richie)
 - [ ] Ablation tests:
-  - [ ] single iteration for s/e indices instead of 4. On a related note, log the iteration convergence behaviour.
+  - [ ] single iteration for s/e indices instead of 4.
   - [ ] smaller HIDDEN_DIM
   - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
-  - [ ] *Think of more ablation tests.*
+  - [ ] *Think of more ablation tests. Take ones from the paper.*
 - [ ] Plots:
-  - [ ] Plotting F1/EM scores (Kuba)
-  - [ ] Plotting scores depending on ans length (Dip)
-- [ ] Generate predictions for evaluation (TODO batching if needed, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
+  - [x] Automate computation of F1/EM scores throughout a model's evolution (training). (Kuba)
+  - [ ] Plotting F1/EM scores on top of loss
+  - [ ] Prepare loss tables (discussed in the gdoc)
+  - [ ] Plotting scores depending on true span length (Dip)
+- [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
 
 # Dynamic Coattention Networks For Question Answering
 
