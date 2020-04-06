@@ -96,7 +96,7 @@ def build_forward_input(embeddings, dataset_tokenized, evaluation_batch_size):
 	if len(batch[2]) > 0:
 		yield batch
 
-def load_model_for_evaluation(state_file_path, device):
+def load_model_for_evaluation(eval_batch_size, state_file_path, device):
     if state_file_path is not None:
         if not os.path.isfile(state_file_path):
             print("Failed to read path %s, aborting." % state_file_path)
@@ -108,7 +108,7 @@ def load_model_for_evaluation(state_file_path, device):
         if len(state) != 5:
             print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
             sys.exit()
-        model = DCNModel(1, device).to(device)
+        model = DCNModel(eval_batch_size, device).to(device)
         model.load_state_dict(state[SERIALISATION_KEY_MODEL])
         return model
     else:
@@ -141,7 +141,7 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 	print ("cuda is available = %d" % th.cuda.is_available())
 	device = th.device("cuda:0" if th.cuda.is_available() and (not DISABLE_CUDA) else "cpu")
 
-	model = load_model_for_evaluation(model_path, device)
+	model = load_model_for_evaluation(evaluation_batch_size, model_path, device)
 	model.eval()
 
 	dev_set_tokenized = load_dev_set(eval_set_path)
@@ -230,7 +230,7 @@ def run_evaluation(model_path, eval_set_path, output_path, shouldDebugSurrouding
 			curr_answer_substring = curr_context_string[ansStartIdx:ansEndIdx]
 
 			print("id=%s\nquestion=%s\n" % (context_ids[batchIdx], questions[batchIdx]))
-			print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, answerSubstring))
+			print("start=%d\n end=%d\n substring=%s\n" % (ansStartIdx, ansEndIdx, curr_answer_substring))
 
 			answer_mapping[curr_qas_id] = curr_answer_substring
 
