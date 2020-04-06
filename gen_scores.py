@@ -5,7 +5,7 @@ import subprocess
 import sys
 import torch as th
     
-FREQ = 10  # Evals every 10th model. With save frequency = 10 batches, it evals every 10*10=100 batches.
+FREQ = 200  # Evals every 200 global steps.
 TEMP_JSON_FILENAME = "kuba_temp.json"
 
 def gen_predictions(model_path, dataset_path):
@@ -33,15 +33,17 @@ if __name__ == "__main__":
             model_dir += '/'
         dataset_path = sys.argv[2]
 
+        next_global_step_to_eval = 0
+
         with open(model_dir+"scores.log", "w") as scores_file:
             model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
             model_paths = [p for p in model_paths if ".par" in str(p)]
             for i, model_path in enumerate(model_paths):
-                if i % FREQ != 0:
-                    continue
                 assert(".par" in str(model_path))
-                print("Evaluating model: '%s' ..." % model_path, flush=True)
                 global_step = th.load(model_path)[SERIALISATION_KEY_GLOBAL_STEP]
-                gen_predictions(model_path, dataset_path)
-                em_score, f1_score, total = run_eval(dataset_path)
-                scores_file.write(global_step + "," + em_score + "," + f1_score + "," + total + "\n")
+                if global_step >= next_global_step_to_eval:
+                    next_global_step_to_eval += FREQ
+                    print("Evaluating model: '%s' ..." % model_path, flush=True)
+                    gen_predictions(model_path, dataset_path)
+                    em_score, f1_score, total = run_eval(dataset_path)
+                    scores_file.write(global_step + "," + em_score + "," + f1_score + "," + total + "\n")
