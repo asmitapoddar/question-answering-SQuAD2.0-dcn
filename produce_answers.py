@@ -195,7 +195,8 @@ def run_evaluation(model_path, eval_set_path, output_path, glove, shouldDebugSur
 
 
 		# Run model
-		_, s, e = model.forward(doc, que, true_s, true_e)
+		with th.no_grad():
+			_, s, e = model.forward(doc, que, true_s, true_e)
 
 		# Now look at the first "num_actual_batches" results
 		for batchIdx in range(num_actual_batches):
