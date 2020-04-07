@@ -251,7 +251,7 @@ def gen_predictions(model_path, dataset_path, glove):
 
 def main():
   glove = load_embeddings_index()
-  gen_predictions(OPTS.model_path, OPTS.data_file, glove)
+  gen_predictions(OPTS.model_params, OPTS.data_file, glove)
 
   with open(OPTS.data_file) as f:
     dataset_json = json.load(f)
