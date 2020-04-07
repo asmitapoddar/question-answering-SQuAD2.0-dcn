@@ -322,7 +322,7 @@ class Training:
         curr_dir_path = str(pathlib.Path().absolute())
         serial_path = None
         if state_file_path is not None:
-            serial_path = state_file_path.split("/")[0]+"/" # If we're resuming training, use the same session directory.
+            serial_path = "/".join(state_file_path.split("/")[:-1])+"/" # If we're resuming training, use the same session directory.
         else:
             serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + self.metadata_string() + "/"
             os.makedirs(serial_path)
