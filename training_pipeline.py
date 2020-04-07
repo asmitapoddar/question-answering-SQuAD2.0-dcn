@@ -198,11 +198,11 @@ class Training:
         # Continue training from a saved serialised model.
         if state_file_path is not None:
             if not os.path.isfile(state_file_path):
-                print("Failed to read path %s, aborting." % state_file_path)
+                raise Exception("Failed to read path %s, aborting." % state_file_path)
                 return
             state = th.load(state_file_path)
             if len(state) != 5:
-                print("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
+                raise Exception("Invalid state read from path %s, aborting. State keys: %s" % (state_file_path, state.keys()))
                 return
             global_step = state[SERIALISATION_KEY_GLOBAL_STEP]
             start_batch = state[SERIALISATION_KEY_BATCH]
@@ -320,9 +320,13 @@ class Training:
 
         # Create directory for this training session.
         curr_dir_path = str(pathlib.Path().absolute())
-        serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + self.metadata_string() + "/"
-        os.makedirs(serial_path)
-        print("This training session will be saved at:\n%s" % serial_path)
+        serial_path = None
+        if state_file_path is not None:
+            serial_path = state_file_path.split("/")[0]+"/" # If we're resuming training, use the same session directory.
+        else:
+            serial_path = curr_dir_path + "/model/" + datetime.now().strftime("%Y-%m-%d_%H-%M-%S") + self.metadata_string() + "/"
+            os.makedirs(serial_path)
+        print("This %straining session will be saved at:\n%s" % ("" if state_file_path is None else "(resumed) ", serial_path))
         
         # Train / resume training.
         for epoch in range(start_epoch, NUM_EPOCHS):
