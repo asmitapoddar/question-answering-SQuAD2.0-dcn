@@ -42,7 +42,7 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 
 	#Documents
 	ax1.set(ylabel="F1")
-	ax1.set(xlabel="Average # Tokens in Document")
+	ax1.set(xlabel="# Tokens in Document")
 	xdelta_doc = 100
 	ax1.set(xticks = range(0, max(xvals_docs)+xdelta_doc, xdelta_doc))
 	ax1.set(yticks = yticks)
@@ -55,7 +55,7 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	#ax2.set(yticks = yticks)
 	ax2.set(ylim = (min(yticks), max(yticks)))
 	ax2.errorbar(xvals_ques, yvals_ques, yerr=errs_ques, fmt='o', markeredgecolor='k', ecolor='lightskyblue', capsize=4.0)
-	ax2.set(xlabel="Average # Tokens in Question")
+	ax2.set(xlabel="# Tokens in Question")
 
 	# Answers
 	ax3.set(xticks = range(0, max(xvals_ans)+xdelta, xdelta))
