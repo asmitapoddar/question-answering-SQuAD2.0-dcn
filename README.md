@@ -44,9 +44,9 @@
   - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
   - [ ] *Think of more ablation tests. Take ones from the paper.*
 - [ ] Plots:
-  - [x] Automate computation of F1/EM scores throughout a model's evolution (training). (Kuba)
-  - [ ] Plotting F1/EM scores on top of loss
-  - [ ] Prepare loss tables (discussed in the gdoc)
+  - [x] Automate computation of F1/EM scores throughout a model's evolution (training) (Kuba)
+  - [x] Plotting F1/EM scores on top of loss (Kuba)
+  - [ ] Prepare loss tables (discussed in the [gdoc](https://docs.google.com/document/d/1Axe38M8h8__j97_XVvrPySE_Frr2uzN183G8P237Uwk/edit))
   - [ ] Plotting scores depending on true span length (Dip)
 - [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
 
