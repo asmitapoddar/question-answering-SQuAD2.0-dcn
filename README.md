@@ -16,10 +16,9 @@
 * Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
 * Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data_batcher.py
 
-### Links to our content
-* GDrive: https://drive.google.com/open?id=17K0ZFb_OCdvHgSlkNFErzyx--eYZnoiG
-* AML GDoc: https://docs.google.com/document/d/1fit7dYVHn0I0PsAA_HCj3AqnxJ7Wzz-78sb--wxKdA4/edit?usp=sharing
-* Group Report: https://www.overleaf.com/4391458899tptsptshghhx
+### Colab training setup
+* GDrive: https://drive.google.com/drive/folders/1n5V3Je-qcuncPhkDYikIbAxJ_68d1p4E
+* Colab: https://colab.research.google.com/drive/1ycVllF_XIsXDvC4qOAMr4HRTeRaEBFNb
 
 ### TODOs
 - [ ] ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) *Add your **past** contributions or **nearest-future work** here. (everyone)*
@@ -47,7 +46,11 @@
   - [ ] Plotting scores depending on true span length (Dip)
 - [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
 
-# Dynamic Coattention Networks For Question Answering
+### Final stretch doc:
+* https://docs.google.com/document/d/1Axe38M8h8__j97_XVvrPySE_Frr2uzN183G8P237Uwk/edit
 
-This repository contain a reimplementation of this paper https://arxiv.org/abs/1611.01604.
-
+### Our older links
+* GDrive: https://drive.google.com/open?id=17K0ZFb_OCdvHgSlkNFErzyx--eYZnoiG
+* AML GDoc: https://docs.google.com/document/d/1fit7dYVHn0I0PsAA_HCj3AqnxJ7Wzz-78sb--wxKdA4/edit?usp=sharing
+* Group Report: https://www.overleaf.com/4391458899tptsptshghhx
+* **Paper: https://arxiv.org/abs/1611.01604**
