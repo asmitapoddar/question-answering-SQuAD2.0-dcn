@@ -13,8 +13,11 @@ import os
 import re
 import string
 import sys
+import numpy as np
 
 OPTS = None
+
+PRINT_F1_STDEV = True
 
 def parse_args():
   parser = argparse.ArgumentParser('Official evaluation script for SQuAD version 2.0.')
@@ -112,18 +115,23 @@ def apply_no_ans_threshold(scores, na_probs, qid_to_has_ans, na_prob_thresh):
 def make_eval_dict(exact_scores, f1_scores, qid_list=None):
   if not qid_list:
     total = len(exact_scores)
-    return collections.OrderedDict([
-        ('exact', 100.0 * sum(exact_scores.values()) / total),
-        ('f1', 100.0 * sum(f1_scores.values()) / total),
-        ('total', total),
-    ])
+
+    results_list = []
+    results_list.append(('exact', 100.0 * sum(exact_scores.values()) / total))
+    results_list.append(('f1', 100.0 * sum(f1_scores.values()) / total))
+    if PRINT_F1_STDEV:
+      results_list.append(('f1_stdev', np.std(f1_scores.values())))
+    results_list.append(('total', total))
+    return collections.OrderedDict(results_list)
   else:
     total = len(qid_list)
-    return collections.OrderedDict([
-        ('exact', 100.0 * sum(exact_scores[k] for k in qid_list) / total),
-        ('f1', 100.0 * sum(f1_scores[k] for k in qid_list) / total),
-        ('total', total),
-    ])
+    results_list = []
+    results_list.append(('exact', 100.0 * sum(exact_scores[k] for k in qid_list) / total))
+    results_list.append(('f1', 100.0 * sum(f1_scores[k] for k in qid_list) / total))
+    if PRINT_F1_STDEV:
+      results_list.append(('f1_stdev', np.stdev([f1_scores[k] for k in qid_list])))
+    results_list.append(('total', total))
+    return collections.OrderedDict(results_list)
 
 def merge_eval(main_eval, new_eval, prefix):
   for k in new_eval:
