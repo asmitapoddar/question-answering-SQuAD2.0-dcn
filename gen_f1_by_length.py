@@ -121,6 +121,7 @@ def get_raw_scores_with_length_info(dataset, preds):
 
         if qid not in preds:
           print('Missing prediction for %s' % qid)
+          continue
         a_pred = preds[qid]
         # Take max over all gold answers
         em = max(compute_exact(a, a_pred) for a in gold_answers)
