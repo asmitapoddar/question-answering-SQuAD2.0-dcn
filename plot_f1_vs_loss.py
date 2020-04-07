@@ -10,11 +10,13 @@ def main():
     plot_image_target_path = "/".join(scores_path.split("/")[:-1]) + ("/plot_loss_vs_f1_score(%s).png" % scores_dataset_name)
     loss_path = "/".join(scores_path.split("/")[:-1]) + "/loss.log"
     with open(loss_path, "r") as f:
-        data = list(map(lambda s: s[:-1].split(": "), f.readlines()[:-1]))
-        x_loss = list(map(lambda d: int(d[0]), data))
-        y_loss = list(map(lambda d: float(d[1]), data))
+        data_loss = list(map(lambda s: s[:-1].split(": "), f.readlines()[:-1]))
+        data_loss = sorted(list(filter(lambda tup: len(tup)==2, data_loss)))
+        x_loss = list(map(lambda d: int(d[0]), data_loss))
+        y_loss = list(map(lambda d: float(d[1]), data_loss))
     with open(scores_path, "r") as f:
         data_scores = list(map(lambda s: (s.split(",")), f.readlines()))
+        data_scores = sorted(data_scores)
         x_scores = list(map(lambda d: int(d[0]), data_scores))
         y_scores_f1 = list(map(lambda d: float(d[1]), data_scores))
 
