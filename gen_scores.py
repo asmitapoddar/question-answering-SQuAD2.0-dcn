@@ -63,6 +63,8 @@ def main():
                 gen_predictions(model_path, dataset_path, glove)
                 em_score, f1_score, total = run_eval(dataset_path)
                 scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total) + "\n")
+    print("gen_scores finished. Log written to:", scores_path)
+
 
 if __name__ == "__main__":
     main()
