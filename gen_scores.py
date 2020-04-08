@@ -40,11 +40,12 @@ def main():
     dataset_path = sys.argv[2]
     freq = DEFAULT_FREQ if len(sys.argv)==3 else int(sys.argv[3])
 
-    scores_path = model_dir+"scores_"+dataset_path.split("/")[-1].split(".")[0]+".log"
+    scores_filename = "scores_"+dataset_path.split("/")[-1].split(".")[0]+".log"
+    scores_path = model_dir+scores_filename
 
     next_global_step_to_eval = 0
     if os.path.exists(scores_path):
-        custom_print("scores.log already exists. Do you want to overwrite it? [y/n] + Enter")
+        custom_print("%s already exists. Do you want to overwrite it? [y/n] + Enter" % scores_filename)
         user_ans = str(input())
         if "y" not in user_ans:
             return
