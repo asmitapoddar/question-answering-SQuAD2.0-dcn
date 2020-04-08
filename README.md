@@ -38,6 +38,7 @@
 - [x] Model serialisation (Kuba + Richie)
 - [x] Debug `retain_graph` error (Dip)
 - [x] Debug training issues (Dip with help from Kuba and Richie)
+- [ ] Quick script to evaluate latest version of a model automatically (Kuba?)
 - [ ] Ablation tests:
   - [ ] single iteration for s/e indices instead of 4.
   - [ ] smaller HIDDEN_DIM
