@@ -8,7 +8,7 @@ import matplotlib.pyplot as plt
 
 loss_path = "loss.log" if len(sys.argv) <= 1 else sys.argv[1]
 
-HISTORY = 200
+HISTORY = 15000
 SMOOTHING = 0  # Ballpark values: try setting to 5 for some smoothing or 20 for a lot of smoothing.
 
 with open(loss_path, "r") as f:
@@ -30,6 +30,9 @@ with open(loss_path, "r") as f:
 
     #print(x, y)
 plt.plot(x, y, 'm-')
+plt.xlabel("Number of Steps")
+plt.ylabel("Loss")
+plt.title("Training curve of " + loss_path)
 plt.pause(1)
 
 filename = loss_path
