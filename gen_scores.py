@@ -8,7 +8,7 @@ import torch as th
     
 DEFAULT_FREQ = 200  # Evals every 200 global steps.
 ENABLE_AUTOMATIC_PLOT_GEN = True
-TEMP_JSON_FILENAME = "gen_scores_temp.json" # Doesn't matter, just didn't want it to clash with other people's temp files.
+TEMP_JSON_FILENAME = "_temp_gen_scores.json" # Doesn't matter, just didn't want it to clash with other people's temp files.
 
 def custom_print(x, flush=False):
     print("[gen_scores] ",end='',flush=flush)
