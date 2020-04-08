@@ -1,4 +1,7 @@
 # -*- coding: utf-8 -*-
+
+# This is not the main training_pipeline file!
+
 """
 from google.colab import drive
 drive.mount('/content/gdrive', force_remount=True)
@@ -82,6 +85,12 @@ def save_state(serial_path, next_batch, next_epoch, next_global_step, model, opt
     th.save(state, target_filename) 
     print("done.")
 
+# freeze weights except for DPD.
+def freeze_weights(model):
+    print("Freezing Weights to train DPD...")
+    modules_to_freeze = [model.coattention_module, model.encoder, model.encoder_sentinel]
+    for module in modules_to_freeze:
+        module.require_grad = False
 
 class Training:
 
@@ -309,8 +318,11 @@ class Training:
         self.compute_dataset_size()
 
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device).train()
+
+        freeze_weights(self.model)
+
         self.params = self.model.parameters()
-        self.optimizer = optim.Adam(self.params, lr=ADAM_LR, amsgrad=True) # TODO: choose right hyperparameters
+        self.optimizer = optim.Adam(filter(lambda p: p.requires_grad, self.params), lr=ADAM_LR, amsgrad=True) # TODO: choose right hyperparameters
 
         # Load saved state from the path. If path is None, still do call this method!
         self.global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
