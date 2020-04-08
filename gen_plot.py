@@ -31,15 +31,11 @@ with open(loss_path, "r") as f:
         y_loss = y_loss_smoothed
         plt.title("(loss smoothing width %d)" % (2*LOSS_SMOOTHING+1))
 
-<<<<<<< HEAD
-    #print(x, y)
-plt.plot(x, y, 'm-')
+plt.plot(x_loss, y_loss, 'm-')
 plt.xlabel("Number of Steps")
 plt.ylabel("Loss")
 plt.title("Training curve of " + loss_path)
-=======
-plt.plot(x_loss, y_loss, 'm-')
->>>>>>> 6ec21b04f7008fac9f4c81c7018ead9d67404e10
+
 plt.pause(1)
 
 filename = loss_path
