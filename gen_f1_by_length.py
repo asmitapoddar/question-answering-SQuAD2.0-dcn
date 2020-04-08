@@ -143,7 +143,7 @@ def get_raw_scores_with_length_info(dataset, preds):
         que_f1[str(qu_len)].append(f1)
         doc_f1[str(doc_len)].append(f1)
 
-  return ans_f1, que_f1, doc_f1
+  return ans_f1, que_f1, doc_f1, f1_scores
 
 def apply_no_ans_threshold(scores, na_probs, qid_to_has_ans, na_prob_thresh):
   new_scores = {}
@@ -266,9 +266,25 @@ def main():
   qid_to_has_ans = make_qid_to_has_ans(dataset)  # maps qid to True/False
   has_ans_qids = [k for k, v in qid_to_has_ans.items() if v]
   no_ans_qids = [k for k, v in qid_to_has_ans.items() if not v]
-  ans_f1, que_f1, doc_f1 = get_raw_scores_with_length_info(dataset, preds)
+  ans_f1, que_f1, doc_f1, f1_scores = get_raw_scores_with_length_info(dataset, preds)
 
+  all_f1_scores = list(f1_scores.values())
+  has_ans_f1_scores = [f1_scores[k] for k in has_ans_qids if k in f1_scores]
+  no_ans_f1_scores = [f1_scores[k] for k in no_ans_qids if k in f1_scores]
+
+  # Plot of F1 against length of doc/que/ans.
   plot_f1(ans_f1, que_f1, doc_f1, OPTS.out_image_path)
+
+  # Plot histogram of f1s.
+  # Provide only the "HasAns" f1s.
+  f1_outpath_name, f1_outpath_ext = os.path.splitext(OPTS.out_image_path)
+  f1_outpath = f1_outpath_name + "_f1_histogram" + f1_outpath_ext
+  plot_f1_histogram(has_ans_f1_scores, f1_outpath)
+
+
+  # Write summary file with percentage of F1 scores that are zero, one, or in between.
+  f1_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
+  f1_distribution_summary(has_ans_f1_scores, f1_summary_outpath)
 
   # Delete temporary predictions file
   os.remove(TEMP_JSON_FILENAME_F1_PLOT)
