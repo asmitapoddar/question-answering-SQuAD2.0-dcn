@@ -248,7 +248,7 @@ def plot_f1(ans_data, que_data, doc_data, outpath):
   make_plot_f1(ans_len_avgf1_std, que_len_avgf1_std, doc_len_avgf1_std, outpath)
 
 def gen_predictions(model_path, dataset_path, glove):
-    tokenized_dataset_path = dataset_path.split(".")[0]+"-tokenized.json"
+    tokenized_dataset_path = ".".join(dataset_path.split(".")[:-1])+"-tokenized.json"
     print("Calling produce_answers.run_evaluation()...")
     run_evaluation(str(model_path), tokenized_dataset_path, TEMP_JSON_FILENAME_F1_PLOT, glove)
 
