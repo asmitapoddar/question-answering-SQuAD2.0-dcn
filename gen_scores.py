@@ -38,7 +38,7 @@ def main():
     if model_dir[-1] != '/':
         model_dir += '/'
     dataset_path = sys.argv[2]
-    freq = DEFAULT_FREQ if len(sys.argv)==3 else sys.argv[3]
+    freq = DEFAULT_FREQ if len(sys.argv)==3 else int(sys.argv[3])
 
     scores_path = model_dir+"scores_"+dataset_path.split("/")[-1].split(".")[0]+".log"
 
