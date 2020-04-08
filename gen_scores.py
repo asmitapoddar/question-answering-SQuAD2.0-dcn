@@ -14,7 +14,7 @@ def custom_print(x, flush=False):
     print(x)
 
 def gen_predictions(model_path, dataset_path, glove):
-    tokenized_dataset_path = dataset_path.split(".")[0]+"-tokenized.json"
+    tokenized_dataset_path = ".".join(dataset_path.split(".")[:-1])+"-tokenized.json"
     custom_print("Calling produce_answers.run_evaluation()...")
     run_evaluation(str(model_path), tokenized_dataset_path, TEMP_JSON_FILENAME, glove)
 
