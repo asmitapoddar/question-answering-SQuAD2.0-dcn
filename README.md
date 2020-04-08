@@ -34,7 +34,7 @@
 - [x] Debug why predicted end indices are all 0 (Richie)
 - [x] Complete batching (Asmita)
 - [x] Create word2id, id2word, embedding matrix (Asmita)
-- [x] Training pipeline (Asmita + Kuba's minor cleanup)
+- [x] Training pipeline (Asmita + Kuba's minor cleanup + Richie)
 - [x] Model serialisation (Kuba + Richie)
 - [x] Debug `retain_graph` error (Dip)
 - [x] Debug training issues (Dip with help from Kuba and Richie)
