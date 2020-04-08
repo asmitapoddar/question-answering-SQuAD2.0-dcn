@@ -70,6 +70,7 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 
 
 def plot_f1_histogram(all_f1s, out_path):
+	plt.figure()
 	plt.hist(all_f1s, weights=np.ones(len(all_f1s)) / len(all_f1s))
 	plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
 	plt.xlabel("F1 score")
