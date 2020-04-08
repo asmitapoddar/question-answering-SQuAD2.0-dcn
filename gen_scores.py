@@ -27,12 +27,12 @@ def run_eval(dataset_path):
     em_score = outp.split('"exact": ')[1].split(",")[0]
     f1_score = outp.split('"f1": ')[1].split(",")[0]
     total = outp.split('"total": ')[1].split(",")[0]
-    HasAns_exact = None if not outp.contains("HasAns_exact") else outp.split('"HasAns_exact: ')[1].split(",")[0]
-    HasAns_f1 = None if not outp.contains("HasAns_f1") else outp.split('"HasAns_f1: ')[1].split(",")[0]
-    HasAns_total = None if not outp.contains("HasAns_total") else outp.split('"HasAns_total: ')[1].split(",")[0]
-    NoAns_exact = None if not outp.contains("NoAns_exact") else outp.split('"NoAns_exact: ')[1].split(",")[0]
-    NoAns_f1 = None if not outp.contains("NoAns_f1") else outp.split('"NoAns_f1: ')[1].split(",")[0]
-    NoAns_total = None if not outp.contains("NoAns_total") else outp.split('"NoAns_total: ')[1].split(",")[0]
+    HasAns_exact = None if not ("HasAns_exact") in outp else outp.split('"HasAns_exact: ')[1].split(",")[0]
+    HasAns_f1 = None if not ("HasAns_f1") in outp else outp.split('"HasAns_f1: ')[1].split(",")[0]
+    HasAns_total = None if not ("HasAns_total") in outp else outp.split('"HasAns_total: ')[1].split(",")[0]
+    NoAns_exact = None if not ("NoAns_exact") in outp else outp.split('"NoAns_exact: ')[1].split(",")[0]
+    NoAns_f1 = None if not ("NoAns_f1") in outp else outp.split('"NoAns_f1: ')[1].split(",")[0]
+    NoAns_total = None if not ("NoAns_total") in outp else outp.split('"NoAns_total: ')[1].split(",")[0]
     return em_score, f1_score, total, HasAns_exact, HasAns_f1, HasAns_total, NoAns_exact, NoAns_f1, NoAns_total
 
 def main():
