@@ -204,6 +204,10 @@ class Training:
         start_batch = 0
         start_epoch = 0
         
+        for p in ["MI1-newloss", "MI1_zeroinit", "MI4-newloss", "MI4-zeroinit-smallerlr"]:
+            if state_file_path.contains(p):
+                raise Exception("You're trying to run an experimental pipeline on a model that's meant to be trained only with vanilla pipeline. Please reconsider :)")
+
         # Continue training from a saved serialised model.
         if state_file_path is not None:
             if not os.path.isfile(state_file_path):
