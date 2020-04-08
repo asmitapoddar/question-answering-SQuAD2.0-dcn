@@ -7,6 +7,7 @@ import sys
 import torch as th
     
 DEFAULT_FREQ = 200  # Evals every 200 global steps.
+ENABLE_AUTOMATIC_PLOT_GEN = True
 TEMP_JSON_FILENAME = "gen_scores_temp.json" # Doesn't matter, just didn't want it to clash with other people's temp files.
 
 def custom_print(x, flush=False):
@@ -21,12 +22,18 @@ def gen_predictions(model_path, dataset_path, glove):
 def run_eval(dataset_path):
     cmd = ["python3", "evaluate-v2.0.py", dataset_path, TEMP_JSON_FILENAME]
     custom_print("Calling subprocess '%s'..." % " ".join(list(map(str,cmd))))
-    p = subprocess.run(["python3", "evaluate-v2.0.py", dataset_path, TEMP_JSON_FILENAME], check=True, stdout=subprocess.PIPE, universal_newlines=True)
+    p = subprocess.run(cmd, check=True, stdout=subprocess.PIPE, universal_newlines=True)
     outp = p.stdout
     em_score = outp.split('"exact": ')[1].split(",")[0]
     f1_score = outp.split('"f1": ')[1].split(",")[0]
     total = outp.split('"total": ')[1].split(",")[0]
-    return em_score, f1_score, total
+    HasAns_exact = None if not outp.contains("HasAns_exact") else outp.split('"HasAns_exact: ')[1].split(",")[0]
+    HasAns_f1 = None if not outp.contains("HasAns_f1") else outp.split('"HasAns_f1: ')[1].split(",")[0]
+    HasAns_total = None if not outp.contains("HasAns_total") else outp.split('"HasAns_total: ')[1].split(",")[0]
+    NoAns_exact = None if not outp.contains("NoAns_exact") else outp.split('"NoAns_exact: ')[1].split(",")[0]
+    NoAns_f1 = None if not outp.contains("NoAns_f1") else outp.split('"NoAns_f1: ')[1].split(",")[0]
+    NoAns_total = None if not outp.contains("NoAns_total") else outp.split('"NoAns_total: ')[1].split(",")[0]
+    return em_score, f1_score, total, HasAns_exact, HasAns_f1, HasAns_total, NoAns_exact, NoAns_f1, NoAns_total
 
 def main():
     if len(sys.argv) not in [3,4]:
@@ -62,10 +69,19 @@ def main():
                 next_global_step_to_eval += freq
                 custom_print("Evaluating model: '%s' ..." % model_path,flush=True)
                 gen_predictions(model_path, dataset_path, glove)
-                em_score, f1_score, total = run_eval(dataset_path)
-                scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total) + "\n")
+                em_score, f1_score, total, HasAns_exact, HasAns_f1, HasAns_total, NoAns_exact, NoAns_f1, NoAns_total = run_eval(dataset_path)
+                scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total))
+                if HasAns_exact is not None:
+                    scores_file.write("," + str(HasAns_exact) + "," + str(HasAns_f1) + "," + str(HasAns_total))
+                    if NoAns_exact is not None:
+                        scores_file.write("," + str(NoAns_exact) + "," + str(NoAns_f1) + "," + str(NoAns_total))
+                scores_file.write("\n")
     print("gen_scores finished. Log written to:", scores_path)
 
+    if ENABLE_AUTOMATIC_PLOT_GEN:
+        cmd = ["python3", "plot_f1_vs_loss.py", scores_path]
+        custom_print("Calling subprocess '%s'..." % " ".join(list(map(str,cmd))))
+        subprocess.run(cmd, check=True)
 
 if __name__ == "__main__":
     main()

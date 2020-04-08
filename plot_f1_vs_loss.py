@@ -2,6 +2,7 @@ import matplotlib.pyplot as plt
 import sys
 
 LOSS_SMOOTHING = 20  # Ballpark values: try setting to 5 for some smoothing or 20 for a lot of smoothing.
+PLOT_EM_SCORES = True  # If false, then F1 scores are plotted instead.
 X_START = 200 # The loss is super high at the very beginning and makes the plot useless
 
 def main():
@@ -21,7 +22,8 @@ def main():
         data_scores = list(map(lambda s: tuple((s.split(","))), f.readlines()))
         data_scores = list(filter(lambda tup: int(tup[0]) >= X_START, data_scores))
         x_scores = list(map(lambda d: int(d[0]), data_scores))
-        y_scores_f1 = list(map(lambda d: float(d[1]), data_scores))
+        y_scores_em = list(map(lambda d: float(d[1]), data_scores))
+        y_scores_f1 = list(map(lambda d: float(d[2]), data_scores))
 
     if LOSS_SMOOTHING > 0:
         print("Using loss smoothing by running average of width %d." % (2*LOSS_SMOOTHING+1))
@@ -46,10 +48,10 @@ def main():
     ax2 = ax1.twinx()
     color = 'tab:blue'
     ax2.set_ylabel('F1 score (%s)' % scores_dataset_name, color=color)
-    ax2.plot(x_scores, y_scores_f1, color=color)
+    ax2.plot(x_scores, y_scores_em if PLOT_EM_SCORES else y_scores_f1, color=color)
     ax2.tick_params(axis='y', labelcolor=color)
 
-    plt.title("(loss smoothing width %d)" % (2*LOSS_SMOOTHING+1))
+    plt.title("%s scores (loss smoothing width %d)" % ("EM" if PLOT_EM_SCORES else "F1", 2*LOSS_SMOOTHING+1))
 
     fig.tight_layout()
     print("Saving figure to: %s" % plot_image_target_path)
