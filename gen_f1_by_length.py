@@ -283,7 +283,7 @@ def main():
 
 
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
-  f1_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
+  f1_summary_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
   f1_distribution_summary(has_ans_f1_scores, f1_summary_outpath)
 
   # Delete temporary predictions file
