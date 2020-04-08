@@ -1,5 +1,6 @@
 import numpy as np
-import matplotlib.pyplot as plt 
+import matplotlib.pyplot as plt
+from matplotlib.ticker import PercentFormatter
 
 SMALL_SIZE = 10
 MEDIUM_SIZE = 12
@@ -67,8 +68,39 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	plt.tight_layout()
 	plt.savefig(out_path)
 
+
+def plot_f1_histogram(all_f1s, out_path):
+	plt.hist(all_f1s, weights=np.ones(len(all_f1s)) / len(all_f1s))
+	plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
+	plt.xlabel("F1 score")
+	plt.ylabel("% questions")
+	plt.savefig(out_path)
+
+
+def f1_distribution_summary(all_f1s, out_path):
+	num_f1s = len(all_f1s)
+	zero_f1s = np.count_nonzero(np.array(all_f1s) < 1e-6)
+	percent_zero_f1s = 100 * zero_f1s / num_f1s
+
+	one_f1s = np.count_nonzero(np.array(all_f1s) > 1.0 - 1e-6)
+	percent_one_f1s = 100 * one_f1s / num_f1s
+
+	partial_f1s = num_f1s - (zero_f1s + one_f1s)
+	percent_partial_f1s = 100 * partial_f1s / num_f1s
+
+	with open(out_path, "w") as f:
+		f.write("zero_f1=%s, one_f1=%s, partial_f1=%s\n" % (percent_zero_f1s, percent_one_f1s, percent_partial_f1s))
+
 def test():
 	ans_f1 = [(1, 0.5, 0.05), (2, 0.2, 0.09), (3, 0.1,0.05), (23, 0.5, 0.03), (24, 0.9, 0.03)]
 	que_f1 = [(3, 0.9, 0.03), (2, 0.3, 0.03), (1, 0.1, 0.03), (34, 0.4, 0.02)]
 	doc_f1 = [(124, 0.9, 0.01), (923, 0.2, 0.01), (422, 0.5, 0.01)]
-	make_plot_f1(ans_f1, que_f1, doc_f1, "test.png")
+	make_plot_f1(ans_f1, que_f1, doc_f1, "test_make_plot_f1.png")
+
+	f1s = np.array([min(1, max(0, np.random.normal(0.5, 0.2))) for _ in range(1000)])
+	plot_f1_histogram(f1s, "plot_f1_histogram_test.svg")
+
+
+if __name__ == '__main__':
+	print("Running make_plot_f1.test()")
+	test()
