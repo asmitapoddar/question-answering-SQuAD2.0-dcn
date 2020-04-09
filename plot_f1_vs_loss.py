@@ -15,11 +15,13 @@ def main():
     loss_path = "/".join(scores_path.split("/")[:-1]) + "/loss.log"
     with open(loss_path, "r") as f:
         data_loss = list(map(lambda s: tuple(s[:-1].split(": ")), f.readlines()[:-1]))
+        data_loss = list(filter(lambda tup: len(tup) >= 2, data_loss))
         data_loss = list(filter(lambda tup: int(tup[0]) >= X_START, data_loss))
         x_loss = list(map(lambda d: int(d[0]), data_loss))
         y_loss = list(map(lambda d: float(d[1]), data_loss))
     with open(scores_path, "r") as f:
         data_scores = list(map(lambda s: tuple((s.split(","))), f.readlines()))
+        data_scores = list(filter(lambda tup: len(tup) >= 3, data_scores))
         data_scores = list(filter(lambda tup: int(tup[0]) >= X_START, data_scores))
         x_scores = list(map(lambda d: int(d[0]), data_scores))
         y_scores_em = list(map(lambda d: float(d[1]), data_scores))
