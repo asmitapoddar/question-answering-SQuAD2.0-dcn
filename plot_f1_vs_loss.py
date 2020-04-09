@@ -11,7 +11,7 @@ def main():
         raise Exception('Incorrect number of args.')
     scores_path = sys.argv[1]
     scores_dataset_name = scores_path.split("/")[-1].split(".")[0].split("cores_")[1]
-    plot_image_target_path = "/".join(scores_path.split("/")[:-1]) + ("/plot_loss_vs_f1_score(%s).png" % scores_dataset_name)
+    plot_image_target_path = "/".join(scores_path.split("/")[:-1]) + ("/plot_loss_vs_%s_score(%s).png" % ("em" if PLOT_EM_SCORES else "f1", scores_dataset_name))
     loss_path = "/".join(scores_path.split("/")[:-1]) + "/loss.log"
     with open(loss_path, "r") as f:
         data_loss = list(map(lambda s: tuple(s[:-1].split(": ")), f.readlines()[:-1]))
@@ -49,7 +49,7 @@ def main():
 
     ax2 = ax1.twinx()
     color = 'tab:blue'
-    ax2.set_ylabel('F1 score (%s)' % scores_dataset_name, color=color)
+    ax2.set_ylabel('%s score (%s)' % ("EM" if PLOT_EM_SCORES else "F1", scores_dataset_name), color=color)
     ax2.plot(x_scores, y_scores_em if PLOT_EM_SCORES else y_scores_f1, color=color)
     ax2.tick_params(axis='y', labelcolor=color)
 
