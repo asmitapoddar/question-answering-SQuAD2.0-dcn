@@ -8,7 +8,7 @@ DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if po
                            # github.com/atulkum/co-attention/blob/master/code/model.py#L177
 DISABLE_L2_REG = True
 DISABLE_GRAD_CLIPPING = True
-DISABLE_DROPOUT = True
+DISABLE_DROPOUT = True		# Remember to set DISABLE_HMN_DROPOUT
 DROPOUT = 0.3 if not DISABLE_DROPOUT else 0.0
 EMBEDDING_DIM = 300
 HIDDEN_DIM = 200  # Denoted by 'l' in the paper.

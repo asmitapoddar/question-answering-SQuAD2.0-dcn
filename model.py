@@ -104,9 +104,9 @@ class HighwayMaxoutNetwork(nn.Module):
     self.hidden_dim = hidden_dim
     self.maxout_pool_size = maxout_pool_size
 
-    # Don't apply dropout to biases.
-    # Disable dropout if requested, by replacing it with a builtin identity 'placeholder' module.
-    self.dropout_modifier = nn.Identity() if DISABLE_HMN_DROPOUT else nn.Dropout(p=dropout)
+    self.dropout_r = nn.Identity() if DISABLE_HMN_DROPOUT else nn.Dropout(p=dropout)
+    self.dropout_mt1 = nn.Identity() if DISABLE_HMN_DROPOUT else nn.Dropout(p=dropout)
+    self.dropout_mt2 = nn.Identity() if DISABLE_HMN_DROPOUT else nn.Dropout(p=dropout)
 
     # W_D := Weights of MLP applied to the coattention encodings of
     # the start/end positions, and the current LSTM hidden state (h_i)
@@ -118,18 +118,18 @@ class HighwayMaxoutNetwork(nn.Module):
     # There's no bias for this MLP.
     
     # (From OpenReview) random initialisation is used for W's and b's
-    self.W_D = self.dropout_modifier(nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device)))
+    self.W_D = nn.Parameter(th.randn(self.hidden_dim, 5 * self.hidden_dim, device=device))
 
     # 1st Maxout layer
-    self.W_1 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device)))
+    self.W_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, 3 * self.hidden_dim, device=device))
     self.b_1 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 2nd maxout layer
-    self.W_2 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device)))
+    self.W_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, self.hidden_dim, device=device))
     self.b_2 = nn.Parameter(th.randn(self.maxout_pool_size, self.hidden_dim, device=device))
 
     # 3rd maxout layer
-    self.W_3 = self.dropout_modifier(nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device)))
+    self.W_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, 2 * self.hidden_dim, device=device))
     self.b_3 = nn.Parameter(th.randn(self.maxout_pool_size, 1, device=device))
 
   def forward(self, u_t, h_i, u_si_m_1, u_ei_m_1):
@@ -154,6 +154,7 @@ class HighwayMaxoutNetwork(nn.Module):
 
     # r := output of MLP
     r = th.tanh(self.W_D.matmul(h_us_ue))
+    r = self.dropout_r(r)
 
     # r has dimension BATCH_SIZE * HIDDEN_DIM * 1
     assert(r.size()[0] == self.batch_size)
@@ -177,6 +178,7 @@ class HighwayMaxoutNetwork(nn.Module):
     assert(m_t_1_beforemaxpool.size()[1+1] == self.hidden_dim)
 
     m_t_1 = th.Tensor.max(m_t_1_beforemaxpool, dim=1).values
+    m_t_1 = self.dropout_mt1(m_t_1)
     assert(m_t_1.size()[0] == self.batch_size)
     assert(m_t_1.size()[1+0] == self.hidden_dim)
 
@@ -190,6 +192,7 @@ class HighwayMaxoutNetwork(nn.Module):
         self.hidden_dim
     ) + self.b_2.expand(self.batch_size, -1, -1)
     m_t_2 = th.Tensor.max(m_t_2_beforemaxpool, dim=1).values
+    m_t_2 = self.dropout_mt2(m_t_2)
     assert(m_t_2.size()[0] == self.batch_size)
     assert(m_t_2.size()[1+0] == self.hidden_dim)
 
