@@ -319,6 +319,8 @@ class DCNModel(nn.Module):
     self.coattention_module = CoattentionModule(batch_size, dropout_coattention, embedding_dim, hidden_dim, device)
     self.decoder = DynamicPointerDecoder(batch_size, dpd_max_iter, dropout_decoder_hmn, dropout_decoder_lstm, hidden_dim, maxout_pool_size, device) 
     self.device = device
+    self.dropout_doc_encoding = nn.Dropout(p=dropout_encoder)
+    self.dropout_que_encoding = nn.Dropout(p=dropout_encoder)
     self.encoder = Encoder(embedding_dim, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(1, hidden_dim)) # the sentinel is a trainable parameter of the network
     self.hidden_dim = hidden_dim
@@ -355,6 +357,10 @@ class DCNModel(nn.Module):
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
     # Q: B x (n+1) x l
+
+    if not DISABLE_POST_ENCODER_DROPOUT:
+      D_T = self.dropout_doc_encoding(D_T)
+      Q_T = self.dropout_que_encoding(Q_T)
 
     U = self.coattention_module(D_T,Q_T)  # B X 2l X (m+1)
     alphas, betas, start, end = self.decoder(U)

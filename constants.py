@@ -6,12 +6,14 @@ DISABLE_CUDA = False # If this is set to True, make sure it should be!
 DISABLE_HMN_DROPOUT = True # Investigate how to get dropout working there, if possible.
                            # Note that existing impl. has HMN dropout commented out!
                            # github.com/atulkum/co-attention/blob/master/code/model.py#L177
+                           # If setting this to False, make sure DISABLE_DROPOUT is also False.
 DISABLE_L2_REG = True
 DISABLE_GRAD_CLIPPING = True
-DISABLE_DROPOUT = True		# Remember to set DISABLE_HMN_DROPOUT
+DISABLE_DROPOUT = True		# Remember to set DISABLE_HMN_DROPOUT and DISABLE_POST_ENCODER_DROPOUT
 DROPOUT = 0.3 if not DISABLE_DROPOUT else 0.0
+DISABLE_POST_ENCODER_DROPOUT = True # If setting this to False, make sure DISABLE_DROPOUT is also False.
 EMBEDDING_DIM = 300
-HIDDEN_DIM = 200  # Denoted by 'l' in the paper.
+HIDDEN_DIM = 10  # Denoted by 'l' in the paper.
 MAX_ITER = 1
 MAXOUT_POOL_SIZE = 16
 MAX_CONTEXT_LEN = 600
