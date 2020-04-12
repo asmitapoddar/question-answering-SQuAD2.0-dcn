@@ -17,8 +17,9 @@ def test_example():
 
 
 # It's often useful to change HIDDEN_DIM to 1 for testing the code.
-# This test ensures that you haven't forgotten to undo that.
-def test_hidden_dim():
+# This test ensures that you haven't forgotten to undo that. And similar things...
+def test_constants():
+    assert(not DISABLE_CUDA)
     assert(HIDDEN_DIM == 200)
 
 
