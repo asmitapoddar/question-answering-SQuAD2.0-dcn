@@ -323,6 +323,7 @@ class DCNModel(nn.Module):
     self.dropout_que_encoding = nn.Dropout(p=dropout_encoder)
     self.encoder = Encoder(embedding_dim, hidden_dim, batch_size, dropout_encoder, device)
     self.encoder_sentinel = nn.Parameter(th.randn(1, hidden_dim)) # the sentinel is a trainable parameter of the network
+    self.encoder_sentinel_2 = nn.Parameter(th.randn(1, hidden_dim)) if (not DISABLE_MULTIPLE_SENTINELS) else None
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
@@ -353,7 +354,7 @@ class DCNModel(nn.Module):
     # D: B x (m+1) x l
     
     outp = self.encoder(que_word_vecs)
-    Qprime = th.cat([outp, self.encoder_sentinel.expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
+    Qprime = th.cat([outp, (self.encoder_sentinel_2 if not DISABLE_MULTIPLE_SENTINELS else self.encoder_sentinel).expand(self.batch_size, -1, -1)], dim=1)  # append sentinel word vector
     # Qprime: B x (n+1) x l
     Q_T = th.tanh(self.WQ(Qprime.view(-1, self.hidden_dim))).view(Qprime.size())
     # Q: B x (n+1) x l
