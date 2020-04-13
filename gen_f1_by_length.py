@@ -105,6 +105,7 @@ def get_raw_scores_with_length_info(dataset, preds):
   ans_f1 = {}
   que_f1 = {}
   doc_f1 = {}
+  produced_ans_f1 = {}
 
   for article in dataset:
     for p in article['paragraphs']:
@@ -132,18 +133,24 @@ def get_raw_scores_with_length_info(dataset, preds):
         qu_len = len(get_tokens(qa['question']))
         doc_len = len(get_tokens(p['context']))
 
+        # Length of predicted answer
+        produced_ans_len = len(get_tokens(a_pred))
+
         if str(average_gold_answer_length) not in ans_f1:
           ans_f1[str(average_gold_answer_length)] = []
         if str(qu_len) not in que_f1:
           que_f1[str(qu_len)] = []
         if str(doc_len) not in doc_f1:
           doc_f1[str(doc_len)] = []
+        if str(produced_ans_len) not in produced_ans_f1:
+          produced_ans_f1[str(produced_ans_len)] = []
 
         ans_f1[str(average_gold_answer_length)].append(f1)
         que_f1[str(qu_len)].append(f1)
         doc_f1[str(doc_len)].append(f1)
+        produced_ans_f1[str(produced_ans_len)].append(f1)
 
-  return ans_f1, que_f1, doc_f1, f1_scores
+  return ans_f1, que_f1, doc_f1, produced_ans_f1, f1_scores
 
 def apply_no_ans_threshold(scores, na_probs, qid_to_has_ans, na_prob_thresh):
   new_scores = {}
@@ -247,6 +254,10 @@ def plot_f1(ans_data, que_data, doc_data, outpath):
   doc_len_avgf1_std = compute_average_f1s(doc_data)
   make_plot_f1(ans_len_avgf1_std, que_len_avgf1_std, doc_len_avgf1_std, outpath)
 
+def plot_f1_against_pred_len(pred_len_f1, outpath):
+  pred_len_avgf1_std = compute_average_f1s(pred_len_f1)
+  make_plot_f1_pred_len(pred_len_avgf1_std, outpath)
+
 def gen_predictions(model_path, dataset_path, glove):
     tokenized_dataset_path = ".".join(dataset_path.split(".")[:-1])+"-tokenized.json"
     print("Calling produce_answers.run_evaluation()...")
@@ -266,7 +277,7 @@ def main():
   qid_to_has_ans = make_qid_to_has_ans(dataset)  # maps qid to True/False
   has_ans_qids = [k for k, v in qid_to_has_ans.items() if v]
   no_ans_qids = [k for k, v in qid_to_has_ans.items() if not v]
-  ans_f1, que_f1, doc_f1, f1_scores = get_raw_scores_with_length_info(dataset, preds)
+  ans_f1, que_f1, doc_f1, pred_len_f1, f1_scores = get_raw_scores_with_length_info(dataset, preds)
 
   all_f1_scores = list(f1_scores.values())
   has_ans_f1_scores = [f1_scores[k] for k in has_ans_qids if k in f1_scores]
@@ -285,6 +296,10 @@ def main():
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
   f1_summary_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
   f1_distribution_summary(has_ans_f1_scores, f1_summary_outpath)
+
+  # Create plot of average F1 against produced-answer length
+  f1_predicted_answer_length_outpath = f1_outpath_name + "_f1_against_prediction_len" + f1_outpath_ext
+  plot_f1_against_pred_len(pred_len_f1, f1_predicted_answer_length_outpath)
 
   # Delete temporary predictions file
   os.remove(TEMP_JSON_FILENAME_F1_PLOT)

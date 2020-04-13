@@ -14,6 +14,31 @@ plt.rc('ytick', labelsize=SMALL_SIZE)    # fontsize of the tick labels
 plt.rc('legend', fontsize=SMALL_SIZE)    # legend fontsize
 plt.rc('figure', titlesize=BIGGER_SIZE)  # fontsize of the figure title
 
+def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
+	xvals = list(map(lambda x:x[0], pred_len_f1))
+	yvals = list(map(lambda x:x[1], pred_len_f1))
+	errs = list(map(lambda x:x[2], pred_len_f1))
+	yticks = np.arange(0, 1.4, 0.2)
+	
+	xdelta = 5
+	xticks = range(0, max(xvals) + xdelta, xdelta)
+
+	fig, ax = plt.figure()
+
+	ax.grid(color='white')
+	ax.set_facecolor('gainsboro')
+
+	ax.set(ylabel="F1")
+	ax.set(xlabel="# Tokens in Predicted Answer")
+
+	ax.set(xticks=xticks)
+	ax.set(yticks=yticks)
+
+	ax.set(ylim=(min(yticks), max(yticks)))
+	ax.errorbar(xvals, yvals, yerr=errs, fmt='o', markeredgecolor='k', ecolor='lightskyblue', capsize=4.0)
+	plt.tight_layout()
+	plt.savefig(outpath)
+
 def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	
 	xvals_ans = list(map(lambda x:x[0], ans_f1))
