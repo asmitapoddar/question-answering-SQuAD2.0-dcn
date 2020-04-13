@@ -1,29 +1,7 @@
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%2345678901234567890123456789012345678901234567890123456789012345678901234567890
-%        1         2         3         4         5         6         7         8
+\documentclass[a4paper, 10pt, conference]{article}
 
-\documentclass[letterpaper, 10 pt, conference]{ieeeconf}  % Comment this line out if you need a4paper
-
-%\documentclass[a4paper, 10pt, conference]{ieeeconf}      % Use this line for a4 paper
-
-\IEEEoverridecommandlockouts                              % This command is only needed if 
-                                                          % you want to use the \thanks command
-
-\overrideIEEEmargins                                      % Needed to meet printer requirements.
-
-%In case you encounter the following error:
-%Error 1010 The PDF file may be corrupt (unable to open PDF file) OR
-%Error 1000 An error occurred while parsing a contents stream. Unable to analyze the PDF file.
-%This is a known problem with pdfLaTeX conversion filter. The file cannot be opened with acrobat reader
-%Please use one of the alternatives below to circumvent this error by uncommenting one or the other
-%\pdfobjcompresslevel=0
-%\pdfminorversion=4
-
-% See the \addtolength command later in the file to balance the column lengths
-% on the last page of the document
-
-% The following packages can be found on http:\\www.ctan.org
 \usepackage{graphics} % for pdf, bitmapped graphics files
+\graphicspath{ {./plots/} }
 \usepackage{epsfig} % for postscript graphics files
 \usepackage{mathptmx} % assumes new font selection scheme installed
 \usepackage{times} % assumes new font selection scheme installed
@@ -32,26 +10,37 @@
 \usepackage{color}
 \usepackage{float}
 \usepackage{hyperref}
+\usepackage{booktabs}
+
+\usepackage[margin=1in]{geometry}
+
+
 \newcommand{\ttt}{\texttt}
-\newcommand\com[1]{{\color{red}\textit{[#1]}}}
-\newcommand{\todo}{\com{TODO}}
+\newcommand{\TODO}{{\color{red}\textbf{TODO}}}
+\newcommand{\TODOx}[1]{{\color{red}\textbf{TODO: #1}}}
+
 
 \newcommand{\LSTMenc}{\text{LSTMenc}}
 \newcommand{\LSTMdec}{\text{LSTMdec}}
-\newcommand{\BiLSTM}{\text{BiLSTM}}
+\newcommand{\BiLSTM}{\text{BiLSTM}} 
 \newcommand{\HMN}{\text{HMN}}
-\newcommand{\HMNstart}{\text{HMNstart}}
+\newcommand{\HMNstart}{\text{HMNstart}} % Please make this prettier -K
 \newcommand{\HMNend}{\text{HMNend}}
 \newcommand{\softmax}{\text{softmax}}
+
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
 
 \renewcommand{\Re}{\mathbb{R}}
 
 \title{\LARGE \bf
-Dynamic Coattention Networks For \\Question Answering -- paper reproduction
+Dynamic Coattention Networks For \\Question Answering -- Reproducibility Challenge
 }
 
+\usepackage[square]{natbib}
+\bibliographystyle{authordate1}
 
-\author{D. Roy, R. Yeung, A. Poddar, K. Perlin, E. Chaumat
+\author{D. Roy, R. Yeung, A. Poddar, K. Perlin, E. Chaumat % Yes, please keep K. Perlin, not J. Perlin :)
 \\University of Oxford}% <-this % stops a space
 
 \begin{document}
@@ -65,163 +54,234 @@ Dynamic Coattention Networks For \\Question Answering -- paper reproduction
 
 \begin{abstract}
 
-Hey how you doing. This is my abstract. Lorem ipsum.
+\cite{dcn} proposes a new deep model for Question Answering, the Dynamic Coattention Network~(DCN), based on coattention and LSTMs. We attempt to reproduce some results from that paper, reimplementing the network from scratch with PyTorch. We discuss our results, learnings, and the reproduction process.
+% Keep tenses consistent -K
+
+% What results did we achieve in the end for MI1? 
+
+% Shall we include this?
+% Not in the abstract -K
+% As extensions, we experimented with regularising the model's Dynamic Pointing Decoder (DPD) to force early convergence; alternative methods of initialising the model's LSTMs; and, applying transfer learning to individually train the model's DPD while benefiting from representation learning taking place upstream.
+
+Our code can be found at \TODOx{Upload code to fresh anon public repo on the 15th and link here}.
 
 \end{abstract}
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{INTRODUCTION}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\section{Introduction}
 
-Why did we select this paper?
-Paper summary: 
-	Set the experiment in context
-	Underlines relevant technical details
+\subsection{The task}
 
+Question answering is an NLP task, in which, given a text corpus (referred to as `context' or `document') and a related question (also phrased in natural language), one needs to output the correct answer to that question in natural language.
 
+The problem is considered AI-complete (\cite{Weston2015TowardsAQ}) and requires both natural language understanding, as well as general world knowledge (\cite{rajpurkar2016squad}).
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Implementation}
-\subsection{Dataset and Preprossessing}
-\subsection{Model}
-Our Dynamic Coattention Network is divided into 5 units: the Encoder, the Coattention Module, the BiLSTM Encoder, the Highway Maxout Network, ant the Dynamic Pointer Decoder.\\
-\subsubsection{The Encoder}
+\subsection{Datasets}
 
+A large dataset of over 100k questions, called SQuAD, was constructed by Stanford University researchers, using passages from Wikipedia, and Mechanical Turk crowdworkers ~\cite{rajpurkar2016squad}.
 
-The questions $Q=(x_1^Q,x_2^Q,...,x_n^Q)\in\Re^{B \times n}$  as well as their associated context documents $D=(x_1^D,x_2^D,...,x_m^D)\in\Re^{B\times m}$ are taken as inputs, B corresponding to the batch size.  
-Questions and documents are then encoded using the same LSTM : 
-\begin{equation}
-d_t= \LSTMenc(d_{t-1},x_t^D)\in\Re^{l} 
-\end{equation}
-\begin{equation}
-q_t= \LSTMenc(q_{t-1},x_t^Q)\in\Re^{l}
-\end{equation}
-The encoded documents $D=[d_1,d_2,...,d_m,d_{\emptyset}]\in\Re^{B \times l \times (m+1)}$ and  $Q'=[q_1,q_2,...,q_m,q_{\emptyset}]\in\Re^{B \times l \times (n+1)} $ are added $d_{\emptyset}$ and $q_{\emptyset}$ sentinels. The sentinels will allow to better predict rare and unseen words.
-The questions are then passed through non-linearities: $Q=tanh(W^{(Q)}Q'+b^{(Q)})$. This operation will permit some variation between the encoding space of the documents and the questions.\\
- 
+The original DCN paper was trained and evaluated on SQuAD, establishing at-the-time state of the art performance, siginificantly below human performance.
+Since then, new deep models have surpassed human performance on SQuAD, including Google's BERT (\cite{bert}).\footnote{Leaderboards for both SQuAD1.1 and SQuAD2.0 can be found at \href{https://rajpurkar.github.io/SQuAD-explorer}{https://rajpurkar.github.io/SQuAD-explorer}.}
+
+% \TODOx{Dip, could you please write a paragraph about SQuAD 2, the differences and that the previous one was not available anymore on wherever it was that you looked for it?}
+
+A new version of the dataset, SQuAD 2.0 (\cite{rajpurkar2018know}), was released after the original DCN paper. This added an extra 50k `unanswerable` questions which are not answerable given the document provided, but written adversarially to look similar to answerable ones. We decided to evaluate our model on SQuAD 2.0 because the original SQuAD dataset was no longer available.
+Using the official SQuAD evaluation script we could obtain the performance of our model on the answerable subset. % How's this? -D
+
+% Since the maintainers of the dataset provide an evaluation script which produces a breakdown of the exact match and F1 scores across the answerable and unanswerable subsets of SQuAD 2.0, we could ignore the effect of the unanswerable questions and achieve scores that could be compared with the paper. % last sentence too verbose -K
+
+\subsection{Paper selection rationale}
+
+We took several things into account when selecting this paper as our first choice:
+
+\begin{itemize}
+\item \textbf{Availability of datasets.} The original paper uses a well-established SQuAD dataset~(\cite{rajpurkar2016squad}), a version of which is currently readily available online.
+\item \textbf{Clarity and detail of model description.} We could see the network structure was precisely defined in the paper and easy to understand.
+\item \textbf{Interesting task.} We considered Question Answering to be an interesting AI-complete problem.
+\item \textbf{Space for extensions.} We had some possible extensions in mind already when we were selecting the project -- for example studying the overlapping problem of Visual Question Answering (\cite{visual-qa}) or implementing a modified version of DCN, called DCN+, introduced by the same authors in \cite{dcn-plus}.
+\end{itemize}
+
+\section{Dynamic Coattention Networks}
+
+The model introduced in~\cite{dcn} is a deep neural network utilising a coattention mechanism and LSTMs. It outputs two integer indices indicating a substring of the input context, to be interpreted as the predicted answer. 
+This makes sense, because the SQuAD dataset's ground truth answers are always a substring of the input context.
+
+Before describing the full model, we introduce the reader briefly to LSTMs and coattention, its core components.
+
+\subsection{LSTMs}
+
+LSTM (Long short-term memory) is a well established recurrent neural network architecture, first introduced in \cite{lstm}. It is designed to deal with shortcomings of classic RNNs, and is particularly well-suited for processing sequences (e.g. time series or language sentences), where cooccurrence of two events may be very important even if they are far apart in the sequence.
+
+The key idea of LSTMs is a `memory' referred to as cell state -- that is state that can easily persist unchanged across multiple inputs. The network learns the rules for updating that memory based on the current cell state, current hidden state, and the input.
+
+An implementation of LSTM is available in PyTorch and comes with an optional bidirectional variant, which aggregates information in both directions, instead of just one.
+
+\subsection{Coattention}
+The idea of \textit{attention} originated in \cite{attention-foundational-paper}, where the authors used it in their neural translation model (i.e. one that translates text from one natural language to another). That paper presents an encoder-decoder architecture, where the decoder weighs the contribution of components of the encoding, based on an alignment score between the encoding component and the current hidden state of the decoder. In contemporary vocabulary, this could be described as the decoder attending to the most relevant parts of the input.
+
+Attention is thus a further improvement, in some ways, over LSTMs for processing sequences -- whereas LSTMs reduced the drawbacks of having long paths between early input elements and a decoder, attention effectively decreases all the path lenghts from $O(n)$ to $O(1)$, following the phrasing of the impactful paper \cite{attention-is-all-you-need}, which showed that multiple sequence transduction tasks can be handled well using only attention, without recurrent architectures.
+
+\subsection{The full model}
+
+\begin{figure}\label{fig:dcn}
+\centering
+\includegraphics[scale=0.8]{plots/Model_Overview.png}
+\caption{Illustration of the network.}
+\end{figure}
+
+This section presents the full Dynamic Coattention Network model from \cite{dcn}, that we have reimplemented. The model overview is illustrated in Fig.~\ref{fig:dcn}.
+
+\subsubsection{LSTM Encoder}
+This module encodes the documents and questions using the same LSTM. Further, the question encoding is passed through an extra layer (linear transformation followed by $\tanh$) to allow for a difference between document and question encoding spaces.
+
+% I wonder what the point of using the same LSTM is if you later add this extra transformation to Q. Just to have fewer params?
+
+Finally, each of the two encodings is appended a single learned sentinel element at the end, which can be attended to later, which should be interpreted as a `choice to not attend to any particular word'.
+
 \subsubsection{The Coattention Module}
 
+\begin{figure}\label{fig:coattention}
+\centering
+\includegraphics[scale=0.6]{plots/Coattention_Module.png}
+\caption{The coattention mechanism.}
+\end{figure}
 
-This module corresponds to the attention mechanism of the model. It permits to put focus for each document and each question on the relevant parts.
-The module takes the questions and the documents as inputs and then, outputs the co-attention context $C^D$, a shared representation of the attention of both the documents and questions.\\
-First, L is computed:
-\begin{equation}
-L=D^{T}Q \in\Re^{B \times (m+1)\times(n+1)}
-\end{equation}
-L represents the affinity score between each question and its associated document. L is then normalized row-wise to produce $A^Q$, the affinity weights for each word of the document with the words in the associated question. Likewise, $A^D$ is obtained in normalizing L column-wise and represents for each word of the question, the affinity weights with the words of the associated document.
-\begin{equation}
-A^Q= \softmax (L)\in \Re^{B \times(m+1)\times(n+1)}
-\end{equation}
-\begin{equation}
-A^D= \softmax(L^T)\in \Re^{B \times(n+1)\times(m+1)}
-\end{equation}
-These affinity coefficients represent the attention weights. Multiplied respectively with D and Q, the attention contexts for the documents and the questions are obtained.  
-\begin{equation}
-C^Q=DA^Q \in \Re^{B \times l \times(n+1)}
-\end{equation}
-Finally, the co-attention context $C^D \in \Re^{B \times 3l \times(m+1)}$ is computed by concatenating $QA^D$ and $C^QA^D$.\\
+\textit{Coattention}, as used in \cite{dcn} refers to the idea that the question encodings and document encodings each attend to the other, producing two attention-weight matrices (which are, up to a transposition, simply the column-wise and row-wise softmaxes of the product of the two encoding matrices).
 
-\subsubsection{The BiLSTM Encoder}
+In the paper, first the summary of the document $C^Q$ is computed per each word of the question (standard use of attention). Then both that summary and the question encoding itself are multiplied by the other attention matrix, producing a summary of the question (per document word) as well as a summary of $C^Q$.
 
-This module will concatenate the documents and the co-attention context and encode them using a BiLSTM. 
-\begin{equation}
-u_t= \BiLSTM(u_{t-1},u_{t+1},[d_t;c_t^D])\in \Re^{B\times 2l}
-\end{equation}
- 
-
-\subsubsection{The Highway Maxout Network}
-This module takes the previous encoded start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$, the co-attention encoding corresponding to the $t^{th}$ word in the document $u_{t}$ and the current hidden state of the Dynamic Pointer Decoder $h_i$ and returns the start score $\alpha_t$ and end score $\beta_t$ of the $t^{th}$ word in the document.
-\begin{equation}
-\alpha_t= \HMNstart(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
-\end{equation}
-\begin{equation}
-\beta_t= \HMNend(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})
-\end{equation}
-The HMN is designed as follows:
-\begin{equation}
-\HMN(u_t,h_i,u_{s_{i-1}},u_{e_{i-1}})=  \max(W^{(3)}[m^{(1)}_t;m^{(2)}_t]+b^{(3))}
-\end{equation}
-\begin{equation}
-r=  \tanh(W^{(D)}[h_i;u_{s_{i-1}};u_{e_{i-1}}])
-\end{equation}
-\begin{equation}
-m^{(1)}_t=  \max(W^{(1)}[u_t;r] +b^{(1)})
-\end{equation}
-\begin{equation}
-m^{(2)}_t=  \max(W^{(2)}m^{(1)}_t+b^{(2)})
-\end{equation}
-Add some more information about why this architecture is relevant here.\\
-
-\subsubsection{The Dynamic Pointer Decoder}
-
-The decoder takes as input the co-attention encoding U. At each iteration, the hidden state $h_i$ is computed with the previous hidden state $h_{i-1}$, and the representation of the estimates of the start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$.
-\begin{equation}
-h_i= \LSTMdec(h_{i-1},[u_{s_{i-1}};u_{e_{i-1}}])
-\end{equation}
-Furthermore, the current start position and end position are computed using $h_i$, $u_{s_{i-1}}$, $u_{e_{i-1}}$ with the following equations: 
-\begin{equation}
-s_i= \underset{t}{\mathrm{argmax}}(\alpha_1,...,\alpha_m)
-\end{equation}
-\begin{equation}
-e_i= \underset{t}{\mathrm{argmax}}(\beta_1,...,\beta_m)
-\end{equation}
-\subsection{Pipeline}
-\subsection{Design decision}
-\subsection{Difficulties and Remarks}
+Both those summaries are concatenated to produce the \textit{coattention context}, of the length equal to document length, which is outputted by the coattention module. The next module also receives the original document encoding. The entire structure of the  is illustrated in Fig.~\ref{fig:coattention}.
 
 
+\subsubsection{The Bi-LSTM Encoder}
+
+A bidirectional LSTM is used as the final step of the encoder. As the $t^\text{th}$ input it receives the $t^\text{th}$ word of the document, and the $t^\text{th}$ component of the coattention context. The rationale is to combine the temporal information (i.e. word order) with the coattention context.
+
+As a side note, the coattention context itself is already not independent of the word order, because it is built upon the initial (order-sensitive) LSTM encodings of both document and question.
 
 
+\subsubsection{The Dynamic Pointer Decoder and the loss}
+
+The encoding $U$ produced by the Bi-LSTM encoder is consumed by the Dynamic Pointer Decoder.
+
+The decoder works in an iterative manner, at each iteration outputting a proposed answer span -- i.e. two indices (pointers) indicating a substring of the input document, which is to be interpreted as the predicted answer. The indices are denoted by $E^i$ and $S^i$ in Fig.~\ref{fig:dcn}.
+
+At each iteration, two Highway Maxout Networks (see Section~\ref{sssec:hmn}) take the previous guess\footnote{To be precise, the HMN responsible for predicting the end-pointer gets the old end-prediction but the newest start-prediction available -- in this way the roles of the two HMNs are not symmetric.} (initialised to $(0,0)$), a hidden state and the encoding $U$ into consideration, and produce scores for all start-indices and end-indices. The highest-scoring pair (which could possibly represent an invalid segment by having the start-index be greater than the end-index) is chosen as the next guess. The entire score vectors are used to compute the cross-entropy loss. A new hidden state is then computed by an LSTM, to prepare for the next iteration.
+
+The decoder is described in the original paper to be run until convergence, and the loss is accummulated over all the iterations. 
+We note that mathematical convergence is hard to verify, because of the evolving hidden state, and so we interpret that as having a guess $(s,e)$ index-pair repeat twice in a row.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Training and Evaluation }
+\subsubsection{The Highway Maxout Network}\label{sssec:hmn} \TODOx{Dip, please polish this.}
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+This module takes the previous encoded start position $u_{s_{i-1}}$ and end position $u_{e_{i-1}}$, the co-attention encoding corresponding to the $t^{th}$ word in the document $u_{t}$, and the current hidden state of the Dynamic Pointer Decoder $h_i$. It returns the start score $\alpha_t$ and end score $\beta_t$ of the $t^{th}$ word in the document.
 
+Most specifically, the module implements the equations (9),(10),(11) and (12) of the paper. \\
+We apply nn.CrossEntropy \TODOx{Formatting.} between the predicted spans and the true spans. At first, we did not know that nn.CrossEntropy already performed softmax, and applied softmax twice. 
 
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Observations}
-
- How does it differ from the original paper? Why? What do we conclude?
+Furthermore, the predicted spans are found by computing the maximum of the alphas and betas. We first used th.argmax but faced the problem of its non-differentiability. To preserve the integrity of the computation graph we used th.max \TODOx{Formatting.} instead. Hence, all operations are differentiable, and the depth of the graph is determined dynamically.
 
 
+\section{Our implementation}
+
+\subsection{Model}
+
+We have reimplemented the network from scratch in PyTorch (\cite{pytorch}). We referred to an existing PyTorch implementation\footnote{\url{https://github.com/atulkum/co-attention}} occasionally, due to our prior inexperience with PyTorch, but did not reuse their code (\TODO\ is that accurate -- has anyone copy-pasted code from there? I think a lot of the batching is re-used from the their implementation but i might be wrong \TODOx{ Discuss what to do about this.}).
+
+In some places our implementation differed from the paper's description, or the paper failed to provide details, and we had to make design decisions ourselves. Here are the most notable cases:
+\begin{itemize}
+\item \TODO\ Dropout
+\item \TODO\ Zero padding and interaction with sentinel
+\item \TODO\ \ttt{MAX\_ITER=1}
+\item \TODO\ Hyperparameters for ADAM
+\end{itemize}
 
 
+\subsection{The training pipeline}
+
+\subsubsection{Word embeddings}
+Following the original paper, we use pre-trained word vectors `Glove 840B' from Stanford (\cite{glove}). The set contains $2.2$M word vectors of dimensionality $300$.
+
+\subsubsection{Dataset and preprocessing}
+To train our model, we used the SQuAD2.0 dataset (\cite{rajpurkar2018know}). 
+Since the dataset represents unanswerable questions as having no ground truth answers, no further work was needed to exclude them during training.
+% \TODOx{Dip, how did you achieve that there were no unanswerable questions in the training set?}
+
+To tokenise the data, we used Stanford CoreNLP (\cite{coreNLP}). We convert the character-indexed answer spans from SQuAD2.0 to token indexing.
+
+The conversion was simplified by disabling Penn Treebank token transformations\footnote{See \url{https://nlp.stanford.edu/software/tokenizer.shtml}.} to prevent having some tokens replaced by longer placeholders. Despite this, there were still special cases in which the conversion could not be completed, which we excluded from training and evaluation. \TODOx{Example where character-to-token index conversion failed}
+
+We group the data into batches of size $64$ for efficient training.
+
+\subsubsection{Training}
+We use the ADAM optimiser (\cite{adam}), following the original paper. An implementation of ADAM is provided by PyTorch and we set the learning rate to \ttt{lr = 0.001}.
+
+Custom infrastructure code we have written automates periodic saving of the trained model to a session directory and allows for easily resuming any training session later on. We also keep track of how the loss evolves, in an append-only log file.
+
+We run the training on a single \TODO\ GPU for \TODO\ steps, which constitutes \TODO\ epochs (the dataset size is \TODO).
+
+\TODO\ Insert some loss (or loss+score) plots.
+
+\section{Experimental results}
+
+\TODO\ Insert tables and plots of our model's performance, compared with the values reported in the original paper.
+
+% What did we evaluate
+
+We trained an implementation of the DCN with the decoder performing only one iteration, and no dropout. 
+
+% Hyperparameters and training time
+We trained it using Adam with a learning rate of $0.001$ for 23 epochs (corresponding to 23 passes over the entire training set).
+We stopped training as soon as we observed that model's F1 score on the dev set no longer increased, despite the training loss continuing to decrease (Figure~\TODO\textbf{})
+
+\begin{table}[h]
+\begin{center}
+\begin{tabular}{l c c c c}
+\toprule
+Model                                           & Dev EM        & Dev F1 \\
+\midrule
+DCN with single iteration decoder (Ours)        &               &     \\
+DCN with single iteration decoder (\cite{dcn})  & 63.7          & 74.0\\
+\bottomrule
+\end{tabular}
+\end{center}
+\caption{Performance of our main model on the SQuAD dataset (i.e.\ performance on the answerable questions in the SQuAD 2.0 dataset).}
+\label{table:main-results}
+\end{table}
+
+Table~\ref{table:main-results} summarises the performance of this model, compared to the closest comparable model studied by~\cite{dcn} (the DCN with single iteration).
+
+\textbf{Performance across length}
+
+\textbf{Breakdown of F1 distribution}
+
+\subsection{Conclusions}
+
+\TODO\ State we have failed to reproduce the performance stated in the paper. Present some hypotheses why.
+
+\section{Findings}
+
+\TODO\ Interesting findings/experiments made throughout implementation/training that do not fit into the previous Section.
 
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Extensions}
+\section{Cost of reproducing the paper}
 
-Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.
+% find . -name '*.py' | xargs wc -l | sort -nr
+A total of 3375 lines of Python code were written for this project and over 350 git commits were submitted into our development repository. Initial implementation of the model and training pipeline took about two weeks. Further, debugging until we managed to get significant learning done took more than an extra week of intense work.
 
+We would loosely estimate the total number of work-hours spent on the project (excluding the report and poster) by the 5 team members to be about \TODOx{200?}.
 
+We have not had to contact the paper's authors.
+We have used a single privately-owned RTX 2060 SUPER GPU with 8GB of RAM for training and evaluation. We have found that we could have two training sessions running simultaneously if the multiple iterations option was disabled in the network.
 
+\TODOx{Mention how much memory was taken up by the loaded embeddings. Theoretically the multiple models being trained in parallel could only use a single shared embeddings set.}
 
+\subsection{Failures to reproduce the paper exactly}
+\TODO\ Describe any parts of the paper that we didn't reproduce, and estimate whether that would have been difficult/time-consuming.
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\section{Conclusion}
+\TODO\ \textit{Optional. State largest roadblocks we've faced and how we've overcome them in the end.}
 
-Remarks on the reproducibility the paper. Which parts of the paper can be reproduced, and at what cost in terms of resources (computation, time, people, development effort, communication with the authors). Now we’re done, would we have done things differently?
-
-
-
-
-
-
-
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-
-
-\begin{thebibliography}{99}
-
-\bibitem{dcn} Xiong, Zhong, and Socher. ``Dynamic Coattention Networks For Question Answering''. ICLR. 2017.
-
-
-\end{thebibliography}
+\bibliography{refs}
 
 \end{document}
