@@ -20,7 +20,7 @@ def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
 	errs = list(map(lambda x:x[2], pred_len_f1))
 	yticks = np.arange(0, 1.4, 0.2)
 	
-	xdelta = 5
+	xdelta = 50
 	xticks = range(0, max(xvals) + xdelta, xdelta)
 
 	fig = plt.figure()
