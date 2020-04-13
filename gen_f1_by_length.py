@@ -256,7 +256,7 @@ def plot_f1(ans_data, que_data, doc_data, outpath):
 
 def plot_f1_against_pred_len(pred_len_f1, outpath):
   pred_len_avgf1_std = compute_average_f1s(pred_len_f1)
-  make_plot_f1_pred_len(pred_len_avgf1_std, outpath)
+  make_plot_f1_against_prediction_length(pred_len_avgf1_std, outpath)
 
 def gen_predictions(model_path, dataset_path, glove):
     tokenized_dataset_path = ".".join(dataset_path.split(".")[:-1])+"-tokenized.json"
