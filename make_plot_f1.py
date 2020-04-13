@@ -23,7 +23,8 @@ def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
 	xdelta = 5
 	xticks = range(0, max(xvals) + xdelta, xdelta)
 
-	fig, ax = plt.figure()
+	fig = plt.figure()
+	ax = fig.add_subplot()
 
 	ax.grid(color='white')
 	ax.set_facecolor('gainsboro')
@@ -124,7 +125,9 @@ def test():
 	make_plot_f1(ans_f1, que_f1, doc_f1, "test_make_plot_f1.png")
 
 	f1s = np.array([min(1, max(0, np.random.normal(0.5, 0.2))) for _ in range(1000)])
-	plot_f1_histogram(f1s, "plot_f1_histogram_test.svg")
+	plot_f1_histogram(f1s, "test_plot_f1_histogram_test.svg")
+
+	make_plot_f1_against_prediction_length(ans_f1, "test_f1_pred_len.svg")
 
 
 if __name__ == '__main__':
