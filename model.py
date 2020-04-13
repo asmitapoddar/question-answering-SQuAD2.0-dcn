@@ -327,15 +327,6 @@ class DCNModel(nn.Module):
     self.hidden_dim = hidden_dim
     self.WQ = nn.Linear(hidden_dim, hidden_dim)
 
-  def parameters(self):
-    #TODO combine params from
-    # coattention, decoder, encoder, encoder_sentinel, WQ
-    params = list(super(DCNModel, self).parameters())
-    for i, arch in enumerate([self.coattention_module, self.decoder, self.encoder, self.WQ]):
-        params += list(arch.parameters())
-    params += [self.encoder_sentinel]
-    return params
-
   def forward(self, doc_word_vecs, que_word_vecs, true_s, true_e):
     """
     doc_word_vecs: should have 3 dimensions: [batch_size, max_doc_length, word_vec_dim].
