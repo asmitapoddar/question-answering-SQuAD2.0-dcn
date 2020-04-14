@@ -83,5 +83,9 @@ def main():
         custom_print("Calling subprocess '%s'..." % " ".join(list(map(str,cmd))))
         subprocess.run(cmd, check=True)
 
+        cmd = ["python3", "plot_f1_vs_loss.py", scores_path, "f1"]
+        custom_print("Calling subprocess '%s'..." % " ".join(list(map(str,cmd))))
+        subprocess.run(cmd, check=True)
+
 if __name__ == "__main__":
     main()

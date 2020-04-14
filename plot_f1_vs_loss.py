@@ -7,11 +7,15 @@ X_START = 200 # The loss is super high at the very beginning and makes the plot 
 
 def main():
     plt.rcParams.update({'font.size': 14})
-    if len(sys.argv) != 2:
+    if len(sys.argv) not in [2,3]:
         raise Exception('Incorrect number of args.')
     scores_path = sys.argv[1]
     scores_dataset_name = scores_path.split("/")[-1].split(".")[0].split("cores_")[1]
-    plot_image_target_path = "/".join(scores_path.split("/")[:-1]) + ("/plot_loss_vs_%s_score(%s).png" % ("em" if PLOT_EM_SCORES else "f1", scores_dataset_name))
+    plot_em_scores = PLOT_EM_SCORES
+    if len(sys.argv) == 3:
+        if "f1" in sys.argv[2]:
+            plot_em_scores = False
+    plot_image_target_path = "/".join(scores_path.split("/")[:-1]) + ("/plot_loss_vs_%s_score(%s).png" % ("em" if plot_em_scores else "f1", scores_dataset_name))
     loss_path = "/".join(scores_path.split("/")[:-1]) + "/loss.log"
     with open(loss_path, "r") as f:
         data_loss = list(map(lambda s: tuple(s[:-1].split(": ")), f.readlines()[:-1]))
@@ -49,11 +53,11 @@ def main():
 
     ax2 = ax1.twinx()
     color = 'tab:blue'
-    ax2.set_ylabel('%s score (%s)' % ("EM" if PLOT_EM_SCORES else "F1", scores_dataset_name), color=color)
-    ax2.plot(x_scores, y_scores_em if PLOT_EM_SCORES else y_scores_f1, color=color)
+    ax2.set_ylabel('%s score (%s)' % ("EM" if plot_em_scores else "F1", scores_dataset_name), color=color)
+    ax2.plot(x_scores, y_scores_em if plot_em_scores else y_scores_f1, color=color)
     ax2.tick_params(axis='y', labelcolor=color)
 
-    plt.title("%s scores (loss smoothing width %d)" % ("EM" if PLOT_EM_SCORES else "F1", 2*LOSS_SMOOTHING+1))
+    plt.title("%s scores (loss smoothing width %d)" % ("EM" if plot_em_scores else "F1", 2*LOSS_SMOOTHING+1))
 
     fig.tight_layout()
     print("Saving figure to: %s" % plot_image_target_path)
