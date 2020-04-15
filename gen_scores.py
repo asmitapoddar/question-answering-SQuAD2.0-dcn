@@ -1,4 +1,4 @@
-# python3 gen_scores.py model/my_model/ 1000 8500
+# python3 gen_scores.py model/my_model/ preprocessing/data/subset-1/train-subset-1.json 1000 8500
 # first number is frequency, second number is start
 
 from constants import *
@@ -40,7 +40,7 @@ def run_eval(dataset_path):
     return em_score, f1_score, total, HasAns_exact, HasAns_f1, HasAns_total, NoAns_exact, NoAns_f1, NoAns_total
 
 def main():
-    if len(sys.argv) not in [3,4]:
+    if len(sys.argv) not in [3,4,5]:
         custom_print("Usage example: \npython3 gen_scores.py ./model/2020-04-07_00-10-37\[LR1-00e-03_Q86821_B64_H200_RS1\]/ preprocessing/data/subset-4/train-subset-4.json")
         custom_print("Can add optional FREQ parameter at the end (integer regulating frequency of evaluation measured in global steps).")
         return
