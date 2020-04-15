@@ -1,3 +1,6 @@
+# python3 gen_scores.py model/my_model/ 1000 8500
+# first number is frequency, second number is start
+
 from constants import *
 import os
 from pathlib import Path
@@ -5,8 +8,9 @@ from produce_answers import load_embeddings_index, run_evaluation
 import subprocess
 import sys
 import torch as th
-    
+
 DEFAULT_FREQ = 200  # Evals every 200 global steps.
+DEFAULT_START = DEFAULT_FREQ
 ENABLE_AUTOMATIC_PLOT_GEN = True
 TEMP_JSON_FILENAME = "_temp_gen_scores.json" # Doesn't matter, just didn't want it to clash with other people's temp files.
 
@@ -45,12 +49,13 @@ def main():
     if model_dir[-1] != '/':
         model_dir += '/'
     dataset_path = sys.argv[2]
-    freq = DEFAULT_FREQ if len(sys.argv)==3 else int(sys.argv[3])
+    freq = DEFAULT_FREQ if len(sys.argv)<=3 else int(sys.argv[3])
+    start = DEFAULT_START if len(sys.argv)<=4 else int(sys.argv[4])
 
     scores_filename = "scores_"+dataset_path.split("/")[-1].split(".")[0]+".log"
     scores_path = model_dir+scores_filename
 
-    next_global_step_to_eval = 0
+    next_global_step_to_eval = start
     if os.path.exists(scores_path):
         custom_print("%s already exists. Do you want to overwrite it? [y/n] + Enter" % scores_filename)
         user_ans = str(input())
