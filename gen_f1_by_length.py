@@ -256,15 +256,20 @@ def compute_average_f1s(data, error_bar_type):
   for len_str in data:
     f1s = data[len_str]
 
+    mean = np.mean(f1s)
+
     # Compute error bar values
     if error_bar_type is ERROR_BAR_TYPE_PERCENTILE:
       lowerr, uperr = np.percentile(f1s, 100 - ERROR_BAR_PERCENTILE_VALUE), np.percentile(f1s, ERROR_BAR_PERCENTILE_VALUE)
+      lowerr = mean - lowerr
+      uperr = uperr - mean
     elif error_bar_type is ERROR_BAR_TYPE_STDEV:
       lowerr, uperr = np.std(f1s), np.std(f1s)
     else:
       lowerr, uperr = np.std(f1s), np.std(f1s)
 
-    points.append((int(len_str), np.mean(f1s), lowerr, uperr))
+    print(lowerr, uperr)
+    points.append((int(len_str), mean, lowerr, uperr))
   return points
 
 def plot_f1(ans_data, que_data, doc_data, outpath, error_bar_type):
