@@ -42,7 +42,7 @@ def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
 	ax.set(ylim=(min(yticks), max(yticks)))
 	ax.errorbar(xvals, yvals, yerr=errs, fmt='o', markeredgecolor='k', ecolor='lightskyblue', capsize=4.0)
 	plt.tight_layout()
-	plt.savefig(outpath)
+	plt.savefig(outpath, dpi=300)
 
 def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	
@@ -106,7 +106,7 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	ax3.set(xlabel="Average # Tokens in Answer")
 
 	plt.tight_layout()
-	plt.savefig(out_path)
+	plt.savefig(out_path, dpi=300)
 
 
 def plot_f1_histogram(all_f1s, out_path):
@@ -115,7 +115,7 @@ def plot_f1_histogram(all_f1s, out_path):
 	plt.gca().yaxis.set_major_formatter(PercentFormatter(1))
 	plt.xlabel("F1 score")
 	plt.ylabel("% questions")
-	plt.savefig(out_path)
+	plt.savefig(out_path, dpi=300)
 
 
 def f1_distribution_summary(all_f1s, out_path):
