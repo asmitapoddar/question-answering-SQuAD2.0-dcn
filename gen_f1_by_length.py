@@ -20,6 +20,16 @@ from produce_answers import load_embeddings_index, run_evaluation
 OPTS = None
 TEMP_JSON_FILENAME_F1_PLOT = "gen_f1_by_length_temp.json"
 
+# Constants passed to plotting functions to indicate whether to
+# plot stdev or confidence interval error bars
+ERROR_BAR_TYPE_PERCENTILE = "ERROR_BAR_TYPE_PERCENTILE"
+ERROR_BAR_TYPE_STDEV = "ERROR_BAR_TYPE_STDEV"
+ERROR_BAR_PERCENTILE_VALUE = 95
+
+DEFAULT_ERROR_BAR_TYPE = ERROR_BAR_TYPE_PERCENTILE
+
+
+
 def parse_args():
   parser = argparse.ArgumentParser('Plot F1 scores and standard deviations by document/question/answer length.')
   parser.add_argument('model_params', metavar='modelparams.par', help='Model parameters.')
@@ -241,21 +251,21 @@ def find_all_best_thresh(main_eval, preds, exact_raw, f1_raw, na_probs, qid_to_h
   main_eval['best_f1'] = best_f1
   main_eval['best_f1_thresh'] = f1_thresh
 
-def compute_average_f1s(data):
+def compute_average_f1s(data, error_bar_type):
   points = []
   for len_str in data:
     f1s = data[len_str]
     points.append((int(len_str), np.mean(f1s), np.std(f1s)))
   return points
 
-def plot_f1(ans_data, que_data, doc_data, outpath):
-  ans_len_avgf1_std = compute_average_f1s(ans_data)
-  que_len_avgf1_std = compute_average_f1s(que_data)
-  doc_len_avgf1_std = compute_average_f1s(doc_data)
+def plot_f1(ans_data, que_data, doc_data, outpath, error_bar_type):
+  ans_len_avgf1_std = compute_average_f1s(ans_data, error_bar_type)
+  que_len_avgf1_std = compute_average_f1s(que_data, error_bar_type)
+  doc_len_avgf1_std = compute_average_f1s(doc_data, error_bar_type)
   make_plot_f1(ans_len_avgf1_std, que_len_avgf1_std, doc_len_avgf1_std, outpath)
 
-def plot_f1_against_pred_len(pred_len_f1, outpath):
-  pred_len_avgf1_std = compute_average_f1s(pred_len_f1)
+def plot_f1_against_pred_len(pred_len_f1, outpath, error_bar_type):
+  pred_len_avgf1_std = compute_average_f1s(pred_len_f1, error_bar_type)
   make_plot_f1_against_prediction_length(pred_len_avgf1_std, outpath)
 
 def gen_predictions(model_path, dataset_path, glove):
@@ -284,13 +294,13 @@ def main():
   no_ans_f1_scores = [f1_scores[k] for k in no_ans_qids if k in f1_scores]
 
   # Plot of F1 against length of doc/que/ans.
-  plot_f1(ans_f1, que_f1, doc_f1, OPTS.out_image_path)
+  plot_f1(ans_f1, que_f1, doc_f1, OPTS.out_image_path, DEFAULT_ERROR_BAR_TYPE)
 
   # Plot histogram of f1s.
   # Provide only the "HasAns" f1s.
   f1_outpath_name, f1_outpath_ext = os.path.splitext(OPTS.out_image_path)
   f1_outpath = f1_outpath_name + "_f1_histogram" + f1_outpath_ext
-  plot_f1_histogram(has_ans_f1_scores, f1_outpath)
+  plot_f1_histogram(has_ans_f1_scores, f1_outpath, DEFAULT_ERROR_BAR_TYPE)
 
 
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
@@ -299,7 +309,7 @@ def main():
 
   # Create plot of average F1 against produced-answer length
   f1_predicted_answer_length_outpath = f1_outpath_name + "_f1_against_prediction_len" + f1_outpath_ext
-  plot_f1_against_pred_len(pred_len_f1, f1_predicted_answer_length_outpath)
+  plot_f1_against_pred_len(pred_len_f1, f1_predicted_answer_length_outpath, DEFAULT_ERROR_BAR_TYPE)
 
   # Delete temporary predictions file
   os.remove(TEMP_JSON_FILENAME_F1_PLOT)
