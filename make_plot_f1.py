@@ -18,8 +18,8 @@ def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
 	xvals = list(map(lambda x:x[0], pred_len_f1))
 	yvals = list(map(lambda x:x[1], pred_len_f1))
 	
-	up_errs = list(map(lambda x:x[2], pred_len_f1))
-	down_errs = list(map(lambda x:x[3], pred_len_f1))
+	down_errs = list(map(lambda x:x[2], pred_len_f1))
+	up_errs = list(map(lambda x:x[3], pred_len_f1))
 	errs = [down_errs, up_errs]
 
 	yticks = np.arange(0, 1.4, 0.2)
@@ -49,22 +49,22 @@ def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	xvals_ans = list(map(lambda x:x[0], ans_f1))
 	yvals_ans = list(map(lambda x:x[1], ans_f1))
 
-	up_errs_ans = list(map(lambda x:x[2], ans_f1))
-	down_errs_ans = list(map(lambda x:x[3], ans_f1))
+	down_errs_ans = list(map(lambda x:x[2], ans_f1))
+	up_errs_ans = list(map(lambda x:x[3], ans_f1))
 	errs_ans = [down_errs_ans, up_errs_ans]
 
 	xvals_ques = list(map(lambda x:x[0], que_f1))
 	yvals_ques = list(map(lambda x:x[1], que_f1))
 	
-	up_errs_ques = list(map(lambda x:x[2], que_f1))
-	down_errs_ques = list(map(lambda x:x[3], que_f1))
+	down_errs_ques = list(map(lambda x:x[2], que_f1))
+	up_errs_ques = list(map(lambda x:x[3], que_f1))
 	errs_ques = [down_errs_ques, up_errs_ques]
 
 	xvals_docs = list(map(lambda x:x[0], doc_f1))
 	yvals_docs = list(map(lambda x:x[1], doc_f1))
 	
-	up_errs_docs = list(map(lambda x:x[2], doc_f1))
-	down_errs_docs = list(map(lambda x:x[3], doc_f1))
+	down_errs_docs = list(map(lambda x:x[2], doc_f1))
+	up_errs_docs = list(map(lambda x:x[3], doc_f1))
 	errs_docs = [down_errs_docs, up_errs_docs]
 
 
@@ -133,6 +133,7 @@ def f1_distribution_summary(all_f1s, out_path):
 		f.write("zero_f1=%s, one_f1=%s, partial_f1=%s\n" % (percent_zero_f1s, percent_one_f1s, percent_partial_f1s))
 
 def test():
+	# last two components of each tuple are values for error bars (upper limit, lower limit)
 	ans_f1 = [(1, 0.5, 0.05, 0.05), (2, 0.2, 0.09, 0.09), (3, 0.1,0.05, 0.09), (23, 0.5, 0.03, 0.09), (24, 0.9, 0.03, 0.09), (103, 0.2, 0.9, 0.09)]
 	que_f1 = [(3, 0.9, 0.03, 0.09), (2, 0.3, 0.03, 0.09), (1, 0.1, 0.03, 0.09), (34, 0.4, 0.02, 0.09)]
 	doc_f1 = [(124, 0.9, 0.01, 0.09), (923, 0.2, 0.01, 0.09), (422, 0.5, 0.01, 0.09)]
