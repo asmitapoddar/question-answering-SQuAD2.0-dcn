@@ -309,7 +309,7 @@ def main():
   # Provide only the "HasAns" f1s.
   f1_outpath_name, f1_outpath_ext = os.path.splitext(OPTS.out_image_path)
   f1_outpath = f1_outpath_name + "_f1_histogram" + f1_outpath_ext
-  plot_f1_histogram(has_ans_f1_scores, f1_outpath, DEFAULT_ERROR_BAR_TYPE)
+  plot_f1_histogram(has_ans_f1_scores, f1_outpath)
 
 
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
