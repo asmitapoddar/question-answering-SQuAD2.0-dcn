@@ -16,6 +16,7 @@ question_path = sys.path[14]
 context_path = sys.path[15]
 ans_path = sys.path[16]
 """
+### usage: python3 training_pipeline.py constants/constants.py
 
 import io
 import json
@@ -29,8 +30,8 @@ import sys
 import time
 import torch as th
 import pathlib
-
-from constants import *
+ 
+#from constants import *
 from datetime import datetime
 from model import *
 from preprocessing.batching import *
@@ -38,6 +39,10 @@ from preprocessing.embedding_matrix import get_glove
 
 from torch.nn.utils import clip_grad_norm_
 
+from importlib.machinery import SourceFileLoader
+file_name = "constants.py" if len(sys.argv) <= 1 else sys.argv[1]
+SourceFileLoader("constants_file", file_name).load_module()
+from constants_file import *
 
 # the idea is that this will stand out on the loss graph
 def filter_nan(x):
