@@ -28,7 +28,8 @@ def main():
         data_scores = list(map(lambda s: tuple((s.split(","))), f.readlines()))
         data_scores = list(filter(lambda tup: len(tup) >= 3, data_scores))
         data_scores = list(filter(lambda tup: int(tup[0]) >= X_START, data_scores))
-        if len(data_scores[0]) >= 6):
+        data_scores = sorted(data_scores, lambda tup: tup[0])
+        if len(data_scores[0]) >= 6:
             usingHasAns = True
         x_scores = list(map(lambda d: int(d[0]), data_scores))
         y_scores_em = list(map(lambda d: float(d[4 if usingHasAns else 1]), data_scores))

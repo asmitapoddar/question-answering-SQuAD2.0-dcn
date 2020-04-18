@@ -56,12 +56,12 @@ def main():
     scores_path = model_dir+scores_filename
 
     next_global_step_to_eval = start
-    if os.path.exists(scores_path):
-        custom_print("%s already exists. Do you want to overwrite it? [y/n] + Enter" % scores_filename)
-        user_ans = str(input())
-        if "y" not in user_ans:
-            return
-    with open(scores_path, "w") as scores_file:
+    # if os.path.exists(scores_path):
+    #     custom_print("%s already exists. Do you want to overwrite it? [y/n] + Enter" % scores_filename)
+    #     user_ans = str(input())
+    #     if "y" not in user_ans:
+    #         return
+    with open(scores_path, "a") as scores_file:
         model_paths = sorted(Path(model_dir).iterdir(), key=os.path.getmtime)
         model_paths = [p for p in model_paths if ".par" in str(p)]
 
@@ -75,12 +75,12 @@ def main():
                 custom_print("Evaluating model: '%s' ..." % model_path,flush=True)
                 gen_predictions(model_path, dataset_path, glove)
                 em_score, f1_score, total, HasAns_exact, HasAns_f1, HasAns_total, NoAns_exact, NoAns_f1, NoAns_total = run_eval(dataset_path)
+                scores_file.write("\n")
                 scores_file.write(str(global_step) + "," + str(em_score) + "," + str(f1_score) + "," + str(total))
                 if HasAns_exact is not None:
                     scores_file.write("," + str(HasAns_exact) + "," + str(HasAns_f1) + "," + str(HasAns_total))
                     if NoAns_exact is not None:
                         scores_file.write("," + str(NoAns_exact) + "," + str(NoAns_f1) + "," + str(NoAns_total))
-                scores_file.write("\n")
     print("gen_scores finished. Log written to:", scores_path)
 
     if ENABLE_AUTOMATIC_PLOT_GEN:
