@@ -3,9 +3,10 @@
 
 ### Generate scores for a model at different stages throughout its training
 * `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq. measured in global steps]`
-* Concrete example: `python3 gen_scores.py ./model/2020-04-07_00-10-37\[LR1-00e-03_Q86821_B64_H200_RS1\]/ preprocessing/data/subset-4/train-subset-4.json`
+* Concrete example: `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json`
 * The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!
-* Will generate a file `scores_<datasetname>.log` in the model folder.
+* Will generate a file `scores_<datasetname>.log` in the model folder, as well as two plots (EM and F1).
+* To copy the plots to your computer run: `scp -T guest@138.19.43.95:"'Documents/no_eating_no_drinking/model/MI1_dropout_encodings_only/plot_loss_vs_em_score(train-subset-1).png'" . && scp -T guest@138.19.43.95:"'Documents/no_eating_no_drinking/model/MI1_dropout_encodings_only/plot_loss_vs_f1_score(train-subset-1).png'" . && ` (or same but with `dev-v2` replacing `train-subset-1`).
 
 ### Produce answer file for evaluation
 * Generate predictions on **SQuAD dev set**: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par`
