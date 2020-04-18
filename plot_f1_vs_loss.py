@@ -23,13 +23,16 @@ def main():
         data_loss = list(filter(lambda tup: int(tup[0]) >= X_START, data_loss))
         x_loss = list(map(lambda d: int(d[0]), data_loss))
         y_loss = list(map(lambda d: float(d[1]), data_loss))
+    usingHasAns = False
     with open(scores_path, "r") as f:
         data_scores = list(map(lambda s: tuple((s.split(","))), f.readlines()))
         data_scores = list(filter(lambda tup: len(tup) >= 3, data_scores))
         data_scores = list(filter(lambda tup: int(tup[0]) >= X_START, data_scores))
+        if len(data_scores[0]) >= 6):
+            usingHasAns = True
         x_scores = list(map(lambda d: int(d[0]), data_scores))
-        y_scores_em = list(map(lambda d: float(d[1]), data_scores))
-        y_scores_f1 = list(map(lambda d: float(d[2]), data_scores))
+        y_scores_em = list(map(lambda d: float(d[4 if usingHasAns else 1]), data_scores))
+        y_scores_f1 = list(map(lambda d: float(d[5 if usingHasAns else 2]), data_scores))
 
     if LOSS_SMOOTHING > 0:
         print("Using loss smoothing by running average of width %d." % (2*LOSS_SMOOTHING+1))
@@ -53,7 +56,7 @@ def main():
 
     ax2 = ax1.twinx()
     color = 'tab:blue'
-    ax2.set_ylabel('%s score (%s)' % ("EM" if plot_em_scores else "F1", scores_dataset_name), color=color)
+    ax2.set_ylabel('%s score (%s, %s)' % ("EM" if plot_em_scores else "F1", scores_dataset_name, "HasAns" if usingHasAns else "total"), color=color)
     ax2.plot(x_scores, y_scores_em if plot_em_scores else y_scores_f1, color=color)
     ax2.tick_params(axis='y', labelcolor=color)
 
