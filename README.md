@@ -2,8 +2,8 @@
 * `python3 training_pipeline.py "model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
 ### Generate scores for a model at different stages throughout its training
-* `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq. measured in global steps]`
-* Concrete example (training set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json`
+* `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq.] [optional eval start step]`
+* Concrete example (training set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json 2000 50000` -- this will eval model at step 50000, 52000, 54000, ... up to the most recent one.
 * Concrete example (dev set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/dev-v2.0.json`
 * *The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!*
 * The script will generate a file `scores_<datasetname>.log` in the model folder, as well as two plots (EM and F1).
