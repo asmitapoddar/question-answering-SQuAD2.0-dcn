@@ -259,8 +259,8 @@ def compute_average_f1s(data, error_bar_type):
     if error_bar_type is ERROR_BAR_TYPE_PERCENTILE:
       midpoint = np.median(f1s)
       lowerr, uperr = np.percentile(f1s, 100 - ERROR_BAR_PERCENTILE_VALUE), np.percentile(f1s, ERROR_BAR_PERCENTILE_VALUE)
-      lowerr = mean - lowerr
-      uperr = uperr - mean
+      lowerr = midpoint - lowerr
+      uperr = uperr - midpoint
     elif error_bar_type is ERROR_BAR_TYPE_STDEV:
       midpoint = np.mean(f1s)
       lowerr, uperr = np.std(f1s), np.std(f1s)
