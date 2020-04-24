@@ -126,7 +126,7 @@ def get_raw_scores_with_length_info(dataset, preds):
         if not gold_answers:
           #Ignore unanswerable questions
           continue
-          
+
         # Average length of answer for this question
         average_gold_answer_length = int(np.rint(np.mean([len(get_tokens(ans)) for ans in gold_answers])))
 
@@ -255,19 +255,19 @@ def compute_average_f1s(data, error_bar_type):
   points = []
   for len_str in data:
     f1s = data[len_str]
-
-    mean = np.mean(f1s)
-
     # Compute error bar values
     if error_bar_type is ERROR_BAR_TYPE_PERCENTILE:
+      midpoint = np.median(f1s)
       lowerr, uperr = np.percentile(f1s, 100 - ERROR_BAR_PERCENTILE_VALUE), np.percentile(f1s, ERROR_BAR_PERCENTILE_VALUE)
       lowerr = mean - lowerr
       uperr = uperr - mean
     elif error_bar_type is ERROR_BAR_TYPE_STDEV:
+      midpoint = np.mean(f1s)
       lowerr, uperr = np.std(f1s), np.std(f1s)
     else:
+      midpoint = np.mean(f1s)
       lowerr, uperr = np.std(f1s), np.std(f1s)
-    points.append((int(len_str), mean, lowerr, uperr))
+    points.append((int(len_str), midpoint, lowerr, uperr))
   return points
 
 def plot_f1(ans_data, que_data, doc_data, outpath, error_bar_type):
