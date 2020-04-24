@@ -124,9 +124,9 @@ def get_raw_scores_with_length_info(dataset, preds):
         gold_answers = [a['text'] for a in qa['answers']
                         if normalize_answer(a['text'])]
         if not gold_answers:
-          # For unanswerable questions, only correct answer is empty string
-          gold_answers = ['']
-
+          #Ignore unanswerable questions
+          continue
+          
         # Average length of answer for this question
         average_gold_answer_length = int(np.rint(np.mean([len(get_tokens(ans)) for ans in gold_answers])))
 
