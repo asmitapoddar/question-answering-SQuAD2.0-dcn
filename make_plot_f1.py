@@ -54,7 +54,7 @@ def make_plot_questions(que_f1, outpath):
 
 	yticks = np.arange(0, 1.4, 0.2)
 	xdelta = 5
-	xticks = range(0, max(xvals) + xdelta, xdelta)
+	xticks = range(0, max(xvals_ques) + xdelta, xdelta)
 
 	fig = plt.figure()
 	ax = fig.add_subplot()
