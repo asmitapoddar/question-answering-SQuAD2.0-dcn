@@ -26,7 +26,7 @@ ERROR_BAR_TYPE_PERCENTILE = "ERROR_BAR_TYPE_PERCENTILE"
 ERROR_BAR_TYPE_STDEV = "ERROR_BAR_TYPE_STDEV"
 ERROR_BAR_PERCENTILE_VALUE = 75
 
-DEFAULT_ERROR_BAR_TYPE = ERROR_BAR_TYPE_PERCENTILE
+DEFAULT_ERROR_BAR_TYPE = ERROR_BAR_TYPE_STDEV
 
 
 
@@ -321,7 +321,7 @@ def main():
 
   # Plot F1 against just length of question
   f1_qlen_outpath = f1_outpath_name + "_f1_qlength_only" + f1_outpath_ext
-  plot_f1_questions(que_f1, f1_qlen_outpath)
+  plot_f1_questions(que_f1, f1_qlen_outpath, DEFAULT_ERROR_BAR_TYPE)
 
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
   f1_summary_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
