@@ -312,17 +312,16 @@ def main():
   # Plot of F1 against length of doc/que/ans.
   plot_f1(ans_f1, que_f1, doc_f1, OPTS.out_image_path, DEFAULT_ERROR_BAR_TYPE)
 
-  # Plot F1 against just length of question
-  f1_qlen_outpath = f1_outpath_name + "_f1_qlength_only" + f1_outpath_ext
-  plot_f1_questions(que_f1, f1_qlen_outpath)
-
-
   # Plot histogram of f1s.
   # Provide only the "HasAns" f1s.
   f1_outpath_name, f1_outpath_ext = os.path.splitext(OPTS.out_image_path)
   f1_outpath = f1_outpath_name + "_f1_histogram" + f1_outpath_ext
   plot_f1_histogram(has_ans_f1_scores, f1_outpath)
 
+
+  # Plot F1 against just length of question
+  f1_qlen_outpath = f1_outpath_name + "_f1_qlength_only" + f1_outpath_ext
+  plot_f1_questions(que_f1, f1_qlen_outpath)
 
   # Write summary file with percentage of F1 scores that are zero, one, or in between.
   f1_summary_outpath = f1_outpath_name + "_f1_dist_summary" + ".txt"
