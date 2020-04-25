@@ -276,6 +276,10 @@ def plot_f1(ans_data, que_data, doc_data, outpath, error_bar_type):
   doc_len_avgf1_std = compute_average_f1s(doc_data, error_bar_type)
   make_plot_f1(ans_len_avgf1_std, que_len_avgf1_std, doc_len_avgf1_std, outpath)
 
+def plot_f1_questions(que_data, outpath, error_bar_type):
+  que_len_avgf1_std = compute_average_f1s(que_data, error_bar_type)
+  make_plot_questions(que_len_avgf1_std, outpath)
+
 def plot_f1_against_pred_len(pred_len_f1, outpath, error_bar_type):
   pred_len_avgf1_std = compute_average_f1s(pred_len_f1, error_bar_type)
   make_plot_f1_against_prediction_length(pred_len_avgf1_std, outpath)
@@ -307,6 +311,11 @@ def main():
 
   # Plot of F1 against length of doc/que/ans.
   plot_f1(ans_f1, que_f1, doc_f1, OPTS.out_image_path, DEFAULT_ERROR_BAR_TYPE)
+
+  # Plot F1 against just length of question
+  f1_qlen_outpath = f1_outpath_name + "_f1_qlength_only" + f1_outpath_ext
+  plot_f1_questions(que_f1, f1_qlen_outpath)
+
 
   # Plot histogram of f1s.
   # Provide only the "HasAns" f1s.

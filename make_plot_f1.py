@@ -44,6 +44,35 @@ def make_plot_f1_against_prediction_length(pred_len_f1, outpath):
 	plt.tight_layout()
 	plt.savefig(outpath, dpi=300)
 
+def make_plot_questions(que_f1, outpath):
+	xvals_ques = list(map(lambda x:x[0], que_f1))
+	yvals_ques = list(map(lambda x:x[1], que_f1))
+	
+	down_errs_ques = list(map(lambda x:x[2], que_f1))
+	up_errs_ques = list(map(lambda x:x[3], que_f1))
+	errs_ques = [down_errs_ques, up_errs_ques]
+
+	yticks = np.arange(0, 1.4, 0.2)
+	xdelta = 5
+	xticks = range(0, max(xvals) + xdelta, xdelta)
+
+	fig = plt.figure()
+	ax = fig.add_subplot()
+
+	ax.grid(color='white')
+	ax.set_facecolor('gainsboro')
+
+	ax.set(ylabel="F1")
+	ax.set(xlabel="# Tokens in Question")
+
+	ax.set(xticks=xticks)
+	ax.set(yticks=yticks)
+
+	ax.set(ylim=(min(yticks), max(yticks)))
+	ax.errorbar(xvals_ques, yvals_ques, yerr=errs_ques, fmt='o', markeredgecolor='k', ecolor='lightskyblue', capsize=4.0)
+	plt.tight_layout()
+	plt.savefig(outpath, dpi=300)
+
 def make_plot_f1(ans_f1, que_f1, doc_f1, out_path):
 	
 	xvals_ans = list(map(lambda x:x[0], ans_f1))
