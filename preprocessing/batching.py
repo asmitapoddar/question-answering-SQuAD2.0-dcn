@@ -222,6 +222,4 @@ def get_batch_generator(word2id, context_path, qn_path, ans_path, batch_size, co
         # Make into a Batch object
         batch = Batch(context_ids, context_mask, context_tokens, qn_ids, qn_mask, qn_tokens, ans_span, ans_tokens)
         yield batch
-
-    #return batch
     

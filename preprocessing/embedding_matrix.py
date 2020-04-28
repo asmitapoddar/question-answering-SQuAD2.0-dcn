@@ -8,7 +8,6 @@ import csv
 import numpy as np
 
 from constants import *
-#from google.colab import files
 from tqdm import tqdm
 
 def get_glove(glove_path, glove_dim):
@@ -29,19 +28,9 @@ def get_glove(glove_path, glove_dim):
     # put start tokens in the dictionaries
     idx = 0
     for word in START_VOCAB:
-        #print('word', idx)
         word2id[word] = idx
         id2word[idx] = word
         idx += 1
-
-    """
-    # Length of vocab
-    with open(glove_path, 'r') as f:
-        for i, l in enumerate(f):
-            pass
-        print('Length',i+1)
-    """
-    #print('index', idx)
 
     # go through glove vecs
     with open(glove_path, 'r') as fh:
@@ -50,8 +39,6 @@ def get_glove(glove_path, glove_dim):
             word = ''.join(line[:-(len(' '.join(values[-300:]))+2)])
             if word in word2id:
                 continue
-            #print(word)
-            #print(line, word)
             
             vector = list(map(float, values[-300:]))
 
@@ -64,31 +51,24 @@ def get_glove(glove_path, glove_dim):
 
     assert len(word2id) == len(id2word)
 
-    """
-    skipping over bad embeddings
-    final_vocab_size = vocab_size + len(START_VOCAB)
-    #assert len(word2id) == final_vocab_size
-    #assert len(id2word) == final_vocab_size
-    #assert idx == final_vocab_size
-    """
-
     return emb_matrix, word2id, id2word
-'''
-#Write to file
 
-#For dictionary
-w = csv.writer(open("word2id.csv", "w"))
-for key, val in word2id.items():
-    w.writerow([key, val])
-#files.download('word2id.csv') #for downloading to Google Drive
 
-w1 = csv.writer(open("id2word.csv", "w"))
-for key, val in id2word.items():
-    w1.writerow([key, val])
+# #Write to file
+
+# #For dictionary
+# w = csv.writer(open("word2id.csv", "w"))
+# for key, val in word2id.items():
+#     w.writerow([key, val])
+# #files.download('word2id.csv') #for downloading to Google Drive
+
+# w1 = csv.writer(open("id2word.csv", "w"))
+# for key, val in id2word.items():
+#     w1.writerow([key, val])
     
-#For embedding_matrix
-np.savetxt('embedding_matrix.txt', emb_matrix,fmt='%.2f')
+# #For embedding_matrix
+# np.savetxt('embedding_matrix.txt', emb_matrix,fmt='%.2f')
 
-#f=open("embedding_matrix.txt", "r")
-#embedding_matrix = f.read()
-'''
+# #f=open("embedding_matrix.txt", "r")
+# #embedding_matrix = f.read()
+

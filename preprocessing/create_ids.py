@@ -28,19 +28,9 @@ def get_glove(glove_path, glove_dim):
     # put start tokens in the dictionaries
     idx = 0
     for word in START_VOCAB:
-        #print('word', idx)
         word2id[word] = idx
         id2word[idx] = word
         idx += 1
-
-    # Length of vocab
-    """
-    with open(glove_path, 'r') as f:
-        for i, l in enumerate(f):
-            pass
-        print('Length',i+1)
-    """
-    #print('index', idx)
     
     # go through glove vecs
     with open(glove_path, 'r') as fh:
@@ -50,19 +40,14 @@ def get_glove(glove_path, glove_dim):
             word = ''.join(line[:-(len(' '.join(values[-300:]))+2)])
             
             vector = list(map(float, values[-300:]))
-            #print('Length', len(vector))
             if glove_dim != len(vector):
-                continue;
+                continue
                 raise Exception("You set --embedding_size=%i. If you set --glove_path yourself then make sure that --embedding_size=%i matches!" % (glove_dim, len(vector)))
             emb_matrix[idx, :] = vector
             word2id[word] = idx
             id2word[idx] = word
             idx += 1
             
-
     final_vocab_size = vocab_size + len(START_VOCAB)
-    #assert len(word2id) == final_vocab_size
-    #assert len(id2word) == final_vocab_size
-    #assert idx == final_vocab_size
 
     return emb_matrix, word2id, id2word

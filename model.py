@@ -27,9 +27,6 @@ class Encoder(nn.Module):
     # Even if batch_first=True, the initial hidden state should still have batch index in dim1, not dim0.
     return (th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
             th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32))
-    
-    #return nn.init.xavier_initialisation(th.zeros(1, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
-    #      th.zeros(1, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
   def forward(self, x):
     hidden = self.generate_initial_hidden_state()
@@ -51,7 +48,7 @@ class CoattentionModule(nn.Module):
         #Q: B x n + 1 x l
         #D: B x m + 1 x l
         
-        Q = th.transpose(Q_T, 1, 2) #B x  n + 1 x l
+        Q = th.transpose(Q_T, 1, 2) #B x n + 1 x l
         D = th.transpose(D_T, 1, 2) #B x m + 1 x l
 
         # Coattention.
@@ -81,11 +78,8 @@ class BiLSTMEncoder(nn.Module):
         self.lstm = nn.LSTM(3 * hidden_dim, hidden_dim, 1, batch_first=True, bidirectional=True)
 
     def init_hidden(self): 
-        # First is the hidden h, second is the cell c.
         return (th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
               th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
-        # return nn.init.xavier_initialisation(th.zeros(2, self.batch_size, self.hidden_dim, device=self.device, dtype=th.float32),
-        #      th.zeros(2, self.batch_size,self.hidden_dim, device=self.device, dtype=th.float32))
 
     def forward(self, input_BiLSTM):
         hidden = self.init_hidden()
@@ -110,7 +104,6 @@ class HighwayMaxoutNetwork(nn.Module):
 
     # W_D := Weights of MLP applied to the coattention encodings of
     # the start/end positions, and the current LSTM hidden state (h_i)
-    # (nn.Linear is an affine transformation y = Wx + b).
 
     # There are 5 * hidden_dim incoming features (u_si-1, u_ei-1, h_i) 
     # which are vectors containing (2l, 2l, l) elements respectively.

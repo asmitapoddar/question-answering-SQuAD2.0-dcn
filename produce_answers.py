@@ -138,7 +138,6 @@ def run_evaluation(model_path, eval_set_path, output_path, glove, shouldDebugSur
 
 	evaluation_batch_size = 64
 
-	# https://discuss.pytorch.org/t/solved-make-sure-that-pytorch-using-gpu-to-compute/4870/2
 	# Is GPU available:
 	print ("cuda device count = %d" % th.cuda.device_count())
 	print ("cuda is available = %d" % th.cuda.is_available())
@@ -238,7 +237,6 @@ def run_evaluation(model_path, eval_set_path, output_path, glove, shouldDebugSur
 	with open(output_path, "w") as f:
 		json.dump(answer_mapping, f)
 
-# TODO: provide path to serialised model
 if __name__ == "__main__":
 	saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 	evaluation_set_path = "preprocessing/data/dev-v2.0-tokenized.json" if len(sys.argv) <= 2 else sys.argv[2]

@@ -97,16 +97,11 @@ def preprocess(dataset, type):
                         print(get_char_length(context_tokens))
                         print(answer_text_tokens)
                     
-
-                    #if answer_token_end_location==None:
-                     # print("answer_token_end_location=None")
-                      #print(answer_end)
                     examples.append((' '.join(context_tokens), \
                      ' '.join(question_tokens), \
                      ' '.join(answer_text_tokens),\
                      ' '.join([str(answer_token_start_location), str(answer_token_end_location)])))
                
-                    #print(answer_start)
     with open('data/preprocessed_'+type+'_context.txt', 'wb+') as context_file,  \
          open('data/preprocessed_'+type+'_question.txt', 'wb+') as question_file,\
          open('data/preprocessed_'+type+'_ans_text.txt', 'wb+') as ans_text_file,\
@@ -121,11 +116,8 @@ def preprocess(dataset, type):
           ans_span_file.write(span.encode('utf8') + b'\n')
 
 
-
 def main():
-    
-    
-    # download train set
+     # download train set
      train_data = load_tokenize_train_set()
 
      # preprocess train set and write to file

@@ -9,7 +9,7 @@ import matplotlib.pyplot as plt
 loss_path = "loss.log" if len(sys.argv) <= 1 else sys.argv[1]
 
 HISTORY = 200
-LOSS_SMOOTHING = 0  # Ballpark values: try setting to 5 for some smoothing or 20 for a lot of smoothing.
+LOSS_SMOOTHING = 0
 
 with open(loss_path, "r") as f:
     data = list(map(lambda s: tuple(s[:-1].split(": ")), f.readlines()[-HISTORY:]))

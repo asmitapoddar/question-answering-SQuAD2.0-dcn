@@ -42,9 +42,6 @@ def load_dev_set():
         dev_set = json.load(f)
     return dev_set
 
-# dev_set = load_question_answering_dataset()
-# print(json.dumps(dev_set, indent=4, sort_keys=True))
-
 def encode_word(word, embeddings):
     # "Set embeddings for out of vocabulary words to zero"
     if word in embeddings: 
@@ -116,7 +113,6 @@ def preprocess(nlp_client, embeddings, dataset):
                     answer_embeddings = embed_string(nlp_client, embeddings, answer_text)
                     ans["answer_text_embedding"] = answer_embeddings
                     answer_start = ans["answer_start"]
-                    #print(answer_start)
 
     # Write to file 
     with open("preprocessed_training_set.txt", "w") as outFile: 

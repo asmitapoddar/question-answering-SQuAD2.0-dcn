@@ -1,21 +1,4 @@
 # -*- coding: utf-8 -*-
-"""
-from google.colab import drive
-drive.mount('/content/gdrive', force_remount=True)
-import sys
-sys.path.append('AML_Project/word_vectors/glove.840B.300d.txt')
-sys.path.append('/content/gdrive/My Drive/AML_Project/word_vectors/word2id.csv')
-sys.path.append('/content/gdrive/My Drive/AML_Project/word_vectors/id2word.csv')
-sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_question.txt')
-sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_context.txt')
-sys.path.append('/content/gdrive/My Drive/AML_Project/Training and development files/preprocessed_training_ans_text.txt')
-
-#For me:
-word2id_path = sys.path[12]
-question_path = sys.path[14]
-context_path = sys.path[15]
-ans_path = sys.path[16]
-"""
 
 import io
 import json
@@ -38,7 +21,6 @@ from preprocessing.embedding_matrix import get_glove
 
 from torch.nn.utils import clip_grad_norm_
 
-# the idea is that this will stand out on the loss graph
 def filter_nan(x):
     return -1000 if math.isnan(x) else x
 
@@ -138,11 +120,11 @@ class Training:
         self.optimizer = None
         self.params = " "  # Model parameters (50 layers, infeatures:200, outfeatures:200)
 
-        #TO BE UPDATED  #TODO: What does this comment mean?
         self.word2id_path = "word_vectors/word2id.csv"
         self.id2word_path = "word_vectors/id2word.csv"
         self.glove_path = "word_vectors/glove.840B.300d.txt"
         self.emb_mat_path = "word_vectors/embedding_matrix.txt"
+
         # These get set dynamically by a call to one of the methods above
         self.question_path = None
         self.context_path = None
@@ -251,7 +233,7 @@ class Training:
         
         # convert sequence into embedding
         q_emb = self.seq_to_emb(q_seq)  #Batched questions embedding Shape: batch_size X max_question_length, embedding_dimension
-        d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape:  batch_size X max_context_length, embedding_dimension
+        d_emb = self.seq_to_emb(d_seq)  #Batched contexts embedding Shape:  batch_size X max_context_length,  embedding_dimension
 
         loss, s, e = model(d_emb, q_emb, span_s, span_e)
 
@@ -309,7 +291,7 @@ class Training:
 
         self.model = DCNModel(BATCH_SIZE, self.device).to(self.device).train()
         self.params = self.model.parameters()
-        self.optimizer = optim.Adam(self.params, lr=ADAM_LR, amsgrad=True) # TODO: choose right hyperparameters
+        self.optimizer = optim.Adam(self.params, lr=ADAM_LR, amsgrad=True)
 
         # Load saved state from the path. If path is None, still do call this method!
         self.global_step, start_batch, start_epoch = self.load_saved_state(state_file_path)
@@ -368,7 +350,6 @@ class Training:
         if not log_file_exists:
             print("Created loss.log file at path:", loss_path)
 
-# TODO: Move.
 saved_state_path = None if len(sys.argv) <= 1 else sys.argv[1]
 
 training_pipeline = Training()
