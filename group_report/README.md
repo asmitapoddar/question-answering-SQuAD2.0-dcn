@@ -1,5 +1,0 @@
-**Currently we are updating the report over on [Overleaf](https://www.overleaf.com/8533217623kfnhpsrcnmbf).**
-
-Excerpt from https://www.cs.ox.ac.uk/files/11607/assessment.pdf:
-
-> The group report will carry 25% of the marks. Each group should submit a group report no longer than 5,000 words. The report should describe the rationale for selecting the paper and the particular experiments for replication. It should summarise aspects of the paper relevant to the experiment (both to set the experiment in context and to lay out relevant technical details). The report should detail the experimental simulations you ran, compare them to those in the original paper, and draw conclusions. The report may further discuss the target questions of the paper selected, experimental methodology, your implementation details, analysis and discussion of findings, conclusions on reproducibility of the paper. A partial goal to keep in mind is to identify which parts of the selected paper can be reproduced, and at what cost in terms of resources (computation, time, people, development effort, communication with the authors).
