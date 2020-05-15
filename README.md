@@ -4,8 +4,20 @@ This project aims at implementing a Dynamic Coattention Network proposed by [Xio
 
 ## Code
 The following scripts, stored in this repository, have been developed for implementing Factorization Machines for music recommendation using the dataset.
-1. 
-The DCN is comprised of two components - the Coattention Encoder and the Dynamic Pointer Decoder  
+1. [preprocessing](https://github.com/asmitapoddar/question-answering-dcn/tree/master/preprocessing): Preprocessing done on the dataset including tokenizing the data, loading the GloVE embeddings and batching.    
+2. [model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/model.py): The Dynamic Coattention Network model, which comprises two components - the Coattention Encoder and the Dynamic Pointer Decoder.  
+3. [constants.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/constants.py): Hyper-paramters of the model.  
+4. [training_pipeline.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/training_pipeline.py): Script to train the model.  
+5. [produce_answers.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/produce_answers.py): Script to produce the answers of the given dataset using the model (path) provided.    
+6. [gen_scores.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_scores.py): Script to generate scores *todo*. 
+7. [evaluate-v2.0.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/evaluate-v2.0.py): Evaluation script to find F1 and EM score of the model.   
+8. [test_model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/test_model.py): Testing the model using dummy values (for debugging).    
+9. [gen_plot.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_plot.py):   
+10. [gen_f1_by_length.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_f1_by_length.py):   
+11. [index_convergence.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/index_convergence.py):   
+12. [make_plot_f1.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/make_plot_f1.py):   
+13. [plot_f1_vs_loss.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/plot_f1_vs_loss.py):   
+14. [training_pipeline_freeze_nondpd_weights.py](https://github.com/asmitapoddar/question-answering- dcn/blob/master/training_pipeline_freeze_nondpd_weights.py):   
 
 ## Usage
 
@@ -14,8 +26,8 @@ The DCN is comprised of two components - the Coattention Encoder and the Dynamic
 * Resuming training from saved state: `python3 training_pipeline.py "model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
 ### Generate scores for a model at different stages throughout its training
-* Generating scores for a model: `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq.] [optional eval start step]`. 
-Example (training set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json 2000 50000` -- this will eval model at step 50000, 52000, 54000, ... up to the most recent one.  
+* Generating scores for a model: `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq.] [optional eval start step]`.   
+Example (training set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json 2000 50000` -- this will eval model at step 50000, 52000, 54000, ... up to the most recent one.   
 Example (dev set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/dev-v2.0.json`. 
 
 Note: The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!
