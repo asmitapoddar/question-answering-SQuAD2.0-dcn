@@ -3,15 +3,15 @@
 This project aims at implementing a Dynamic Coattention Network proposed by [Xionget al.(2017)](https://arxiv.org/abs/1611.01604) for Question Answering, learning to find answers spans in a document, given a question from the [Stanford Question Answering Dataset (SQuAD2.0)](https://rajpurkar.github.io/SQuAD-explorer/), using the **PyTorch Framework**. Performance is evaluated with the standard tokenwise F1 score and EM (exact match) percentage over the predicted answers
 
 ## Code
-The following scripts, stored in this repository, have been developed for implementing Factorization Machines for music recommendation using the dataset.
-1. [preprocessing](https://github.com/asmitapoddar/question-answering-dcn/tree/master/preprocessing): Preprocessing done on the dataset including tokenizing the data, loading the GloVE embeddings and batching.    
+The following scripts, stored in this repository, have been developed for implementing Dynamic Coattention Networks for Question Answering using the SQuAD dataset.
+1. [preprocessing](https://github.com/asmitapoddar/question-answering-dcn/tree/master/preprocessing): Preprocessing done on the dataset including tokenizing the data, loading the GloVE embeddings, getting the embeddings for the data and batching the data for training.    
 2. [model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/model.py): The Dynamic Coattention Network model, which comprises two components - the Coattention Encoder and the Dynamic Pointer Decoder.  
 3. [constants.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/constants.py): Hyper-paramters of the model.  
 4. [training_pipeline.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/training_pipeline.py): Script to train the model.  
 5. [produce_answers.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/produce_answers.py): Script to produce the answers of the given dataset using the model (path) provided.    
 6. [gen_scores.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_scores.py): Script to generate scores *todo*. 
 7. [evaluate-v2.0.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/evaluate-v2.0.py): Evaluation script to find F1 and EM score of the model.   
-8. [test_model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/test_model.py): Testing the model using dummy values (for debugging).    
+8. [test_model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/test_model.py): Testing the model using dummy values (for debugging the model).    
 9. [gen_plot.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_plot.py):   
 10. [gen_f1_by_length.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_f1_by_length.py):   
 11. [index_convergence.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/index_convergence.py):   
