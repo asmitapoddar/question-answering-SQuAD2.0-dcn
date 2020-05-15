@@ -1,6 +1,10 @@
 # Dynamic Coattention Networks For Question Answering
 
-This project aims at implementing a Dynamic Coattention Network proposed by [Xionget al.(2017)](https://arxiv.org/abs/1611.01604) for Question Answering, learning to find answers spans in a document, given a question from the [Stanford Question Answering Dataset (SQuAD2.0)](https://rajpurkar.github.io/SQuAD-explorer/), using the **PyTorch Framework**. Performance is evaluated with the standard tokenwise F1 score and EM (exact match) percentage over the predicted answers
+This project aims at implementing a Dynamic Coattention Network proposed by [Xionget al.(2017)](https://arxiv.org/abs/1611.01604) for Question Answering, learning to find answers spans in a document, given a question from the [Stanford Question Answering Dataset (SQuAD2.0)](https://rajpurkar.github.io/SQuAD-explorer/), using the **PyTorch Framework**. Performance is evaluated with the standard tokenwise F1 score and EM (exact match) percentage over the predicted answers.
+
+Several deep learning models have been proposed for question answering. However, due to their single-pass nature, they have no way to recover from local maxima corresponding to incorrect answers. To address this problem, we introduce
+the Dynamic Coattention Network (DCN) for question answering. The DCN first fuses co-dependent representations of the question and the document in order to focus on relevant parts of both. Then a dynamic pointing decoder iterates over potential answer spans. This iterative procedure enables the model to recover from initial local maxima corresponding to incorrect answers.
+
 
 ## Code
 The following scripts, stored in this repository, have been developed for implementing Dynamic Coattention Networks for Question Answering using the SQuAD dataset.
