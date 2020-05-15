@@ -45,19 +45,11 @@
   - [ ] single iteration for s/e indices instead of 4.
   - [ ] smaller HIDDEN_DIM
   - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
-  - [ ] *Think of more ablation tests. Take ones from the paper.*
 - [ ] Plots:
   - [x] Automate computation of F1/EM scores throughout a model's evolution (training) (Kuba)
   - [x] Plotting F1/EM scores on top of loss (Kuba)
   - [ ] Prepare loss tables (discussed in the [gdoc](https://docs.google.com/document/d/1Axe38M8h8__j97_XVvrPySE_Frr2uzN183G8P237Uwk/edit))
   - [ ] Plotting scores depending on true span length (Dip)
-- [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ~~load serialised model~~) (Dip)
+- [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ) (Dip)
 
-### Final stretch doc:
-* https://docs.google.com/document/d/1Axe38M8h8__j97_XVvrPySE_Frr2uzN183G8P237Uwk/edit
-
-### Our older links
-* GDrive: https://drive.google.com/open?id=17K0ZFb_OCdvHgSlkNFErzyx--eYZnoiG
-* AML GDoc: https://docs.google.com/document/d/1fit7dYVHn0I0PsAA_HCj3AqnxJ7Wzz-78sb--wxKdA4/edit?usp=sharing
-* Group Report: https://www.overleaf.com/8533217623kfnhpsrcnmbf
 * **Paper: https://arxiv.org/abs/1611.01604**
