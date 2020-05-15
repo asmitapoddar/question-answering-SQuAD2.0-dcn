@@ -1,3 +1,13 @@
+# Dynamic Coattention Networks ForQuestion Answering
+
+This project aims at implementing a Dynamic Coattention Network proposed by [Xionget al.(2017)](https://arxiv.org/abs/1611.01604) for Question Answering, learning to find answers spans in a document, given a question from the [Stanford Question Answering Dataset (SQuAD2.0)](https://rajpurkar.github.io/SQuAD-explorer/), using the **PyTorch Framework**. 
+
+Inspite of the thrust on computer vision for medical applications, it is not widely adapted in real-life. Our aim is to build trust on the deep learning system, and deploy such a system in the following ways:   
+- Apart from achieving high accuracy in predicting the class of DR using Convolutional Neural Networks, we estimate the uncertainty of neural networks in making its prediction. The deep learning system should give high confidence predictions when the predictions are likely to be correct and low confidence when the system is unsure.   
+- We also generate visual explanation of the deep learning system to convey the pixels in the image that influences its decision. For a visual explanation to enhance trust, it has to be specific and relevant. It should only highlight the parts of image that is most relevant to how human justify its decision.  
+- Create an end-to-end application which enables an end-user (such as a clinician) to obtain all the results on a dashboard to interpret model predictions. Deep-learning systems could thus, aid physicians by offering second opinions and flagging concerning areas in images.  
+
+
 ### Resuming training from saved state
 * `python3 training_pipeline.py "model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
@@ -20,36 +30,9 @@
 
 ### Existing impl (atulkum)
 * Model: https://github.com/atulkum/co-attention/blob/master/code/model.py
-* Batcher: https://github.com/atulkum/co-attention/blob/master/code/data_util/data_batcher.py
 
 ### Colab training setup
 * GDrive: https://drive.google.com/drive/folders/1n5V3Je-qcuncPhkDYikIbAxJ_68d1p4E
 * Colab: https://colab.research.google.com/drive/1ycVllF_XIsXDvC4qOAMr4HRTeRaEBFNb
 
-### TODOs
-- [ ] ![#f03c15](https://placehold.it/15/f03c15/000000?text=+) *Add your **past** contributions or **nearest-future work** here. (everyone)*
-- [x] Move tests to seperate file (Richie)
-- [x] Implement model (everyone)
-- [x] Enable cuda usage (Kuba)
-- [x] Get forward pass to run (Kuba)
-- [x] Get backward pass to run (Kuba -- this was quick)
-- [x] Debug why predicted end indices are all 0 (Richie)
-- [x] Complete batching (Asmita)
-- [x] Create word2id, id2word, embedding matrix (Asmita)
-- [x] Training pipeline (Asmita + Kuba + Richie + Dip)
-- [x] Model serialisation (Kuba + Richie)
-- [x] Debug `retain_graph` error (Dip)
-- [x] Debug training issues (Dip with help from Kuba and Richie)
-- [ ] Quick script to evaluate latest version of a model automatically (Kuba?)
-- [ ] Ablation tests:
-  - [ ] single iteration for s/e indices instead of 4.
-  - [ ] smaller HIDDEN_DIM
-  - [ ] try removing some modules or replacing them with something simpler, e.g. coattention with some fully connected layers.
-- [ ] Plots:
-  - [x] Automate computation of F1/EM scores throughout a model's evolution (training) (Kuba)
-  - [x] Plotting F1/EM scores on top of loss (Kuba)
-  - [ ] Prepare loss tables (discussed in the [gdoc](https://docs.google.com/document/d/1Axe38M8h8__j97_XVvrPySE_Frr2uzN183G8P237Uwk/edit))
-  - [ ] Plotting scores depending on true span length (Dip)
-- [ ] Generate predictions for evaluation (TODO ~~batching if needed~~, better conversion from tokens to answer strings, ) (Dip)
-
-* **Paper: https://arxiv.org/abs/1611.01604**
+Xiong, Caiming, Zhong, Victor, & Socher, Richard. 2017.  Dynamic Coattention Networks for Question Answering, International Conference on Learning Representations (ICLR) 
