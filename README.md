@@ -9,18 +9,20 @@ The DCN is comprised of two components - the Coattention Encoder and the Dynamic
 
 ## Usage
 
-### TrainingR
-* esuming training from saved state: `python3 training_pipeline.py "model/2020-03-28_22-39-28/epoch0_batch11.par"`
+### Training
+* Training model: `python3 training_pipeline.py`
+* Resuming training from saved state: `python3 training_pipeline.py "model/2020-03-28_22-39-28/epoch0_batch11.par"`
 
 ### Generate scores for a model at different stages throughout its training
 * Generating scores for a model: `python3 gen_scores.py <model_path> <dataset_file_path.json> [optional eval freq.] [optional eval start step]`. 
 Example (training set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/subset-1/train-subset-1.json 2000 50000` -- this will eval model at step 50000, 52000, 54000, ... up to the most recent one.  
-Example (dev set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/dev-v2.0.json`
-* *The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!*
-* The script will generate a file `scores_<datasetname>.log` in the model folder, as well as two plots (EM and F1).
+Example (dev set): `python3 gen_scores.py ./model/MI1_dropout_encodings_only/ preprocessing/data/dev-v2.0.json`. 
+
+Note: The dataset file path needs to be `something.json` and have a corresponding `something-tokenized.json` for this script to work!
+The script will generate a file `scores_<datasetname>.log` in the model folder, as well as two plots (EM and F1).
 
 ### Produce answer file for evaluation
-* Generate predictions on **SQuAD dev set**: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par`
+* Generate predictions on *SQuAD dev set*: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par`
 * Generate predictions on a different dataset: `python3 produce_answers.py model/2020-04-01_01-07-06/epoch0_batch791.par preprocessing/data/subset-1/train-subset-1-tokenized.json [optional_prediction_file_path]`
 * Run evaluation: `python3 evaluate-v2.0.py  preprocessing/data/subset-1/train-subset-1.json predictions.json`
 
