@@ -17,7 +17,7 @@ The following scripts, stored in this repository, have been developed for implem
 11. [index_convergence.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/index_convergence.py):   
 12. [make_plot_f1.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/make_plot_f1.py):   
 13. [plot_f1_vs_loss.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/plot_f1_vs_loss.py):   
-14. [training_pipeline_freeze_nondpd_weights.py](https://github.com/asmitapoddar/question-answering- dcn/blob/master/training_pipeline_freeze_nondpd_weights.py):   
+14. [training_pipeline_freeze_nondpd_weights.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/training_pipeline_freeze_nondpd_weights.py):   
 
 ## Usage
 
