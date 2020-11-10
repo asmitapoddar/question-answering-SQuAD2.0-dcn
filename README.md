@@ -16,12 +16,14 @@ The following scripts, stored in this repository, have been developed for implem
 6. [gen_scores.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_scores.py): Script to generate scores *todo*. 
 7. [evaluate-v2.0.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/evaluate-v2.0.py): Evaluation script to find F1 and EM score of the model.   
 8. [test_model.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/test_model.py): Testing the model using dummy values (for debugging the model).    
-9. [gen_plot.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_plot.py):   
-10. [gen_f1_by_length.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_f1_by_length.py):   
+9. [gen_plot.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_plot.py): Script to generate plots in Section 4.     
+10. [gen_f1_by_length.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/gen_f1_by_length.py): Script to generate plot on distribution of F1 scores with the number of tokens in the predicted answer on the answerable subset of the SQuAD dataset.   
 11. [index_convergence.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/index_convergence.py):   
 12. [make_plot_f1.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/make_plot_f1.py):   
 13. [plot_f1_vs_loss.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/plot_f1_vs_loss.py):   
 14. [training_pipeline_freeze_nondpd_weights.py](https://github.com/asmitapoddar/question-answering-dcn/blob/master/training_pipeline_freeze_nondpd_weights.py):   
+
+The Report for this project can be found [here](https://drive.google.com/file/d/1ETTONqyt2rnYU3cmoTld2eG139WbpqCJ/view?usp=sharing).  
 
 ## Usage
 
